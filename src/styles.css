@@ -1,1 +1,76 @@
-/* You can add global styles to this file, and also import other style files */
+/* Definir cores de tema globais para todo o aplicativo */
+:root {
+    --primary-color: #3f51b5; /* Indigo */
+    --accent-color: #e91e63;  /* Pink */
+  }
+  
+  /* Aplicar estilo base ao body */
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: #f5f5f5; /* Fundo claro para a aplicação */
+  }
+  
+  /* Estilo global para os mat-cards */
+  mat-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+  }
+  
+  /* Estilo para os títulos dos cards */
+  mat-card-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+  }
+  
+  /* Estilo para botões principais */
+  button.mat-raised-button {
+    background-color: var(--primary-color);
+    color: white;
+    margin-right: 10px;
+  }
+  
+  /* Estilo para botões de destaque */
+  button.mat-raised-button.mat-accent {
+    background-color: var(--accent-color);
+    color: white;
+  }
+  
+  button.mat-raised-button:hover {
+    opacity: 0.9;
+  }
+  
+  /* Ajustes para formulários */
+  .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .flex-item {
+    flex: 1;
+    margin: 0 10px;
+  }
+  
+  .mat-form-field {
+    width: 100%;
+  }
+  
+  /* Ajustar o espaçamento e a apresentação de cards */
+  .form-container {
+    margin-top: 20px;
+  }
+  
+  /* Ajustes para botões de ação */
+  .button-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  

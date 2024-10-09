@@ -6,5 +6,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app-igreja';
+  pageTitle = 'CCLIMP';
+  isSidenavOpen = true;
+
+  menuSections = [
+    {
+      title: 'Cadastros',
+      links: [
+        { title: 'Empresa', route: '/empresa' },
+      ]
+    }
+  ];
 }

@@ -1,0 +1,99 @@
+<mat-card>
+    <mat-card-title>Cadastro de Empresa</mat-card-title>
+  
+    <div class="button-row">
+      <button mat-raised-button color="primary" (click)="pesquisarEmpresa()">Pesquisar</button>
+    </div>
+  
+    <!-- Formulário de Cadastro -->
+    <mat-card-content *ngIf="!isSearchMode">
+      <form [formGroup]="empresaForm" (ngSubmit)="onSubmit()" class="form-container">
+  
+        <!-- Razão Social e CNPJ na mesma linha -->
+        <div class="row">
+          <mat-form-field appearance="fill" class="flex-item">
+            <mat-label>Razão Social</mat-label>
+            <input matInput formControlName="razao_social" />
+            <mat-error *ngIf="empresaForm.get('razao_social')?.invalid">Razão Social é obrigatória</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill" class="flex-item">
+            <mat-label>CNPJ</mat-label>
+            <input matInput formControlName="cnpj" />
+            <mat-error *ngIf="empresaForm.get('cnpj')?.invalid">CNPJ é obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+  
+        <!-- Endereço, Número e Bairro na mesma linha -->
+        <div class="row">
+          <mat-form-field appearance="fill" class="flex-item">
+            <mat-label>Endereço</mat-label>
+            <input matInput formControlName="endereco" />
+            <mat-error *ngIf="empresaForm.get('endereco')?.invalid">Endereço é obrigatório</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill" class="flex-item">
+            <mat-label>Número</mat-label>
+            <input matInput formControlName="numero" />
+            <mat-error *ngIf="empresaForm.get('numero')?.invalid">Número é obrigatório</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill" class="flex-item">
+            <mat-label>Bairro</mat-label>
+            <input matInput formControlName="bairro" />
+            <mat-error *ngIf="empresaForm.get('bairro')?.invalid">Bairro é obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+  
+        <!-- Telefone e CEP na mesma linha -->
+        <div class="row">
+          <mat-form-field appearance="fill" class="flex-item">
+            <mat-label>Telefone</mat-label>
+            <input matInput formControlName="telefone" />
+            <mat-error *ngIf="empresaForm.get('telefone')?.invalid">Telefone é obrigatório</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill" class="flex-item">
+            <mat-label>CEP</mat-label>
+            <input matInput formControlName="cep" />
+            <mat-error *ngIf="empresaForm.get('cep')?.invalid">CEP é obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+  
+        <!-- Botão Salvar -->
+        <div class="button-row">
+          <button mat-raised-button color="primary" type="submit" class="save-button">Salvar</button>
+        </div>
+      </form>
+    </mat-card-content>
+  
+    <!-- Tabela de Resultados -->
+    <mat-card-content *ngIf="isSearchMode">
+      <button mat-raised-button color="primary" (click)="voltarCadastro()">Voltar ao Cadastro</button>
+      <table mat-table [dataSource]="empresas" class="mat-elevation-z8">
+        <ng-container matColumnDef="razao_social">
+          <th mat-header-cell *matHeaderCellDef>Razão Social</th>
+          <td mat-cell *matCellDef="let element" (click)="selectEmpresa(element)"> {{element.razao_social}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="endereco">
+          <th mat-header-cell *matHeaderCellDef>Endereço</th>
+          <td mat-cell *matCellDef="let element" (click)="selectEmpresa(element)"> {{element.endereco}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="numero">
+          <th mat-header-cell *matHeaderCellDef>Número</th>
+          <td mat-cell *matCellDef="let element" (click)="selectEmpresa(element)"> {{element.numero}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="bairro">
+          <th mat-header-cell *matHeaderCellDef>Bairro</th>
+          <td mat-cell *matCellDef="let element" (click)="selectEmpresa(element)"> {{element.bairro}} </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+  

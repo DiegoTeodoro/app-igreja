@@ -1,0 +1,23 @@
+.row {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .flex-item {
+    flex: 1;
+    margin: 0 10px;
+  }
+  
+  .form-container {
+    margin-top: 20px;
+  }
+  
+  .button-row {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .save-button {
+    margin-top: 20px;
+  }
+  
