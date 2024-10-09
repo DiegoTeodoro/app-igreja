@@ -1,28 +1,41 @@
+/* Estilizar a toolbar */
 .custom-toolbar {
     background-color: #438EB9;
     color: white;
+    z-index: 3;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
   }
   
+  /* Espaço flexível para alinhar itens na toolbar */
   .spacer {
     flex: 1 1 auto;
   }
   
+  /* O container do sidenav ocupará a altura total da tela menos a altura da toolbar */
   .sidenav-container {
-    height: 100%;
+    height: 100vh; /* O sidenav container ocupa a altura total da tela */
+    width: 100%; /* Garante que o sidenav-container ocupe toda a largura */
   }
   
-  mat-toolbar {
-    position: fixed;
-    z-index: 2;
-    width: 100%;
-  }
-  
-  mat-sidenav {
-    width: 250px;
-  }
-  
+  /* Ajustar o conteúdo principal para começar abaixo da toolbar */
   mat-sidenav-content {
-    margin-top: 64px; /* Ajuste para compensar a altura do toolbar */
+    margin-top: 64px; /* Compensar a altura da toolbar */
     padding: 20px;
+  }
+  
+  /* Largura do sidenav e cor de fundo */
+  .custom-sidenav {
+    width: 250px; /* O sidenav ocupa apenas 250px de largura */
+    background-color: #d3d3d3; /* Cor de fundo para o menu lateral */
+    margin-top: 64px; /* Encostar na toolbar */
+  }
+  
+  /* Links no menu lateral */
+  a {
+    text-decoration: none;
+    color: inherit;
   }
   

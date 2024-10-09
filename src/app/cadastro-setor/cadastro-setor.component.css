@@ -1,0 +1,9 @@
+.custom-table-card {
+    width: 40%;
+    /* Centraliza o card horizontalmente */
+  }
+  
+  .custom-table {
+    width: 100%; /* Faz com que a tabela ocupe toda a largura do card */
+  }
+  

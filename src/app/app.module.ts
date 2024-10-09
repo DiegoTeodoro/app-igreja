@@ -15,12 +15,18 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { HomeComponent } from './home/home.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { FormsModule } from '@angular/forms';
+import { CadastroSetorComponent } from './cadastro-setor/cadastro-setor.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     CadastroEmpresaComponent,
-    HomeComponent
+    HomeComponent,
+    CadastroSetorComponent,
+   
   ],
   imports: [
     BrowserModule,
@@ -36,6 +42,9 @@ import { HomeComponent } from './home/home.component';
     MatSidenavModule,
     MatListModule,
     MatIconModule,
+    MatExpansionModule,
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

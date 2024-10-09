@@ -1,0 +1,38 @@
+<h2>Cadastro Setor</h2>
+<mat-card>
+  <form [formGroup]="setorForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Nome do Setor</mat-label>
+      <input matInput formControlName="nome" required />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Salvar</button>
+  </form>
+</mat-card>
+
+<!-- Aqui aplicamos o estilo customizado para o tamanho da tabela -->
+<mat-card class="custom-table-card">
+  <table mat-table [dataSource]="setores" class="mat-elevation-z8 custom-table">
+    <!-- Nome Column -->
+    <ng-container matColumnDef="nome">
+      <th mat-header-cell *matHeaderCellDef> Nome </th>
+      <td mat-cell *matCellDef="let setor"> {{setor.nome}} </td>
+    </ng-container>
+
+    <!-- Ações Column -->
+    <ng-container matColumnDef="acoes">
+      <th mat-header-cell *matHeaderCellDef> Ações </th>
+      <td mat-cell *matCellDef="let setor">
+        <button mat-icon-button color="primary" (click)="onEdit(setor)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="onDelete(setor.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</mat-card>
