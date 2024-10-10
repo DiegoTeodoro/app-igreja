@@ -1,12 +1,14 @@
-.custom-table-card {
-    width: 40%;
-    /* Centraliza o card horizontalmente */
-  }
-  
-  .custom-table {
-    width: 100%; /* Faz com que a tabela ocupe toda a largura do card */
-  }
- .form-row {
+.mat-header-cell {
+  background-color: #438EB9;
+  color: white;
+  font-size: 15px;
+}
+
+.custom-table {
+  width: 100%; /* Faz com que a tabela ocupe toda a largura do card */
+}
+
+.form-row {
   margin-bottom: 30px; /* Adiciona margem inferior entre as linhas de formulário */
 }
 
@@ -18,5 +20,3 @@
 button {
   margin-left: 16px; /* Adiciona espaçamento à esquerda do botão Salvar */
 }
-
-  

@@ -1,0 +1,89 @@
+<mat-card>
+    <mat-card-title>Cadastro de Produto</mat-card-title>
+
+    <!-- Botão de Pesquisar -->
+ <div class="button-row">
+    <button mat-raised-button color="primary">Consultar</button>
+  </div>
+  
+    <!-- Mensagem de Sucesso -->
+    <div *ngIf="showSuccessMessage" class="success-message">
+      Ação realizada com sucesso!
+    </div>
+  
+    <!-- Formulário de Cadastro de Produto -->
+    <form [formGroup]="produtoForm" (ngSubmit)="onSubmit()">
+      <!-- Nome do Produto e Volume na mesma linha -->
+      <div class="form-row-inline">
+        <!-- Nome do Produto -->
+        <mat-form-field appearance="fill" class="nome-produto">
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="nome" required>
+        </mat-form-field>
+  
+        <!-- Volume -->
+        <mat-form-field appearance="fill" class="volume">
+          <mat-label>Volume</mat-label>
+          <mat-select formControlName="volume" required>
+            <mat-option value="UND">UND</mat-option>
+            <mat-option value="LT">LT</mat-option>
+            <mat-option value="CX">CX</mat-option>
+            <mat-option value="FD">FD</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+  
+      <!-- Código de Barras e Categoria na mesma linha -->
+      <div class="form-row-inline">
+        <!-- Código de Barras -->
+        <mat-form-field appearance="fill" class="codigo-barras">
+          <mat-label>Código de Barras</mat-label>
+          <input matInput formControlName="codigo_barra" required>
+        </mat-form-field>
+  
+        <!-- Categoria -->
+        <mat-form-field appearance="fill" class="categoria">
+          <mat-label>Categoria</mat-label>
+          <mat-select formControlName="categoria_id" required>
+            <mat-option *ngFor="let categoria of categorias" [value]="categoria.id">
+              {{ categoria.nome }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+  
+
+      <!-- Marca e Fornecedor na mesma linha -->
+      <div class="form-row-inline">
+        <!-- Fornecedor -->
+        <mat-form-field appearance="fill" class="fornecedor">
+          <mat-label>Fornecedor</mat-label>
+          <mat-select formControlName="fornecedor_id" required>
+            <mat-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor.id">
+              {{ fornecedor.razao_social || fornecedor.nome_fantasia }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Marca -->
+        <mat-form-field appearance="fill" class="marca">
+          <mat-label>Marca</mat-label>
+          <input matInput formControlName="marca" required>
+        </mat-form-field>
+      </div>
+  
+      <!-- Observação -->
+      <mat-form-field appearance="fill" class="observacao">
+        <mat-label>Observação</mat-label>
+        <textarea matInput formControlName="observacao"></textarea>
+      </mat-form-field>
+  
+      <!-- Botão Salvar -->
+       <div>
+      <button mat-raised-button color="primary" type="submit" class="save-button">
+        Salvar
+      </button>
+    </div>
+    </form>
+  </mat-card>
+  

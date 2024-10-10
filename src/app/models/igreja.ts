@@ -1,7 +1,7 @@
 export interface Igreja {
   codigo?: number;
   nome: string;
-  codigo_igreja?: string; // Adicione essa linha
+  codigo_igreja?: string;
   logradouro: string;
   numero: string;
   complemento?: string;
@@ -10,8 +10,9 @@ export interface Igreja {
   cidade_codigo?: number;
   uf_codigo?: number;
   codigo_setor?: number;
-  ativo: boolean;
+  ativo: boolean; // Campo ativo como booleano
 }
+
 
 export interface IgrejaDetalhes extends Igreja {
   setor?: string;

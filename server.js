@@ -84,22 +84,6 @@ app.delete("/setores/:id", (req, res) => {
 // Repita o mesmo tratamento de erro para as demais APIs
 
 // CRUD APIs for 'igreja'
-app.get("/igrejas/:id", (req, res) => {
-  const id = req.params.id;
-  connection.query(
-    "SELECT * FROM igreja WHERE codigo = ?",
-    [id],
-    (err, results) => {
-      if (err) {
-        console.error("Error fetching igreja:", err);
-        res.status(500).send("Internal Server Error");
-        return;
-      }
-      res.send(results[0]);
-    }
-  );
-});
-
 app.get("/igrejas", (req, res) => {
   connection.query("SELECT * FROM igreja", (err, results) => {
     if (err) {
@@ -113,7 +97,6 @@ app.get("/igrejas", (req, res) => {
 
 app.post("/igrejas", (req, res) => {
   const igreja = req.body;
-  delete igreja.codigo; // Remover a coluna 'codigo' antes de inserir
   connection.query("INSERT INTO igreja SET ?", igreja, (err, results) => {
     if (err) {
       console.error("Error inserting igreja:", err);
@@ -127,36 +110,33 @@ app.post("/igrejas", (req, res) => {
 app.put("/igrejas/:id", (req, res) => {
   const id = req.params.id;
   const igreja = req.body;
-  delete igreja.codigo; // Garantir que a coluna 'codigo' não está sendo removida
-  connection.query(
-    "UPDATE igreja SET ? WHERE codigo = ?",
-    [igreja, id],
-    (err, results) => {
-      if (err) {
-        console.error("Error updating igreja:", err);
-        res.status(500).send("Internal Server Error");
-        return;
-      }
-      res.send(results);
+
+  // Certifique-se de que 'ativo' é convertido de booleano para inteiro antes de salvar no banco
+  const igrejaToUpdate = { ...igreja, ativo: igreja.ativo ? 1 : 0 };
+
+  connection.query("UPDATE igreja SET ? WHERE codigo = ?", [igrejaToUpdate, id], (err, results) => {
+    if (err) {
+      console.error("Error updating igreja:", err);
+      res.status(500).send("Internal Server Error");
+      return;
     }
-  );
+    res.send(results);
+  });
 });
+
 
 app.delete("/igrejas/:id", (req, res) => {
   const id = req.params.id;
-  connection.query(
-    "DELETE FROM igreja WHERE codigo = ?",
-    [id],
-    (err, results) => {
-      if (err) {
-        console.error("Error deleting igreja:", err);
-        res.status(500).send("Internal Server Error");
-        return;
-      }
-      res.send(results);
+  connection.query("DELETE FROM igreja WHERE codigo = ?", [id], (err, results) => {
+    if (err) {
+      console.error("Error deleting igreja:", err);
+      res.status(500).send("Internal Server Error");
+      return;
     }
-  );
+    res.send(results);
+  });
 });
+
 
 // CRUD APIs for 'estados'
 app.get("/estados", (req, res) => {

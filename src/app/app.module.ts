@@ -19,6 +19,17 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule } from '@angular/forms';
 import { CadastroSetorComponent } from './cadastro-setor/cadastro-setor.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { CadastroEstadosComponent } from './cadastro-estados/cadastro-estados.component';
+import { CadastroCidadesComponent } from './cadastro-cidades/cadastro-cidades.component';
+import { CadastroIgrejaComponent } from './cadastro-igreja/cadastro-igreja.component'; 
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatRadioModule } from '@angular/material/radio';
+import { CadastroCategoriaComponent } from './cadastro-categoria/cadastro-categoria.component';
+import { DeleteDialogComponent } from './cadastro-categoria/delete-dialog.component';
+import { CadastroProdutoComponent } from './cadastro-produto/cadastro-produto.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +37,12 @@ import { HttpClientModule } from '@angular/common/http';
     CadastroEmpresaComponent,
     HomeComponent,
     CadastroSetorComponent,
-   
+    CadastroEstadosComponent,
+    CadastroCidadesComponent,
+    CadastroIgrejaComponent,
+    CadastroCategoriaComponent,
+    DeleteDialogComponent,
+    CadastroProdutoComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,17 +50,22 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     MatCardModule,
     MatFormFieldModule,
-    ReactiveFormsModule, // Adicionado para formGroup
-    MatTableModule,      // Adicionado para MatTable
-    MatInputModule,      // Adicionado para campos de input
-    MatButtonModule,      // Adicionado para os botões
+    ReactiveFormsModule,
+    MatTableModule,
+    MatInputModule,
+    MatButtonModule,
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
     MatIconModule,
     MatExpansionModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatRadioModule
   ],
   providers: [],
   bootstrap: [AppComponent]

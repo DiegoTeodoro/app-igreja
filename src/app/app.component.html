@@ -1,38 +1,37 @@
 <mat-toolbar color="primary" class="custom-toolbar">
-    <button mat-icon-button (click)="sidenav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span>{{ pageTitle }}</span>
-  </mat-toolbar>
-  
-  <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #sidenav mode="side" [(opened)]="isSidenavOpen" class="custom-sidenav">
-      <mat-nav-list>
-        <!-- Link da Home separado -->
-        <mat-list-item>
-          <a mat-list-item [routerLink]="homeLink.route">{{ homeLink.title }}</a>
-        </mat-list-item>
-        
-        <!-- Usar *ngFor para percorrer as seções de menu -->
-        <mat-expansion-panel *ngFor="let section of menuSections" style="background-color: #f4f4f7">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              {{ section.title }} <!-- Título da seção -->
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          
-          <!-- Percorrer os links dentro de cada seção -->
-          <mat-list>
-            <mat-list-item *ngFor="let link of section.links">
-              <a mat-list-item [routerLink]="link.route">{{ link.title }}</a> <!-- Links dinâmicos -->
-            </mat-list-item>
-          </mat-list>
-        </mat-expansion-panel>
-      </mat-nav-list>
-    </mat-sidenav>
-  
-    <mat-sidenav-content>
-      <router-outlet></router-outlet> <!-- Aqui serão exibidos os componentes -->
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-  
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>{{ pageTitle }}</span>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" [(opened)]="isSidenavOpen" class="custom-sidenav">
+    <mat-nav-list>
+      <!-- Link da Home separado -->
+      <mat-list-item>
+        <a mat-list-item [routerLink]="homeLink.route">{{ homeLink.title }}</a>
+      </mat-list-item>
+
+      <!-- Usar *ngFor para percorrer as seções de menu -->
+      <mat-expansion-panel *ngFor="let section of menuSections" style="background-color: #f4f4f7">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ section.title }} <!-- Título da seção -->
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <!-- Percorrer os links dentro de cada seção -->
+        <mat-list>
+          <mat-list-item *ngFor="let link of section.links">
+            <a mat-list-item [routerLink]="link.route">{{ link.title }}</a> <!-- Links dinâmicos -->
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet> <!-- Aqui serão exibidos os componentes -->
+  </mat-sidenav-content>
+</mat-sidenav-container>

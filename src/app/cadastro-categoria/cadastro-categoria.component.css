@@ -1,0 +1,16 @@
+/* Centralizar o texto no cabeçalho da tabela */
+table.mat-table th.mat-header-cell {
+    text-align: center;
+  }
+  
+  /* Alinhar o texto das células da coluna 'Nome' à esquerda */
+table.mat-table td.mat-cell.mat-nome-cell {
+    text-align: left;
+  }
+
+  .mat-header-cell {
+    background-color: #438EB9;
+    color: white;
+  }
+
+ 

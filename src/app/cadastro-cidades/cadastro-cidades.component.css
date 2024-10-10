@@ -1,0 +1,19 @@
+.mat-header-cell {
+    background-color: #438EB9;
+    color: white;
+    text-align: center;
+    font-size: 15px;
+  }
+
+  .form-row {
+    margin-bottom: 16px; /* Adiciona margem inferior entre as linhas de formulário */
+  }
+  
+  .mat-form-field {
+    margin-right: 16px; /* Adiciona espaçamento à direita de cada campo de formulário */
+  }
+  
+  button {
+    margin-left: 16px; /* Adiciona espaçamento à esquerda do botão Salvar */
+  }
+  

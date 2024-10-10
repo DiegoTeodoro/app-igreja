@@ -1,0 +1,110 @@
+<mat-card>
+  <mat-card-title>Cadastro de Igreja</mat-card-title>
+
+ <!-- Botão de Pesquisar -->
+ <div class="button-row" *ngIf="!showTable">
+  <button mat-raised-button color="primary" (click)="toggleTable()">Pesquisar</button>
+</div>
+
+<br>
+  <!-- Formulário de cadastro (oculto quando a tabela estiver visível) -->
+  <form *ngIf="!showTable" (ngSubmit)="onSubmit()" #igrejaForm="ngForm">
+    <!-- Nome, Código da Igreja e Setor na mesma linha -->
+    <div class="inline-fields">
+      <mat-form-field class="form-field" style="width: 50%;">
+        <input matInput placeholder="Nome" [(ngModel)]="igreja.nome" name="nome" required />
+      </mat-form-field>
+      <mat-form-field class="form-field" style="width: 20%;">
+        <input matInput placeholder="Código da Igreja" [(ngModel)]="igreja.codigo_igreja" name="codigo_igreja" required />
+      </mat-form-field>
+      <mat-form-field class="form-field" style="width: 30%;">
+        <mat-label>Setor</mat-label>
+        <mat-select [(ngModel)]="igreja.codigo_setor" name="codigo_setor" required>
+          <mat-option *ngFor="let setor of setores" [value]="setor.codigo">{{ setor.nome }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Logradouro, Número e Bairro na mesma linha -->
+    <div class="inline-fields">
+      <mat-form-field class="form-field" style="width: 50%;">
+        <input matInput placeholder="Logradouro" [(ngModel)]="igreja.logradouro" name="logradouro" />
+      </mat-form-field>
+      <mat-form-field class="form-field" style="width: 20%;">
+        <input matInput placeholder="Número" [(ngModel)]="igreja.numero" name="numero" />
+      </mat-form-field>
+      <mat-form-field class="form-field" style="width: 30%;">
+        <input matInput placeholder="Bairro" [(ngModel)]="igreja.bairro" name="bairro" />
+      </mat-form-field>
+    </div>
+
+   <!-- Complemento, CEP, Estado e Cidade na mesma linha -->
+<div class="inline-fields">
+  <mat-form-field class="form-field" style="width: 25%;">
+    <input matInput placeholder="Complemento" [(ngModel)]="igreja.complemento" name="complemento" />
+  </mat-form-field>
+  <mat-form-field class="form-field" style="width: 20%;">
+    <input matInput placeholder="CEP" [(ngModel)]="igreja.cep" name="cep" />
+  </mat-form-field>
+  <mat-form-field class="form-field" style="width: 25%;">
+    <mat-label>Estado</mat-label>
+    <mat-select [(ngModel)]="igreja.uf_codigo" name="uf_codigo">
+      <mat-option *ngFor="let uf of estados" [value]="uf.id">{{ uf.nome }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="form-field" style="width: 30%;">
+    <mat-label>Cidade</mat-label>
+    <mat-select [(ngModel)]="igreja.cidade_codigo" name="cidade_codigo">
+      <mat-option *ngFor="let cidade of cidades" [value]="cidade.id">{{ cidade.nome }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<!-- Radio button para Ativo/Inativo -->
+<div class="inline-fields" style="margin-top: 20px;">
+  <mat-radio-group [(ngModel)]="igreja.ativo" name="ativo">
+    <mat-radio-button [value]="true">Ativo</mat-radio-button>
+    <mat-radio-button [value]="false">Inativo</mat-radio-button>
+  </mat-radio-group>
+</div>
+
+<br />
+<div class="button-wrapper">
+  <button mat-raised-button color="primary" type="submit" style="margin-right: 10px;">Salvar</button>
+  <button mat-raised-button color="warn" (click)="onCancel()" type="button">Cancelar</button>
+</div>
+  </form>
+
+ 
+
+  <!-- Tabela de igrejas que aparece ao clicar em Pesquisar -->
+  <mat-card *ngIf="showTable">
+    <div class="button-row">
+      <button mat-raised-button color="primary" (click)="toggleTable()">Voltar</button>
+    </div>
+
+    <h2>Resultado da Pesquisa</h2>
+    <table mat-table [dataSource]="igrejas" class="mat-elevation-z8">
+      <!-- Código da Igreja -->
+      <ng-container matColumnDef="codigo_igreja">
+        <th mat-header-cell *matHeaderCellDef>Código da Igreja</th>
+        <td mat-cell *matCellDef="let element" (click)="onSelectIgreja(element)">{{ element.codigo_igreja }}</td>
+      </ng-container>
+
+      <!-- Nome -->
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td mat-cell *matCellDef="let element" (click)="onSelectIgreja(element)">{{ element.nome }}</td>
+      </ng-container>
+
+      <!-- Setor -->
+      <ng-container matColumnDef="setor">
+        <th mat-header-cell *matHeaderCellDef>Setor</th>
+        <td mat-cell *matCellDef="let element" (click)="onSelectIgreja(element)">{{ element.setor }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['codigo_igreja', 'nome', 'setor']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['codigo_igreja', 'nome', 'setor'];"></tr>
+    </table>
+  </mat-card>
+</mat-card>

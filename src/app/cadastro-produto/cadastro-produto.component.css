@@ -1,0 +1,45 @@
+.full-width {
+    width: 100%;
+  }
+  
+  .nome-produto {
+    width: 70%;
+  }
+  
+  .codigo-barras {
+    width: 50%;
+  }
+  
+  .marca {
+    width: 40%;
+  }
+  .fornecedor {
+    width: 40%;
+  }
+  
+  .volume {
+    width: 30%;
+  }
+  
+  .categoria {
+    width: 30%;
+  }
+
+  .observacao {
+    width: 70%;
+  }
+  .form-row-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espaço entre os elementos */
+  }
+  
+  .save-button {
+    margin-top: 20px;
+  }
+  
+  .success-message {
+    color: green;
+    font-size: 1.2em;
+  }
+  

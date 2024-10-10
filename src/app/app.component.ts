@@ -19,6 +19,12 @@ export class AppComponent {
       links: [
         { title: 'Empresa', route: '/empresa' },  // Rota para cadastro de empresa
         { title: 'Setor', route: '/setor' },
+        { title:'Estados', route: '/estados'},
+        { title:'Cidades', route: '/cidades'},
+        { title:'Igreja', route: '/igreja'},
+        { title:'Caterorias', route: '/categoria'},
+        { title:'Produtos', route: '/produto'},
+     
       ]
     }
   ];
