@@ -33,6 +33,12 @@ export class AppComponent {
         { title:'Cadastro', route: '/produto'},
      
       ]
+    },
+    {
+      title: 'Notas Fiscais',
+      links: [
+        { title: 'Entrada de Nota', route: '/cadastro-nota-fiscal' }
+      ]
     }
   ];
 }

@@ -1,0 +1,137 @@
+
+  .nota-fiscal-row {
+    display: flex;
+    align-items: center;
+    gap: 5%; /* Espaçamento entre os campos */
+    margin-bottom: 16px; /* Espaçamento inferior entre as linhas do formulário */
+  }
+  
+  .large-field {
+    flex: 0 0 30%; /* Define a largura dos campos Fornecedor e CNPJ como 30% */
+    min-width: 150px; /* Largura mínima para evitar que o campo fique muito pequeno */
+  }
+  
+  .small-field {
+    flex: 0 0 20%; /* Define a largura do campo Data de Emissão como 20% */
+    min-width: 100px; /* Largura mínima para evitar que o campo fique muito pequeno */
+  }
+  .item-row {
+    display: flex;
+    align-items: center;
+    gap: 1%; /* Controla o espaçamento entre os campos */
+    margin-bottom: 16px; /* Espaçamento inferior para a seção de adicionar itens */
+  }
+  
+  .nome_produto {
+    flex: 2; /* Define o tamanho relativo do campo Nome */
+  }
+  
+  .quantidade,
+  .valor_unitario,
+  .valor_total {
+    flex: 1; /* Define o tamanho relativo dos campos Quantidade, Valor Unitário e Valor Total */
+  }
+  
+  button {
+    margin-left: 8px; /* Espaçamento à esquerda do botão */
+  }
+  /* Define um contêiner flexível para os campos */
+  .nota-fiscal-row-right {
+  display: flex;
+  justify-content: flex-end; /* Alinha os campos à direita */
+  gap: 10px; /* Espaçamento entre os campos */
+  }
+  
+  /* Define a largura dos campos "Outros" e "Descontos" */
+  .outros, .descontos {
+  flex: 0 0 10%; /* 15% de largura para cada campo */
+  }
+  /* CSS para alinhar os campos na mesma linha à direita */
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .nota-fiscal-row,
+  .nota-fiscal-row-2,
+  .item-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .totals-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  
+  .valor_desconto,
+  .valor_outros,
+  .valor_total_nota {
+    flex: 0 0 15%;
+  }
+  
+  button[type="submit"] {
+    margin-left: 16px;
+  }
+  .flex-row {
+    display: flex;
+    align-items: center; /* Alinha os itens verticalmente ao centro */
+    gap: 16px; /* Espaço entre os itens */
+  }
+  
+  .medium-field {
+    flex: 1; /* O campo "Fornecedor" e "CNPJ" ocupam o mesmo espaço */
+    width: 40px; /* Define uma largura mínima para evitar que os campos fiquem muito pequenos */
+  }
+  
+  .small-field {
+    flex: 0 0 150px; /* O campo "Data de Emissão" ocupa um espaço fixo menor */
+  }
+  .nota-field.numero-nota {
+    flex: 0 0 20%; /* Define largura de 20% para Número da Nota */
+  }
+  
+  .nota-field.serie {
+    flex: 0 0 20%; /* Define largura de 20% para Série */
+  }
+  
+  .nota-field.chave-acesso {
+    flex: 0 0 40%; /* Define largura de 40% para Chave de Acesso */
+  }
+  
+  .nota-field.fornecedor {
+    flex: 0 0 40%; /* Define largura de 40% para Fornecedor */
+  }
+  
+  .nota-field.data-emissao {
+    flex: 0 0 20%; /* Define largura de 20% para Data de Emissão */
+  }
+
+  /* Produto alinhado à esquerda */
+.ng-container[matColumnDef="produto"] th,
+.ng-container[matColumnDef="produto"] td {
+  text-align: left; /* Alinha o texto da coluna Produto à esquerda */
+  padding-left: 16px; /* Adiciona espaçamento à esquerda */
+}
+
+/* Quantidade e Valor centralizados */
+.ng-container[matColumnDef="quantidade"] th,
+.ng-container[matColumnDef="quantidade"] td,
+.ng-container[matColumnDef="valor_unitario"] th,
+.ng-container[matColumnDef="valor_unitario"] td,
+.ng-container[matColumnDef="valor_total"] th,
+.ng-container[matColumnDef="valor_total"] td {
+  text-align: center; /* Centraliza o conteúdo */
+}
+
+/* Ações centralizadas */
+.ng-container[matColumnDef="actions"] th,
+.ng-container[matColumnDef="actions"] td {
+  text-align: center; /* Centraliza o cabeçalho e os ícones de ação */
+  justify-content: center; /* Centraliza os botões de ação */
+  display: flex;
+}

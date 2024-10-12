@@ -1,0 +1,149 @@
+<h1>Entrada de Nota Fiscal</h1>
+<form [formGroup]="notaFiscalForm">
+  <!-- Campos de nota fiscal -->
+ <!-- Primeira linha: Número da Nota, Série e Chave de Acesso -->
+<div class="nota-fiscal-row">
+    <mat-form-field appearance="fill" class="nota-field numero-nota">
+      <mat-label>Número da Nota</mat-label>
+      <input matInput formControlName="numero_nota" required>
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill" class="nota-field serie">
+      <mat-label>Série</mat-label>
+      <input matInput formControlName="serie">
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill" class="nota-field chave-acesso">
+      <mat-label>Chave de Acesso</mat-label>
+      <input matInput formControlName="chave_acesso">
+    </mat-form-field>
+  </div>
+  
+  <!-- Segunda linha: Fornecedor e Data de Emissão -->
+  <div class="nota-fiscal-row">
+    <mat-form-field appearance="fill" class="nota-field fornecedor">
+      <mat-label>Fornecedor</mat-label>
+      <mat-select formControlName="fornecedor_id">
+        <mat-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor.id">
+          {{ fornecedor.nome_fantasia }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill" class="nota-field data-emissao">
+      <mat-label>Data de Emissão</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="data_emissao" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  
+
+  <hr>
+
+  <!-- Seção para adicionar itens -->
+  <h3>Adicionar Itens</h3>
+<form [formGroup]="notaFiscalForm" (ngSubmit)="addItem()">
+  <div class="item-row">
+    <mat-form-field appearance="outline" class="nome_produto">
+      <mat-label>Nome</mat-label>
+      <input
+        matInput
+        [matAutocomplete]="auto"
+        [formControl]="produtoControl"
+        placeholder="Nome do produto"/>
+
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProduto">
+        <mat-option *ngFor="let produto of filteredProdutos | async" [value]="produto">
+          {{ produto.nome }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="quantidade">
+      <mat-label>Quantidade</mat-label>
+      <input matInput type="number" formControlName="quantidade" (input)="updateValorTotal()" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="valor_unitario">
+      <mat-label>Valor Unitário</mat-label>
+      <input matInput type="number" formControlName="valor_unitario"  (input)="updateValorTotal()" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="valor_total">
+      <mat-label>Valor Total</mat-label>
+      <input matInput type="text" formControlName="valor_total" readonly mask="separator.2" prefix="R$ " thousandSeparator="." decimalMarker="," />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Adicionar Item</button>
+  </div>
+</form>
+
+
+ <!-- Tabela de Itens -->
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Coluna de Produto -->
+    <ng-container matColumnDef="produto">
+      <th mat-header-cell *matHeaderCellDef>Produto</th>
+      <td mat-cell *matCellDef="let element">{{ element.produto_nome }}</td>
+    </ng-container>
+  
+    <!-- Coluna de Quantidade -->
+    <ng-container matColumnDef="quantidade">
+      <th mat-header-cell *matHeaderCellDef>Quantidade</th>
+      <td mat-cell *matCellDef="let element">
+        <input matInput type="number" [formControl]="element.quantidadeControl" required>
+      </td>
+    </ng-container>
+  
+    <!-- Coluna de Valor Unitário -->
+    <ng-container matColumnDef="valor_unitario">
+      <th mat-header-cell *matHeaderCellDef>Valor Unitário</th>
+      <td mat-cell *matCellDef="let element">{{ element.valorUnitarioControl.value | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
+    </ng-container>
+  
+    <!-- Coluna de Valor Total -->
+    <ng-container matColumnDef="valor_total">
+      <th mat-header-cell *matHeaderCellDef>Valor Total</th>
+      <td mat-cell *matCellDef="let element">{{ element.valor_total | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
+    </ng-container>
+  
+    <!-- Coluna de Ações -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Ações</th>
+      <td mat-cell *matCellDef="let element; let i = index">
+        <button mat-icon-button color="primary" (click)="editItem(i)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="removeItem(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+  <!-- Campos de Desconto, Outros e Valor Total -->
+  <div class="totals-section">
+    <mat-form-field appearance="fill" class="valor_desconto">
+      <mat-label>Desconto</mat-label>
+      <input matInput type="number" formControlName="valor_desconto" mask="separator.2" prefix="R$ " thousandSeparator="." decimalMarker="," />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="valor_outros">
+      <mat-label>Outros</mat-label>
+      <input matInput type="number" formControlName="valor_outros" mask="separator.2" prefix="R$ " thousandSeparator="." decimalMarker="," />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="valor_total_nota">
+      <mat-label>Valor Total da Nota</mat-label>
+      <input matInput type="text" formControlName="valor_total_nota" readonly mask="separator.2" prefix="R$ " thousandSeparator="." decimalMarker="," />
+    </mat-form-field>
+    <button mat-raised-button color="warn" type="button" (click)="cancelar()">Cancelar</button>
+
+    <button mat-raised-button color="primary" type="button" (click)="salvarNotaFiscal()">Salvar</button>
+  </div>
+</form>
+

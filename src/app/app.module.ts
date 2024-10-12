@@ -31,7 +31,16 @@ import { CadastroCategoriaComponent } from './cadastro-categoria/cadastro-catego
 import { DeleteDialogComponent } from './cadastro-categoria/delete-dialog.component';
 import { CadastroProdutoComponent } from './cadastro-produto/cadastro-produto.component';
 import { ConfirmDialog, ConsultaProdutoComponent } from './consulta-produto/consulta-produto.component';
+import { CadastroNotaFiscalComponent } from './cadastro-nota-fiscal/cadastro-nota-fiscal.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatNativeDateModule } from '@angular/material/core';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
 
+// Registre o locale `pt-BR`
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
@@ -47,6 +56,7 @@ import { ConfirmDialog, ConsultaProdutoComponent } from './consulta-produto/cons
     CadastroProdutoComponent,
     ConsultaProdutoComponent,
     ConfirmDialog,
+    CadastroNotaFiscalComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,9 +79,14 @@ import { ConfirmDialog, ConsultaProdutoComponent } from './consulta-produto/cons
     MatOptionModule,
     MatDialogModule,
     MatSnackBarModule,
-    MatRadioModule
+    MatRadioModule,
+    MatDatepickerModule,
+    MatAutocompleteModule,
+    MatNativeDateModule
   ],
-  providers: [],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'pt-BR' }  // Configuração do locale
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

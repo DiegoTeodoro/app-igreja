@@ -36,6 +36,7 @@ export class ConsultaProdutoComponent implements OnInit {
   editarProduto(produto: Produto): void {
     this.router.navigate(['/cadastro-produto', produto.id]);
   }
+  
 
   deletarProduto(produto: Produto): void {
     const dialogRef = this.dialog.open(ConfirmDialog, {

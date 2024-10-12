@@ -14,7 +14,7 @@
 
 .mat-form-field {
   min-width: 200px; /* Define um tamanho mínimo para os campos */
-  margin-right: 30px; /* Adiciona espaçamento à direita de cada campo de formulário */
+  margin-right: 32px; /* Aumenta o espaçamento à direita de cada campo de formulário */
 }
 
 button {

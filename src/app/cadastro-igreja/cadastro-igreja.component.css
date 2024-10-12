@@ -6,3 +6,11 @@
 .form-field {
   margin-bottom: 16px; /* Espaço inferior entre as linhas */
 }
+
+.button-wrapper {
+  margin-bottom: 20px; /* Adiciona espaço abaixo dos botões */
+}
+
+mat-card {
+  padding-bottom: 20px; /* Adiciona espaçamento interno ao final do card */
+}
