@@ -22,8 +22,15 @@ export class AppComponent {
         { title:'Estados', route: '/estados'},
         { title:'Cidades', route: '/cidades'},
         { title:'Igreja', route: '/igreja'},
-        { title:'Caterorias', route: '/categoria'},
-        { title:'Produtos', route: '/produto'},
+        { title:'Categorias', route: '/categoria'},
+       
+      ]
+    },
+    {
+      title: 'Produtos',
+      links: [
+       
+        { title:'Cadastro', route: '/produto'},
      
       ]
     }

@@ -8,6 +8,7 @@ import { CadastroCidadesComponent } from './cadastro-cidades/cadastro-cidades.co
 import { CadastroIgrejaComponent } from './cadastro-igreja/cadastro-igreja.component';
 import { CadastroCategoriaComponent } from './cadastro-categoria/cadastro-categoria.component';
 import { CadastroProdutoComponent } from './cadastro-produto/cadastro-produto.component';
+import { ConsultaProdutoComponent } from './consulta-produto/consulta-produto.component';
 
 
 
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path:'cidades', component: CadastroCidadesComponent},
   { path:'igreja', component: CadastroIgrejaComponent},
   { path:'categoria', component: CadastroCategoriaComponent},
-  { path: 'produto', component: CadastroProdutoComponent}
+  { path: 'produto', component: CadastroProdutoComponent},
+  { path: 'consulta-produto', component: ConsultaProdutoComponent },
 
 
 

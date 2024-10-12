@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; // Adicione o Router
 import { ProdutoService } from '../produto.service';
 import { Produto } from '../models/produto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./cadastro-produto.component.css']
 })
 export class CadastroProdutoComponent implements OnInit {
+
   produtoForm: FormGroup;
   produto: any;
   categorias: any;
@@ -19,6 +20,7 @@ export class CadastroProdutoComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private router: Router,  // Injetar o serviço Router
     private produtoService: ProdutoService
   ) {
     this.produtoForm = this.fb.group({
@@ -41,6 +43,11 @@ export class CadastroProdutoComponent implements OnInit {
       fornecedor_id: null,
       observacao: ''
     });
+  }
+
+  // Método para abrir a tela de consulta de produto
+  abrirConsultaProduto() {
+    this.router.navigate(['/consulta-produto']); // Navega para a rota de consulta de produto
   }
 
   ngOnInit(): void {

@@ -1,10 +1,11 @@
 <mat-card>
     <mat-card-title>Cadastro de Produto</mat-card-title>
 
-    <!-- Botão de Pesquisar -->
- <div class="button-row">
-    <button mat-raised-button color="primary">Consultar</button>
+<!-- Botão de Pesquisar -->
+<div class="button-row">
+    <button mat-raised-button color="primary" (click)="abrirConsultaProduto()">Consultar</button>
   </div>
+  
   
     <!-- Mensagem de Sucesso -->
     <div *ngIf="showSuccessMessage" class="success-message">

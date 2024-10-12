@@ -30,6 +30,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { CadastroCategoriaComponent } from './cadastro-categoria/cadastro-categoria.component';
 import { DeleteDialogComponent } from './cadastro-categoria/delete-dialog.component';
 import { CadastroProdutoComponent } from './cadastro-produto/cadastro-produto.component';
+import { ConfirmDialog, ConsultaProdutoComponent } from './consulta-produto/consulta-produto.component';
+
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import { CadastroProdutoComponent } from './cadastro-produto/cadastro-produto.co
     CadastroCategoriaComponent,
     DeleteDialogComponent,
     CadastroProdutoComponent,
+    ConsultaProdutoComponent,
+    ConfirmDialog,
   ],
   imports: [
     BrowserModule,
