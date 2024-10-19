@@ -1,248 +1,161 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
-import { MatSnackBar } from "@angular/material/snack-bar";  // Importar MatSnackBar
-import { FornecedorService } from "../fornecedor.service";
-import { ProdutoService } from "../produto.service";
-import { debounceTime, switchMap, map } from "rxjs/operators";
-import { Observable } from "rxjs";
-import { Produto } from "../models/produto";
-import { NotaFiscalService } from '../nota-fiscal.service';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
+import { NotaFiscalService } from '../nota-fiscal.service'; // Importando o serviço
 
 @Component({
-  selector: "app-cadastro-nota-fiscal",
-  templateUrl: "./cadastro-nota-fiscal.component.html",
-  styleUrls: ["./cadastro-nota-fiscal.component.css"],
+  selector: 'app-cadastro-nota-fiscal',
+  templateUrl: './cadastro-nota-fiscal.component.html',
+  styleUrls: ['./cadastro-nota-fiscal.component.css'],
 })
 export class CadastroNotaFiscalComponent implements OnInit {
-  notaFiscalForm!: FormGroup;
-  fornecedores: { id: number; nome_fantasia: string }[] = [];
-  produtos: { id: number; nome: string }[] = [];
-  displayedColumns: string[] = [
-    "produto",
-    "quantidade",
-    "valor_unitario",
-    "valor_total",
-    "actions",
-  ];
-  dataSource: any[] = [];
-  produtoControl = new FormControl();
-  filteredProdutos: Observable<Produto[]> | undefined;
+  notaFiscalForm: FormGroup;
+  itens = new MatTableDataSource<any>([]);
+  displayedColumns: string[] = ['nomeProduto', 'quantidade', 'valorUnitario', 'valorTotal'];
+  fornecedores: any[] = [];
+  produtos: any[] = [];
 
   constructor(
     private fb: FormBuilder,
-    private fornecedorService: FornecedorService,
-    private produtoService: ProdutoService,
-    private notaFiscalService: NotaFiscalService,
-    private snackBar: MatSnackBar  // Inject MatSnackBar
-  ) {}
-
-  cancelar(): void {
-    this.notaFiscalForm.reset({
-      numero_nota: '',
-      serie: '',
-      chave_acesso: '',
-      fornecedor_id: '',
-      data_emissao: '',
-      quantidade: '',
-      valor_unitario: '',
-      valor_total: '',
-      valor_total_nota: '',
-      valor_desconto: 0,
-      valor_outros: 0
+    private notaFiscalService: NotaFiscalService // Injete o serviço
+  ) {
+    this.notaFiscalForm = this.fb.group({
+      numeroNota: [''],
+      serie: [''],
+      chaveAcesso: [''],
+      fornecedor: [''],
+      dataEmissao: [''],
+      observacao: [''],
+      produto: [''],
+      quantidade: [''],
+      valorUnitario: [''],
+      valorTotalProduto: [''],
+      desconto: [''],
+      outros: [''],
+      valorTotalNota: ['']
     });
+  }
+
+  ngOnInit(): void {
+    this.carregarFornecedores();
+    this.carregarProdutos();
+  }
   
-    // Limpa também a lista de itens da tabela
-    this.dataSource = [];
+  carregarFornecedores(): void {
+    this.notaFiscalService.getFornecedores().subscribe(
+      (data: any[]) => {
+        this.fornecedores = data;
+        console.log('Fornecedores carregados:', this.fornecedores);
+      },
+      (error: any) => {
+        console.error('Erro ao carregar fornecedores:', error);
+      }
+    );
+  }
+  
+  carregarProdutos(): void {
+    this.notaFiscalService.getProdutos().subscribe(
+      (data: any[]) => {
+        this.produtos = data;
+        console.log('Produtos carregados:', this.produtos);
+      },
+      (error: any) => {
+        console.error('Erro ao carregar produtos:', error);
+      }
+    );
   }
   
 
-  salvarNotaFiscal() {
-    if (this.notaFiscalForm.invalid) {
-      this.snackBar.open('Alguns campos obrigatórios estão sem informação.', 'Fechar', {
-        duration: 3000,
-        panelClass: ['error-snackbar']
-      });
+
+  atualizarValorTotal(): void {
+    const valorUnitario = this.notaFiscalForm.get('valorUnitario')?.value || 0;
+    const quantidade = this.notaFiscalForm.get('quantidade')?.value || 0;
+    const valorTotal = valorUnitario * quantidade;
+    this.notaFiscalForm.patchValue({ valorTotalProduto: valorTotal });
+  }
+
+  adicionarItem(): void {
+    const valorUnitario = this.notaFiscalForm.value.valorUnitario;
+    const quantidade = this.notaFiscalForm.value.quantidade;
+  
+    // Verifica se os valores não são nulos ou indefinidos
+    if (!valorUnitario || !quantidade) {
+      console.error("Erro: Valor Unitário ou Quantidade inválidos.");
       return;
     }
   
-    const notaFiscalData = this.notaFiscalForm.value;
+    const item = {
+      nomeProduto: this.produtos.find(p => p.id === this.notaFiscalForm.value.produto)?.nome,
+      produto_id: this.notaFiscalForm.value.produto,
+      quantidade: quantidade,
+      valorUnitario: valorUnitario,
+      valorTotal: quantidade * valorUnitario
+    };
   
-    // Formatar data de emissão para o formato 'YYYY-MM-DD'
-    const dataEmissao = new Date(notaFiscalData.data_emissao).toISOString().slice(0, 10);
-    notaFiscalData.data_emissao = dataEmissao;
+    // Adicionar o item ao array de itens
+    this.itens.data = [...this.itens.data, item];
   
-    notaFiscalData.itens = this.dataSource;
-  
-    this.notaFiscalService.salvarNotaFiscal(notaFiscalData).subscribe(
-      (response) => {
-        console.log('Nota fiscal salva com sucesso:', response);
-        
-        this.snackBar.open('Nota fiscal salva com sucesso!', 'Fechar', {
-          duration: 3000,
-          panelClass: ['success-snackbar']
-        });
-    
-        // Limpa o formulário após salvar
-        this.notaFiscalForm.reset({
-          numero_nota: '',
-          serie: '',
-          chave_acesso: '',
-          fornecedor_id: '',
-          data_emissao: '',
-          quantidade: '',
-          valor_unitario: '',
-          valor_total: '',
-          valor_total_nota: '',
-          valor_desconto: 0,
-          valor_outros: 0
-        });
-    
-        // Limpa os itens da tabela
-        this.notaFiscalForm.setControl('itens', this.fb.array([]));
-        this.dataSource = [];
-      },
-      (error) => {
-        console.error('Erro ao salvar nota fiscal:', error);
-        this.snackBar.open('Erro ao salvar a nota fiscal. Tente novamente.', 'Fechar', {
-          duration: 3000,
-          panelClass: ['error-snackbar']
-        });
-      }
-    );
-    
-  }
-  
-  ngOnInit(): void {
-    this.notaFiscalForm = this.fb.group({
-      numero_nota: ["", Validators.required],
-      serie: [""],
-      chave_acesso: [""],
-      fornecedor_id: ["", Validators.required],
-      data_emissao: ["", Validators.required],
-      quantidade: [""],
-      valor_unitario: [""],
-      valor_total: [{ value: "", disabled: true }],
-      valor_total_nota: [{ value: '', disabled: true }],
-      valor_desconto: [0],
-      valor_outros: [0],
-      valor_total_produtos: [0],
-      desconto: [0],
-      outros: [0],
-      itens: this.fb.array([]),
-    });
-
-    this.produtoControl = this.fb.control('');
-
-    this.fornecedorService.getFornecedores().subscribe((data: any) => {
-      this.fornecedores = data;
-    });
-
-    this.filteredProdutos = this.produtoControl.valueChanges.pipe(
-      debounceTime(300),
-      switchMap((value) => this._filter(value))
-    );
-  }
-
-  private _filter(value: string): Observable<Produto[]> {
-    const filterValue = typeof value === "string" ? value.toLowerCase() : "";
-
-    return this.produtoService
-      .getProdutos()
-      .pipe(
-        map((produtos: Produto[]) =>
-          produtos.filter((produto) =>
-            produto.nome.toLowerCase().includes(filterValue)
-          )
-        )
-      );
-  }
-
-  displayProduto(produto: Produto): string {
-    return produto && produto.nome ? produto.nome : "";
-  }
-
-  addItem() {
-    const produto = this.produtoControl.value;
-    const quantidade = this.notaFiscalForm.get("quantidade")?.value;
-    const valorUnitario = this.notaFiscalForm.get("valor_unitario")?.value;
-    const valorTotal = quantidade * valorUnitario;
-  
-    if (produto && quantidade && valorUnitario) {
-      const newItem = {
-        produto_id: produto.id,
-        produto_nome: produto.nome,
-        quantidade: quantidade,
-        valor_unitario: valorUnitario,
-        valor_total: valorTotal,
-        quantidadeControl: new FormControl(quantidade, [
-          Validators.required,
-          Validators.min(1),
-        ]),
-        valorUnitarioControl: new FormControl(valorUnitario, Validators.required),
-      };
-  
-      this.dataSource.push(newItem);
-      this.dataSource = [...this.dataSource];  // Para atualizar a tabela
-      this.calcularTotalNota();
-    }
-  
-    // Limpar os campos do formulário após adicionar o item
+    // Limpar campos após adicionar o item
     this.notaFiscalForm.patchValue({
+      produto: '',
       quantidade: '',
-      valor_unitario: '',
-      valor_total: '',
-    });
-    this.produtoControl.setValue('');
-  }
-  
-  editItem(index: number) {
-    const item = this.dataSource[index];
-  
-    this.produtoControl.setValue(item.produto_nome);
-    this.notaFiscalForm.patchValue({
-      quantidade: item.quantidade,
-      valor_unitario: item.valor_unitario,
-      valor_total: item.valor_total,
+      valorUnitario: '',
+      valorTotalProduto: ''
     });
   
-    // Remover o item da tabela para substituí-lo após a edição
-    this.dataSource.splice(index, 1);
-    this.dataSource = [...this.dataSource];
+    // Recalcular o valor total da nota fiscal
+    this.calcularValorTotalNota();
   }
   
-  updateValorTotal() {
-    const quantidade = this.notaFiscalForm.get("quantidade")?.value || 0;
-    const valorUnitario = this.notaFiscalForm.get("valor_unitario")?.value || 0;
 
-    const valorTotal = quantidade * valorUnitario;
+  calcularValorTotalNota(): void {
+    const desconto = this.notaFiscalForm.value.desconto || 0;
+    const outros = this.notaFiscalForm.value.outros || 0;
+    const valorItens = this.itens.data.reduce((total, item) => total + item.valorTotal, 0);
 
-    this.notaFiscalForm.patchValue({ valor_total: valorTotal.toFixed(2) });
+    const valorTotalNota = valorItens - desconto + outros;
+    this.notaFiscalForm.patchValue({ valorTotalNota: valorTotalNota });
   }
 
-  calcularTotalNota(): void {
-    const totalProdutos = this.dataSource.reduce(
-      (acc, item) => acc + (item.valor_total || 0),
-      0
-    );
+ // Função para formatar a data no formato 'YYYY-MM-DD'
+formatarData(data: Date): string {
+  const d = new Date(data);
+  const ano = d.getFullYear();
+  const mes = ('0' + (d.getMonth() + 1)).slice(-2); // Adiciona o 0 à esquerda se necessário
+  const dia = ('0' + d.getDate()).slice(-2); // Adiciona o 0 à esquerda se necessário
+  return `${ano}-${mes}-${dia}`;
+}
 
-    this.notaFiscalForm.patchValue({ valor_total_nota: totalProdutos.toFixed(2) });
+salvarNotaFiscal(): void {
+  const dataEmissao = this.formatarData(this.notaFiscalForm.value.dataEmissao);
+
+  if (!dataEmissao) {
+    console.error('Data de emissão inválida.');
+    return; // Impede o salvamento se a data for inválida
   }
 
-  removeItem(index: number) {
-    if (index >= 0 && index < this.dataSource.length) {
-      this.dataSource.splice(index, 1);
-      this.dataSource = [...this.dataSource];
-      this.calcularTotalNota();
-    } else {
-      console.error("Índice inválido para remoção:", index);
+  const notaFiscal = {
+    numero_nota: this.notaFiscalForm.value.numeroNota,
+    serie: this.notaFiscalForm.value.serie,
+    chave_acesso: this.notaFiscalForm.value.chaveAcesso,
+    fornecedor_id: this.notaFiscalForm.value.fornecedor,
+    data_emissao: dataEmissao, // Use a data formatada
+    valor_total: this.notaFiscalForm.value.valorTotalNota,
+    observacoes: this.notaFiscalForm.value.observacao,
+    itensNotaFiscal: this.itens.data // Itens da nota fiscal
+  };
+
+  this.notaFiscalService.salvarNotaFiscal(notaFiscal).subscribe(
+    (response: any) => {
+      console.log('Nota Fiscal salva com sucesso!', response);
+
+      // Recarregar a página após o salvamento
+      window.location.reload(); // Força a recarga da página
+    },
+    (error: any) => {
+      console.error('Erro ao salvar nota fiscal:', error);
     }
-  }
+  );
+}
 
-  onFornecedorChange(fornecedorId: number): void {
-    const fornecedorSelecionado = this.fornecedores.find(f => f.id === fornecedorId);
-
-    if (fornecedorSelecionado) {
-      this.notaFiscalForm.patchValue({ fornecedor_id: fornecedorSelecionado.id });
-    }
-  }
 }

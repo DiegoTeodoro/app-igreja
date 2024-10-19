@@ -22,9 +22,10 @@ export class SaldoEstoqueService {
   }
 
  // Método para atualizar o saldo de estoque com base no produto_id e quantidade
- updateSaldoEstoque(produto_id: number, quantidade: number): Observable<any> {
-  const body = { quantidade };  // Enviar apenas a quantidade
-  return this.http.put(`${this.apiUrl}/${produto_id}`, body);
+ updateSaldoEstoque(produto_id: number, quantidade: number, valor_unitario: number): Observable<any> {
+  const body = { quantidade, valor_unitario };  // Enviar tanto a quantidade quanto o valor unitário
+  return this.http.put(`${this.apiUrl}/update/${produto_id}`, body);
 }
+
 
 }

@@ -13,6 +13,8 @@ import { CadastroNotaFiscalComponent } from './cadastro-nota-fiscal/cadastro-not
 
 
 
+
+
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },  // Redireciona para Home por padrão
   { path: 'home', component: HomeComponent },            // Rota para a Home
@@ -25,7 +27,7 @@ const routes: Routes = [
   { path: 'produto', component: CadastroProdutoComponent},
   { path: 'consulta-produto', component: ConsultaProdutoComponent },
   { path: 'cadastro-produto/:id', component: CadastroProdutoComponent },  // Rota para editar com o ID
-  { path: 'cadastro-nota-fiscal', component: CadastroNotaFiscalComponent },  
+  { path: 'cadastro-nota-fiscal', component: CadastroNotaFiscalComponent}
 
 
 

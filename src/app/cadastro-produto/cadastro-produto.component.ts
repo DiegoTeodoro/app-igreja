@@ -11,6 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class CadastroProdutoComponent implements OnInit {
 
+
   produtoForm: FormGroup;
   produto: any;
   categorias: any;
@@ -93,4 +94,19 @@ export class CadastroProdutoComponent implements OnInit {
       this.showSuccessMessage = false;
     }, 3000); // Mensagem desaparece após 3 segundos
   }
+
+  onCancel(): void {
+    this.produtoForm.reset({
+      id: null,
+      nome: '',
+      marca: '',
+      codigo_barras: '',
+      volume: '',
+      categoria_id: null,
+      fornecedor_id: null,
+      observacao: ''
+    });
+    this.showSuccessMessage = false; // Opcional: esconder mensagem de sucesso se necessário
+  }
+  
 }

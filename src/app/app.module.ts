@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CadastroEmpresaComponent } from './cadastro-empresa/cadastro-empresa.component';
-import { MatCardModule } from '@angular/material/card';
+import { MatCardModule }  from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -31,13 +31,17 @@ import { CadastroCategoriaComponent } from './cadastro-categoria/cadastro-catego
 import { DeleteDialogComponent } from './cadastro-categoria/delete-dialog.component';
 import { CadastroProdutoComponent } from './cadastro-produto/cadastro-produto.component';
 import { ConfirmDialog, ConsultaProdutoComponent } from './consulta-produto/consulta-produto.component';
-import { CadastroNotaFiscalComponent } from './cadastro-nota-fiscal/cadastro-nota-fiscal.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatNativeDateModule } from '@angular/material/core';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { CadastroNotaFiscalComponent } from './cadastro-nota-fiscal/cadastro-nota-fiscal.component';
+
+
+
 
 // Registre o locale `pt-BR`
 registerLocaleData(localePt);
@@ -57,6 +61,7 @@ registerLocaleData(localePt);
     ConsultaProdutoComponent,
     ConfirmDialog,
     CadastroNotaFiscalComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -82,7 +87,9 @@ registerLocaleData(localePt);
     MatRadioModule,
     MatDatepickerModule,
     MatAutocompleteModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatTableModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' }  // Configuração do locale

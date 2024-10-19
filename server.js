@@ -305,9 +305,11 @@ app.get("/fornecedores", (req, res) => {
       res.status(500).send("Internal Server Error");
       return;
     }
+    console.log(results); // Verifica se os fornecedores estão sendo retornados
     res.send(results);
   });
 });
+
 
 app.post("/fornecedores", (req, res) => {
   const fornecedor = req.body;
@@ -459,87 +461,6 @@ app.get("/saldo-estoque/preco/:produto_id", (req, res) => {
   });
 });
 
-app.post("/notas-fiscais", (req, res) => {
-  const notaFiscal = req.body;
-  const itensNotaFiscal = notaFiscal.itens; // Extrai os itens da nota fiscal
-
-  // Converta a data_emissao para o formato 'YYYY-MM-DD'
-  let dataEmissao = new Date(notaFiscal.data_emissao)
-    .toISOString()
-    .slice(0, 10);
-
-  // Calcular o valor total da nota somando os itens
-  const valorTotalProdutos = itensNotaFiscal.reduce(
-    (acc, item) => acc + (item.valor_total || 0),
-    0
-  );
-  const valorTotalNota =
-    valorTotalProdutos + (notaFiscal.outros || 0) - (notaFiscal.desconto || 0);
-
-  // Query para inserir a nota fiscal
-  const notaFiscalQuery =
-    "INSERT INTO nota_fiscal (numero_nota, serie, chave_acesso, fornecedor_id, data_emissao, valor_total, valor_total_produtos, valor_total_nota, desconto, outros, observacoes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  const notaFiscalParams = [
-    notaFiscal.numero_nota,
-    notaFiscal.serie,
-    notaFiscal.chave_acesso,
-    notaFiscal.fornecedor_id,
-    dataEmissao,
-    valorTotalNota, // Valor total da nota
-    valorTotalProdutos, // Valor total dos produtos
-    valorTotalNota,
-    notaFiscal.desconto || 0,
-    notaFiscal.outros || 0,
-    notaFiscal.observacoes || "",
-  ];
-
-  // Executa a query de inserção para a nota fiscal
-  connection.query(notaFiscalQuery, notaFiscalParams, (err, result) => {
-    if (err) {
-      console.error("Erro ao inserir nota fiscal:", err);
-      res.status(500).send("Erro ao inserir nota fiscal");
-      return;
-    }
-
-    const notaFiscalId = result.insertId; // ID da nota fiscal recém-inserida
-
-    const itensQuery =
-  "INSERT INTO itens_nota_fiscal (nota_fiscal_id, produto_id, quantidade, valor_unitario) VALUES ?";
-const itensParams = itensNotaFiscal.map((item) => [
-  notaFiscalId,
-  item.produto_id,
-  item.quantidade,
-  item.valor_unitario,
-]);
-app.put('/api/saldo_estoque/:produto_id', (req, res) => {
-  const produto_id = req.params.produto_id;
-  const quantidade = req.body.quantidade;
-
-  // Reduza a quantidade no saldo de estoque
-  db.query(`UPDATE saldo_estoque SET quantidade = quantidade - ? WHERE produto_id = ?`, [quantidade, produto_id], (error, results) => {
-    if (error) throw error;
-    res.send(results);
-  });
-});
-
-// Rota para registrar um pedido
-
-
-    // Executa a query de inserção para os itens
-    connection.query(itensQuery, [itensParams], (err) => {
-      if (err) {
-        console.error("Erro ao inserir itens da nota fiscal:", err);
-        res.status(500).send("Erro ao inserir itens da nota fiscal");
-        return;
-      }
-
-      res.status(201).json({
-        message: 'Nota fiscal salva com sucesso',
-        notaFiscalId: notaFiscalId,
-    });
-  });
-});
-});
 
 // Rota para buscar todos os registros de saldo_estoque
 app.get("/saldo-estoque", (req, res) => {
@@ -577,35 +498,140 @@ app.get("/saldo-estoque/preco/:produto_id", (req, res) => {
   });
 });
 
-// Rota para atualizar apenas a quantidade no saldo de estoque
-app.put("/saldo-estoque/:id", (req, res) => {
-  const id = req.params.id;
-  const { quantidade } = req.body;  // Só estamos recebendo a quantidade
+// Rota para atualizar saldo de estoque ao dar entrada de nota fiscal
+app.put("/saldo-estoque/update/:produto_id", (req, res) => {
+  const produtoId = req.params.produto_id;
+  const { quantidade, valor_unitario } = req.body;
 
-  // Validação: Verificar se a quantidade foi fornecida
-  if (quantidade == null) {
-    res.status(400).send("Quantidade é obrigatória.");
-    return;
-  }
-
-  // Query para atualizar apenas a quantidade e a data de atualização
-  const query = `
-    UPDATE saldo_estoque 
-    SET quantidade = ?, updated_at = NOW()  -- Apenas atualizando a quantidade
-    WHERE id = ?
-  `;
-  const params = [quantidade, id];  // Atualizamos apenas a quantidade
-
-  connection.query(query, params, (err, result) => {
+  // Primeiro, obter o valor unitário atual e quantidade do saldo_estoque
+  const querySelect = `SELECT quantidade, valor_unitario FROM saldo_estoque WHERE produto_id = ?`;
+  
+  connection.query(querySelect, [produtoId], (err, result) => {
     if (err) {
-      console.error("Erro ao atualizar saldo de estoque:", err);
-      res.status(500).send("Erro ao atualizar saldo de estoque.");
+      console.error("Erro ao buscar saldo de estoque:", err);
+      res.status(500).send("Erro ao buscar saldo de estoque");
       return;
     }
 
-    res.send("Quantidade de saldo de estoque atualizada com sucesso.");
+    if (result.length > 0) {
+      const saldoAtual = result[0];
+      let novaQuantidade = saldoAtual.quantidade + quantidade;
+      let novoValorUnitario = saldoAtual.valor_unitario;
+
+      // Se o valor unitário da nota for diferente, atualizamos o valor
+      if (saldoAtual.valor_unitario !== valor_unitario) {
+        novoValorUnitario = valor_unitario;
+      }
+
+      // Atualiza a quantidade e, se necessário, o valor unitário no saldo de estoque
+      const queryUpdate = `
+        UPDATE saldo_estoque 
+        SET quantidade = ?, valor_unitario = ?, updated_at = NOW()
+        WHERE produto_id = ?
+      `;
+      connection.query(queryUpdate, [novaQuantidade, novoValorUnitario, produtoId], (err, result) => {
+        if (err) {
+          console.error("Erro ao atualizar saldo de estoque:", err);
+          res.status(500).send("Erro ao atualizar saldo de estoque");
+          return;
+        }
+
+        res.send("Saldo de estoque atualizado com sucesso.");
+      });
+    } else {
+      res.status(404).send("Produto não encontrado no saldo de estoque");
+    }
   });
 });
+
+
+// Função para formatar data no formato 'YYYY-MM-DD'
+function formatDateToMySQL(date) {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = ('0' + (d.getMonth() + 1)).slice(-2);
+  const day = ('0' + d.getDate()).slice(-2);
+  return `${year}-${month}-${day}`;
+}
+// Rota para salvar a nota fiscal e os itens da nota fiscal
+app.post("/notas-fiscais", (req, res) => {
+  const notaFiscal = req.body;
+
+  const queryNotaFiscal = `
+    INSERT INTO nota_fiscal (numero_nota, serie, chave_acesso, fornecedor_id, data_emissao, valor_total)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+
+  const paramsNotaFiscal = [
+    notaFiscal.numero_nota,
+    notaFiscal.serie,
+    notaFiscal.chave_acesso,
+    notaFiscal.fornecedor_id,
+    notaFiscal.data_emissao,
+    notaFiscal.valor_total,
+  ];
+
+  connection.query(queryNotaFiscal, paramsNotaFiscal, (err, result) => {
+    if (err) {
+      console.error("Erro ao inserir nota fiscal:", err);
+      res.status(500).send("Erro ao inserir nota fiscal");
+      return;
+    }
+
+    const notaFiscalId = result.insertId;
+
+    const itensNotaFiscal = notaFiscal.itensNotaFiscal.map(item => [
+      notaFiscalId, // O ID da nota fiscal inserida
+      item.produto_id,
+      item.quantidade,
+      item.valorUnitario,
+      item.valorTotal
+    ]);
+
+    const queryItensNotaFiscal = `
+      INSERT INTO itens_nota_fiscal (nota_fiscal_id, produto_id, quantidade, valor_unitario, valor_total)
+      VALUES ?
+    `;
+
+    connection.query(queryItensNotaFiscal, [itensNotaFiscal], (err) => {
+      if (err) {
+        console.error("Erro ao inserir itens da nota fiscal:", err);
+        res.status(500).send("Erro ao inserir itens da nota fiscal");
+        return;
+      }
+      res.status(201).send("Nota Fiscal e itens salvos com sucesso");
+    });
+  });
+});
+
+
+
+app.post("/itens-nota-fiscal", (req, res) => {
+  const itensNotaFiscal = req.body.itensNotaFiscal;
+
+  const query = `
+    INSERT INTO itens_nota_fiscal (nota_fiscal_id, produto_id, quantidade, valor_unitario, valor_total)
+    VALUES ?
+  `;
+
+  const values = itensNotaFiscal.map(item => [
+    item.nota_fiscal_id,
+    item.produto_id,
+    item.quantidade,
+    item.valorUnitario,  // Certifique-se de que os valores corretos estão sendo passados
+    item.valorTotal      // Aqui você deve calcular o valor total corretamente
+  ]);
+
+  connection.query(query, [values], (err, result) => {
+    if (err) {
+      console.error("Erro ao inserir itens da nota fiscal:", err);
+      res.status(500).send("Erro ao inserir itens da nota fiscal");
+    } else {
+      res.status(201).send("Itens da Nota Fiscal inseridos com sucesso");
+    }
+  });
+});
+
 // Rota para buscar todos os pedidos
 app.get("/pedidos", (req, res) => {
   const query = `
