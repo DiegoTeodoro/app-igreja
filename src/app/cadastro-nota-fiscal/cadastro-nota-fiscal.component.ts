@@ -9,11 +9,14 @@ import { NotaFiscalService } from '../nota-fiscal.service'; // Importando o serv
   styleUrls: ['./cadastro-nota-fiscal.component.css'],
 })
 export class CadastroNotaFiscalComponent implements OnInit {
+
   notaFiscalForm: FormGroup;
   itens = new MatTableDataSource<any>([]);
   displayedColumns: string[] = ['nomeProduto', 'quantidade', 'valorUnitario', 'valorTotal'];
   fornecedores: any[] = [];
   produtos: any[] = [];
+  showSuccessMessage: boolean = false; // Variável para controlar a mensagem de sucesso
+mensagemSucesso: any;
 
   constructor(
     private fb: FormBuilder,
@@ -64,8 +67,6 @@ export class CadastroNotaFiscalComponent implements OnInit {
       }
     );
   }
-  
-
 
   atualizarValorTotal(): void {
     const valorUnitario = this.notaFiscalForm.get('valorUnitario')?.value || 0;
@@ -78,7 +79,6 @@ export class CadastroNotaFiscalComponent implements OnInit {
     const valorUnitario = this.notaFiscalForm.value.valorUnitario;
     const quantidade = this.notaFiscalForm.value.quantidade;
   
-    // Verifica se os valores não são nulos ou indefinidos
     if (!valorUnitario || !quantidade) {
       console.error("Erro: Valor Unitário ou Quantidade inválidos.");
       return;
@@ -92,10 +92,8 @@ export class CadastroNotaFiscalComponent implements OnInit {
       valorTotal: quantidade * valorUnitario
     };
   
-    // Adicionar o item ao array de itens
     this.itens.data = [...this.itens.data, item];
   
-    // Limpar campos após adicionar o item
     this.notaFiscalForm.patchValue({
       produto: '',
       quantidade: '',
@@ -103,59 +101,73 @@ export class CadastroNotaFiscalComponent implements OnInit {
       valorTotalProduto: ''
     });
   
-    // Recalcular o valor total da nota fiscal
     this.calcularValorTotalNota();
   }
-  
 
   calcularValorTotalNota(): void {
     const desconto = this.notaFiscalForm.value.desconto || 0;
     const outros = this.notaFiscalForm.value.outros || 0;
     const valorItens = this.itens.data.reduce((total, item) => total + item.valorTotal, 0);
-
     const valorTotalNota = valorItens - desconto + outros;
     this.notaFiscalForm.patchValue({ valorTotalNota: valorTotalNota });
   }
 
- // Função para formatar a data no formato 'YYYY-MM-DD'
-formatarData(data: Date): string {
-  const d = new Date(data);
-  const ano = d.getFullYear();
-  const mes = ('0' + (d.getMonth() + 1)).slice(-2); // Adiciona o 0 à esquerda se necessário
-  const dia = ('0' + d.getDate()).slice(-2); // Adiciona o 0 à esquerda se necessário
-  return `${ano}-${mes}-${dia}`;
-}
-
-salvarNotaFiscal(): void {
-  const dataEmissao = this.formatarData(this.notaFiscalForm.value.dataEmissao);
-
-  if (!dataEmissao) {
-    console.error('Data de emissão inválida.');
-    return; // Impede o salvamento se a data for inválida
+  formatarData(data: Date): string {
+    const d = new Date(data);
+    const ano = d.getFullYear();
+    const mes = ('0' + (d.getMonth() + 1)).slice(-2);
+    const dia = ('0' + d.getDate()).slice(-2);
+    return `${ano}-${mes}-${dia}`;
   }
 
-  const notaFiscal = {
-    numero_nota: this.notaFiscalForm.value.numeroNota,
-    serie: this.notaFiscalForm.value.serie,
-    chave_acesso: this.notaFiscalForm.value.chaveAcesso,
-    fornecedor_id: this.notaFiscalForm.value.fornecedor,
-    data_emissao: dataEmissao, // Use a data formatada
-    valor_total: this.notaFiscalForm.value.valorTotalNota,
-    observacoes: this.notaFiscalForm.value.observacao,
-    itensNotaFiscal: this.itens.data // Itens da nota fiscal
-  };
+  salvarNotaFiscal(): void {
+    const dataEmissao = this.formatarData(this.notaFiscalForm.value.dataEmissao);
 
-  this.notaFiscalService.salvarNotaFiscal(notaFiscal).subscribe(
-    (response: any) => {
-      console.log('Nota Fiscal salva com sucesso!', response);
-
-      // Recarregar a página após o salvamento
-      window.location.reload(); // Força a recarga da página
-    },
-    (error: any) => {
-      console.error('Erro ao salvar nota fiscal:', error);
+    if (!dataEmissao) {
+      console.error('Data de emissão inválida.');
+      return;
     }
-  );
-}
 
+    const notaFiscal = {
+      numero_nota: this.notaFiscalForm.value.numeroNota,
+      serie: this.notaFiscalForm.value.serie,
+      chave_acesso: this.notaFiscalForm.value.chaveAcesso,
+      fornecedor_id: this.notaFiscalForm.value.fornecedor,
+      data_emissao: dataEmissao,
+      valor_total: this.notaFiscalForm.value.valorTotalNota,
+      observacoes: this.notaFiscalForm.value.observacao,
+      itensNotaFiscal: this.itens.data
+    };
+
+    this.notaFiscalService.salvarNotaFiscal(notaFiscal).subscribe(
+      (response: any) => {
+        console.log('Nota Fiscal salva com sucesso!', response);
+
+        // Exibir mensagem de sucesso e limpar o formulário
+        this.showSuccessMessage = true;
+        this.notaFiscalForm.reset();
+        this.itens.data = [];
+        this.notaFiscalForm.patchValue({ valorTotalNota: 0 });
+
+        // Resetar a mensagem de sucesso após alguns segundos
+        this.resetSuccessMessage();
+      },
+      (error: any) => {
+        console.error('Erro ao salvar nota fiscal:', error);
+      }
+    );
+  }
+
+  resetSuccessMessage(): void {
+    setTimeout(() => {
+      this.showSuccessMessage = false;
+    }, 3000); // A mensagem de sucesso será ocultada após 3 segundos
+  }
+
+  cancelar(): void {
+    this.notaFiscalForm.reset();
+    this.itens.data = [];
+    this.notaFiscalForm.patchValue({ valorTotalNota: 0 });
+  }
+  
 }

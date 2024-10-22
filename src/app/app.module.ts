@@ -39,6 +39,7 @@ import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CadastroNotaFiscalComponent } from './cadastro-nota-fiscal/cadastro-nota-fiscal.component';
+import { CadastroPedidoComponent } from './cadastro-pedido/cadastro-pedido.component';
 
 
 
@@ -61,6 +62,7 @@ registerLocaleData(localePt);
     ConsultaProdutoComponent,
     ConfirmDialog,
     CadastroNotaFiscalComponent,
+    CadastroPedidoComponent,
     
   ],
   imports: [

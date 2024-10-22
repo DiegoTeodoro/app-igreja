@@ -3,7 +3,10 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span>{{ pageTitle }}</span>
+  <span class="spacer"></span>
+  <button mat-button (click)="logout()" style="margin-right: 16px;">Sair</button>
 </mat-toolbar>
+
 
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav mode="side" [(opened)]="isSidenavOpen" class="custom-sidenav">

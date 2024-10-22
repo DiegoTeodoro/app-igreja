@@ -1,15 +1,15 @@
-<style>
-    .mat-form-field {
-    width: 40%;
-    margin-right: 10px; /* Espaço entre os inputs, opcional */
-  }
-  </style>
- <h1>Consulta Produtos</h1>
+<h1>Consulta Produtos</h1>
+
+<div class="search-and-back">
   <mat-form-field appearance="outline" style="width: 50%;">
     <mat-label>Pesquisar</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Digite para pesquisar">
   </mat-form-field>
-  
+
+  <!-- Botão Voltar para Cadastro de Produto -->
+  <button mat-raised-button color="primary" (click)="voltarParaCadastro()">Voltar</button>
+</div>
+
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" class="mat-table">
   

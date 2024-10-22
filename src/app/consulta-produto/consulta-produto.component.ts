@@ -3,7 +3,31 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ProdutoService } from '../produto.service';
 import { Produto } from '../models/produto';
 import { Router } from '@angular/router';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'; // Certifique-se de importar o MatDialog aqui
+
+@Component({
+  selector: 'confirm-dialog',
+  template: `
+    <h1 mat-dialog-title>Confirmação</h1>
+    <div mat-dialog-content>
+      <p>{{data.message}}</p>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()">Não</button>
+      <button mat-button [mat-dialog-close]="true">Sim</button>
+    </div>
+  `,
+})
+export class ConfirmDialog {
+  constructor(
+    public dialogRef: MatDialogRef<ConfirmDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: { message: string }
+  ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
 
 @Component({
   selector: 'app-consulta-produto',
@@ -14,6 +38,7 @@ export class ConsultaProdutoComponent implements OnInit {
   displayedColumns: string[] = ['id', 'nome', 'volume', 'codigo_barras', 'categoria_id', 'marca', 'fornecedor_id'];
   dataSource = new MatTableDataSource<Produto>();
 
+  // Corrigido: Importação de MatDialog no construtor
   constructor(private produtoService: ProdutoService, private router: Router, private dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -37,20 +62,17 @@ export class ConsultaProdutoComponent implements OnInit {
     this.router.navigate(['/cadastro-produto', produto.id]);
   }
   
-
   deletarProduto(produto: Produto): void {
     const dialogRef = this.dialog.open(ConfirmDialog, {
       width: '250px',
       data: { message: `Tem certeza que deseja excluir o produto ${produto.nome}?` }
     });
   
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.produtoService.deleteProduto(produto.id!).subscribe({
           next: (response) => {
-            // Exibe a mensagem de sucesso
             alert(response); // Aqui o 'response' será "Produto deletado com sucesso"
-            // Recarrega a página
             this.router.navigate(['/consulta-produto']).then(() => {
               window.location.reload();
             });
@@ -63,29 +85,8 @@ export class ConsultaProdutoComponent implements OnInit {
       }
     });
   }
-}  
 
-// Componente de diálogo de confirmação
-@Component({
-  selector: 'confirm-dialog',
-  template: `
-    <h1 mat-dialog-title>Confirmação</h1>
-    <div mat-dialog-content>
-      <p>{{data.message}}</p>
-    </div>
-    <div mat-dialog-actions>
-      <button mat-button (click)="onNoClick()">Não</button>
-      <button mat-button [mat-dialog-close]="true">Sim</button>
-    </div>
-  `
-})
-export class ConfirmDialog {
-  constructor(
-    public dialogRef: MatDialogRef<ConfirmDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: {message: string}
-  ) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
+  voltarParaCadastro(): void {
+    this.router.navigate(['/produto']);
   }
 }

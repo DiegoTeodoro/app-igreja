@@ -1,52 +1,53 @@
 .full-width {
-    width: 100%;
-  }
-  
-  .nome-produto {
-    width: 70%;
-  }
-  
-  .codigo-barras {
-    width: 50%;
-  }
-  
-  .marca {
-    width: 40%;
-  }
-  .fornecedor {
-    width: 40%;
-  }
-  
-  .volume {
-    width: 30%;
-  }
-  
-  .categoria {
-    width: 30%;
-  }
+  width: 100%;
+}
 
-  .observacao {
-    width: 70%;
-  }
-  .form-row-inline {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Espaço entre os elementos */
-  }
-  
-  .save-button {
-    margin-top: 20px;
-  }
-  
-  .success-message {
-    color: green;
-    font-size: 1.2em;
-  }
-  button {
-    height: 36px; /* Ajusta a altura dos botões */
-    line-height: 36px; /* Alinha o texto verticalmente */
-  }
+.nome-produto {
+  width: 70%;
+}
 
-  .save-button, .cancel-button {
-    padding: 0 16px; /* Certifica-se de que o padding esteja uniforme */
-  }
+.codigo-barras {
+  width: 50%;
+}
+
+.marca {
+  width: 40%;
+}
+
+.fornecedor {
+  width: 40%;
+}
+
+.volume {
+  width: 30%;
+}
+
+.categoria {
+  width: 30%;
+}
+
+.observacao {
+  width: 70%;
+}
+
+.form-row-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espaço entre os elementos */
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px; /* Espaço entre os botões */
+  margin-top: 20px;
+}
+
+button {
+  height: 36px; /* Ajusta a altura dos botões */
+  line-height: 36px; /* Alinha o texto verticalmente */
+}
+
+.save-button, .cancel-button {
+  padding: 0 16px; /* Certifica-se de que o padding esteja uniforme */
+}

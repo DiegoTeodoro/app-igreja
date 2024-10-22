@@ -1,0 +1,47 @@
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px; /* Diminui o espaço entre os campos */
+  margin-bottom: 5px; /* Reduz o espaço entre as seções */
+}
+
+.pedido-itens {
+  display: flex;
+  gap: 10px; /* Espaço entre os campos de itens do pedido */
+  flex-wrap: wrap;
+}
+
+.adicionar-item {
+  display: flex;
+  align-items: center;
+  margin-left: 5px; /* Reduz o espaço para separar o botão dos campos */
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 5px; /* Diminui o espaço entre os botões */
+  margin-top: 10px; /* Diminui a margem superior dos botões */
+}
+
+.produto, .recebedor {
+  width: 40%;
+}
+
+.valor-total-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px; /* Reduz o espaçamento superior */
+}
+
+.valor-total-e-botoes {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px; /* Diminui o espaço entre a tabela e os botões */
+}
+
+.valor-total-pedido {
+  width: 20%; /* Largura do campo do valor total */
+}

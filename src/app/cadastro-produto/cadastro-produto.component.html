@@ -78,10 +78,12 @@
     </mat-form-field>
 
     <!-- Botões Salvar e Cancelar na mesma linha -->
-    <div class="form-row-inline">
-      <button mat-raised-button color="primary" type="submit" class="save-button">Salvar</button>
-      <button mat-raised-button color="warn" type="button" (click)="onCancel()" class="cancel-button">Cancelar</button>
-    </div>
+    <!-- Botões Salvar e Cancelar na mesma linha -->
+<div class="button-row">
+  <button mat-raised-button color="primary" type="submit" class="save-button">Salvar</button>
+  <button mat-raised-button color="warn" type="button" (click)="onCancel()" class="cancel-button">Cancelar</button>
+</div>
+
   </form>
 </mat-card>
 
