@@ -1,0 +1,15 @@
+.confirm-message {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  .mat-dialog-actions {
+    justify-content: flex-end;
+  }
+  
+  button {
+    margin-left: 10px;
+  }
+  

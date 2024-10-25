@@ -1,30 +1,30 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-confirm-dialog',
   template: `
     <h1 mat-dialog-title>Confirmação</h1>
     <div mat-dialog-content>
-      <p>{{data.message}}</p>
+      <p>{{ data.message }}</p>
     </div>
     <div mat-dialog-actions>
-      <button mat-button (click)="onNoClick()">Não</button>
-      <button mat-button (click)="onYesClick()" cdkFocusInitial>Sim</button>
+      <button mat-button (click)="onCancelClick()">Cancelar</button>
+      <button mat-button color="warn" (click)="onConfirmClick()">Sim</button>
     </div>
   `
 })
 export class ConfirmDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: { message: string }
   ) {}
 
-  onNoClick(): void {
-    this.dialogRef.close();
+  onCancelClick(): void {
+    this.dialogRef.close(false);
   }
 
-  onYesClick(): void {
+  onConfirmClick(): void {
     this.dialogRef.close(true);
   }
 }

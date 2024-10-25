@@ -40,6 +40,9 @@ import localePt from '@angular/common/locales/pt';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CadastroNotaFiscalComponent } from './cadastro-nota-fiscal/cadastro-nota-fiscal.component';
 import { CadastroPedidoComponent } from './cadastro-pedido/cadastro-pedido.component';
+import { RouterModule } from '@angular/router';
+
+
 
 
 
@@ -63,7 +66,10 @@ registerLocaleData(localePt);
     ConfirmDialog,
     CadastroNotaFiscalComponent,
     CadastroPedidoComponent,
-    
+
+
+   
+   
   ],
   imports: [
     BrowserModule,
@@ -91,7 +97,8 @@ registerLocaleData(localePt);
     MatAutocompleteModule,
     MatNativeDateModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    RouterModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' }  // Configuração do locale

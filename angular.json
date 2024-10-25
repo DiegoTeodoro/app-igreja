@@ -76,7 +76,8 @@
               "browserTarget": "app-igreja:build:production"
             },
             "development": {
-              "browserTarget": "app-igreja:build:development"
+              "browserTarget": "app-igreja:build:development",
+              "liveReload": false
             }
           },
           "defaultConfiguration": "development"

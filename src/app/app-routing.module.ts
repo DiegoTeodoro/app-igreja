@@ -29,7 +29,8 @@ const routes: Routes = [
   { path: 'consulta-produto', component: ConsultaProdutoComponent },
   { path: 'cadastro-produto/:id', component: CadastroProdutoComponent },  // Rota para editar com o ID
   { path: 'cadastro-nota-fiscal', component: CadastroNotaFiscalComponent},
-  { path: 'cadastro-pedido', component: CadastroPedidoComponent}
+  { path: 'cadastro-pedido', component: CadastroPedidoComponent},
+
 
 
 

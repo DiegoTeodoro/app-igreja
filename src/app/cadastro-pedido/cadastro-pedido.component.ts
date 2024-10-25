@@ -1,145 +1,171 @@
-import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { PedidoService } from '../pedido.service'; // Certifique-se de que o caminho está correto
-import { SaldoEstoqueService } from '../Saldo_Estoque.service';
-
-export interface PedidoItem {
-  produto_nome: string;
-  quantidade: number;
-  valor_unitario: number;
-  valor_total: number;
-}
+import { Component, OnInit } from "@angular/core";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar"; // Importar o MatSnackBar para exibir mensagens
+import { PedidoService } from "../pedido.service";
+import { SaldoEstoqueService } from "../Saldo_Estoque.service";
 
 @Component({
-  selector: 'app-cadastro-pedido',
-  templateUrl: './cadastro-pedido.component.html',
-  styleUrls: ['./cadastro-pedido.component.css']
+  selector: "app-cadastro-pedido",
+  templateUrl: "./cadastro-pedido.component.html",
+  styleUrls: ["./cadastro-pedido.component.css"],
 })
 export class CadastroPedidoComponent implements OnInit {
+  editarItem(_t151: any) {
+    throw new Error('Method not implemented.');
+  }
 
-  dataSource: PedidoItem[] = [];
-
-  displayedColumns: string[] = ['produto', 'quantidade', 'valor_unitario', 'valor_total', 'acoes'];
-
-  // Propriedades do pedido
-  pedido: any = {};
-  produtos: any[] = [];
   igrejas: any[] = [];
+  produtos: any[] = [];
+  pedido: any = { igreja_id: null, recebedor: '', pedido_itens: [] };
+  valorUnitario: number | null = null;
+  quantidade: number | null = null;
+  dataSource = new MatTableDataSource<any>([]);
+  valorTotalPedido: number = 0;
+  produtoSelecionado: any;
+  igrejaSelecionada: any;
 
-  // Injeção do SaldoEstoqueService e PedidoService no construtor
-  constructor(private snackBar: MatSnackBar, private pedidoService: PedidoService, private saldoEstoqueService: SaldoEstoqueService) {}
+  // Definir as colunas que serão exibidas na tabela
+  displayedColumns: string[] = ['produto', 'quantidade', 'valorUnitario', 'valorTotal', 'acoes'];
 
-  ngOnInit() {
+  constructor(private pedidoService: PedidoService, private saldoEstoqueService: SaldoEstoqueService, private snackBar: MatSnackBar) {}
+
+  ngOnInit(): void {
     this.carregarIgrejas();
     this.carregarProdutos();
-    
-    // Define a data atual para o campo data_pedido
-    this.pedido.data_pedido = new Date();
+    // Definir o status como "Processando" ao carregar a página
+    this.pedido.status = 'Processando'; 
   }
-  
+
   carregarIgrejas() {
-    this.pedidoService.getIgrejas().subscribe((data: any[]) => {
-      this.igrejas = data;
-    }, (error: any) => {
-      console.error('Erro ao carregar igrejas:', error);
-    });
+    this.pedidoService.getIgrejas().subscribe(
+      (dados: any[]) => {
+        this.igrejas = dados;
+      },
+      error => {
+        console.error("Erro ao carregar igrejas: ", error);
+      }
+    );
   }
-  
+
   carregarProdutos() {
-    this.pedidoService.getProdutos().subscribe((data: any[]) => {
-      this.produtos = data;
-    }, (error: any) => {
-      console.error('Erro ao carregar produtos:', error);
-    });
+    this.pedidoService.getProdutos().subscribe(
+      (dados: any[]) => {
+        this.produtos = dados;
+      },
+      error => {
+        console.error("Erro ao carregar produtos: ", error);
+      }
+    );
   }
 
-  // Função para finalizar o pedido
-  finalizarPedido() {
-    this.snackBar.open('Pedido finalizado com sucesso!', 'Fechar', {
-      duration: 3000, // Duração da mensagem (3 segundos)
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-    });
-
-    // Limpar os campos do formulário
-    this.limparCampos();
-  }
-
-  // Função para limpar os campos do formulário
-  limparCampos() {
-    this.pedido = {}; // Reseta o objeto pedido
-    this.dataSource = []; // Limpa os itens adicionados ao pedido
-  }
-
-  // Função chamada quando um produto é selecionado
-  atualizarValorUnitario(event: any) {
+  // Método para obter o valor unitário ao selecionar um produto
+  onProdutoSelecionado(event: any) {
     const produtoId = event.value;
-    this.saldoEstoqueService.getPrecoUnitario(produtoId).subscribe((response: any) => {
-      this.pedido.valor_unitario = response.preco_unitario;
-      this.calcularValorTotal();  // Atualiza o valor total quando o valor unitário muda
-    }, (error: any) => {
-      console.error('Erro ao buscar valor unitário:', error);
-    });
-  }
-
-  // Função para calcular o valor total
-  calcularValorTotal() {
-    if (this.pedido.quantidade && this.pedido.valor_unitario) {
-      this.pedido.valor_total = this.pedido.quantidade * this.pedido.valor_unitario;
+    if (produtoId) {
+      this.saldoEstoqueService.getPrecoUnitario(produtoId).subscribe(
+        (response: { preco_unitario: number | null; }) => {
+          if (response && response.preco_unitario) {
+            this.valorUnitario = response.preco_unitario;  // Atualizar o valor unitário automaticamente
+          }
+        },
+        (error: any) => {
+          console.error('Erro ao buscar o preço unitário:', error);
+        }
+      );
     }
-  }
-
-  onEdit(item: PedidoItem) {
-    // Implementação para editar um item
-  }
-
-  onDelete(item: PedidoItem) {
-    // Implementação para deletar um item
   }
 
   adicionarItem() {
-    if (this.pedido.produto_id && this.pedido.quantidade && this.pedido.valor_unitario) {
-      // Encontra o nome do produto selecionado
-      const produtoNome = this.produtos.find(p => p.id === this.pedido.produto_id)?.nome || 'Produto desconhecido';
-  
-      // Cria um novo item baseado nos campos preenchidos
-      const newItem: PedidoItem = {
-        produto_nome: produtoNome,
-        quantidade: this.pedido.quantidade,
-        valor_unitario: this.pedido.valor_unitario,
-        valor_total: this.pedido.valor_total
-      };
-  
-      // Adiciona o novo item à dataSource
-      this.dataSource = [...this.dataSource, newItem];
-  
-      // Atualiza o valor total do pedido
-      this.atualizarValorTotalPedido();
-  
-      // Limpa os campos após adicionar
-      this.limparCamposItem();
-    } else {
-      this.snackBar.open('Preencha todos os campos do item antes de adicionar.', 'Fechar', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
+    if (!this.produtoSelecionado || this.quantidade == null || this.valorUnitario == null) {
+      this.snackBar.open('Preencha todos os campos do item antes de adicionar.', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    const produtoNome = this.produtos.find(p => p.id === this.produtoSelecionado).nome;
+    const valorTotalItem = this.quantidade * this.valorUnitario;
+
+    const novoItem = {
+      produto: produtoNome,
+      quantidade: this.quantidade,
+      valorUnitario: parseFloat(this.valorUnitario.toFixed(2)),
+      valorTotal: parseFloat(valorTotalItem.toFixed(2))
+    };
+
+    this.dataSource.data = [...this.dataSource.data, novoItem];
+    this.valorTotalPedido += valorTotalItem;
+
+    this.produtoSelecionado = null;
+    this.quantidade = 0;
+    this.valorUnitario = 0;
+  }
+
+  removerItem(element: any) {
+    const index = this.dataSource.data.indexOf(element);
+    if (index >= 0) {
+      this.dataSource.data.splice(index, 1);
+      this.dataSource._updateChangeSubscription();
+      this.valorTotalPedido -= element.valorTotal;
     }
   }
-  
 
-  // Função para recalcular o valor total do pedido baseado nos itens da tabela
-atualizarValorTotalPedido() {
-  this.pedido.valor_total = this.dataSource.reduce((total, item) => total + item.valor_total, 0);
+  finalizarPedido() {
+    // Validação dos campos obrigatórios
+    if (!this.pedido.igreja_id || !this.pedido.recebedor || !this.dataSource.data.length) {
+      this.snackBar.open('Há campos que ainda não foram preenchidos.', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    const pedido = {
+      igreja_id: this.pedido.igreja_id,
+      data_pedido: new Date(),
+      status: 'Entregue',  // Define o status como 'Entregue' ao finalizar o pedido
+      recebedor: this.pedido.recebedor,
+      valor_total: this.valorTotalPedido,
+      pedido_itens: this.dataSource.data.map(item => ({
+        produto_id: this.produtos.find(p => p.nome === item.produto).id,
+        quantidade: item.quantidade,
+        valor_unitario: item.valorUnitario,
+        valor_total: item.valorTotal
+      }))
+    };
+
+    this.pedidoService.salvarPedido(pedido).subscribe(
+      response => {
+        this.mostrarMensagem('Pedido realizado com sucesso!');
+        this.limparFormulario();
+  
+        // Recarregar a página após 3 segundos (duração da snackbar)
+        setTimeout(() => {
+          window.location.reload();  // Recarrega a página
+        }, 3000);
+      },
+      error => {
+        this.snackBar.open('Erro ao salvar o pedido. Tente novamente.', 'Fechar', { duration: 3000 });
+        console.error('Erro ao salvar o pedido:', error);
+      }
+    );
+  }
+  limparFormulario() {
+    this.pedido = { igreja_id: null, recebedor: '', pedido_itens: [] };
+    this.igrejaSelecionada = null;
+    this.produtoSelecionado = null;
+    this.quantidade = 0;
+    this.valorUnitario = 0;
+    this.dataSource.data = [];
+    this.valorTotalPedido = 0;
+  }
+
+ // Função para mostrar mensagens de snackbar com configuração personalizada
+mostrarMensagem(mensagem: string) {
+  const config: MatSnackBarConfig = {
+    duration: 3000,
+    verticalPosition: 'top',  // Posição vertical para o topo
+    horizontalPosition: 'center',  // Posição horizontal no centro
+    panelClass: ['snackbar-custom'],  // Classe CSS personalizada
+  };
+  this.snackBar.open(mensagem, 'Fechar', config);
 }
 
   
-  
-  // Função para limpar os campos do item do pedido (mas não o cabeçalho)
-limparCamposItem() {
-  this.pedido.produto_id = null;
-  this.pedido.quantidade = null;
-  this.pedido.valor_unitario = null;
- 
 }
-}
+

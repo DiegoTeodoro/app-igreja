@@ -599,11 +599,12 @@ app.post("/notas-fiscais", (req, res) => {
         res.status(500).send("Erro ao inserir itens da nota fiscal");
         return;
       }
-      res.status(201).send("Nota Fiscal e itens salvos com sucesso");
+
+      // Retornando a resposta no formato JSON
+      res.status(201).json({ message: "Nota Fiscal e itens salvos com sucesso" });
     });
   });
 });
-
 
 
 app.post("/itens-nota-fiscal", (req, res) => {
@@ -632,88 +633,25 @@ app.post("/itens-nota-fiscal", (req, res) => {
   });
 });
 
-// Rota para buscar todos os pedidos
-app.get("/pedidos", (req, res) => {
+// Rota para buscar todas as notas fiscais
+app.get("/notas-fiscais", (req, res) => {
   const query = `
-    SELECT p.id, p.igreja_id, i.nome AS igreja_nome, p.data_pedido, p.status, p.valor_total, p.recebedor
-    FROM pedidos p
-    JOIN igreja i ON p.igreja_id = i.codigo;
+    SELECT nf.*, f.nome_fantasia AS fornecedor_nome
+    FROM nota_fiscal nf
+    JOIN fornecedor f ON nf.fornecedor_id = f.id
   `;
+
   connection.query(query, (err, results) => {
     if (err) {
-      console.error("Erro ao buscar pedidos:", err);
-      res.status(500).send("Erro ao buscar pedidos");
+      console.error("Erro ao buscar notas fiscais:", err);
+      res.status(500).send("Erro ao buscar notas fiscais");
     } else {
-      res.json(results);  // Retorna os pedidos no formato JSON
+      res.json(results); // Retorna todas as notas fiscais encontradas
     }
   });
 });
 
 
-// Rota para buscar um pedido por código
-app.get("/pedidos/:id", (req, res) => {
-  const pedidoId = req.params.id;
-  const query = `
-    SELECT p.*, i.nome AS igreja_nome 
-    FROM pedidos p
-    JOIN igreja i ON p.igreja_id = i.codigo
-    WHERE p.id = ?
-  `;
-  connection.query(query, [pedidoId], (err, results) => {
-    if (err) {
-      console.error("Erro ao buscar pedido:", err);
-      res.status(500).send("Erro ao buscar pedido");
-    } else if (results.length > 0) {
-      res.json(results[0]);
-    } else {
-      res.status(404).send("Pedido não encontrado");
-    }
-  });
-});
-
-app.post("/pedidos", (req, res) => {
-  const pedido = req.body;
-  const itensPedido = pedido.pedido_itens;
-
-  // Inserir o pedido
-  const pedidoQuery = `
-    INSERT INTO pedidos (igreja_id, data_pedido, status, valor_total, recebedor)
-    VALUES (?, ?, ?, ?, ?)
-  `;
-  const pedidoParams = [pedido.igreja_id, pedido.data_pedido, pedido.status, pedido.valor_total, pedido.recebedor];
-
-  connection.query(pedidoQuery, pedidoParams, (err, result) => {
-    if (err) {
-      console.error("Erro ao inserir o pedido:", err);
-      res.status(500).send("Erro ao inserir o pedido");
-      return;
-    }
-
-    const pedidoId = result.insertId; // ID do pedido recém-inserido
-
-    // Inserir os itens do pedido
-    const itensQuery = `
-    INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, valor_unitario)
-    VALUES ?
-  `;
-  const itensParams = itensPedido.map(item => [
-    pedidoId,
-    item.produto_id,
-    item.quantidade,
-    item.valor_unitario
-  ]);
-
-    connection.query(itensQuery, [itensParams], (err) => {
-      if (err) {
-        console.error("Erro ao inserir itens do pedido:", err);
-        res.status(500).send("Erro ao inserir itens do pedido");
-        return;
-      }
-
-      res.status(201).send("Pedido e itens salvos com sucesso");
-    });
-  });
-});
 
 // Rota para buscar o saldo de estoque de um produto específico
 app.get("/saldo-estoque/:produto_id", (req, res) => {
@@ -739,39 +677,74 @@ app.get("/saldo-estoque/:produto_id", (req, res) => {
 });
 
 // Função para converter a data no formato 'YYYY-MM-DD HH:MM:SS'
-function formatDateToMySQL(date){
+function formatDateToMySQL(date) {
   const d = new Date(date);
   const year = d.getFullYear();
-  const month = (`0${d.getMonth() + 1}`).slice(-2); // mês começa em 0
-  const day = (`0${d.getDate()}`).slice(-2);
-  const hours = (`0${d.getHours()}`).slice(-2);
-  const minutes = (`0${d.getMinutes()}`).slice(-2);
-  const seconds = (`0${d.getSeconds()}`).slice(-2);
+  const month = ('0' + (d.getMonth() + 1)).slice(-2);
+  const day = ('0' + d.getDate()).slice(-2);
+  const hours = ('0' + d.getHours()).slice(-2);
+  const minutes = ('0' + d.getMinutes()).slice(-2);
+  const seconds = ('0' + d.getSeconds()).slice(-2);
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
+
+
 // No código de inserção do pedido
 app.post("/pedidos", (req, res) => {
   const pedido = req.body;
 
-  // Converte a data do pedido para o formato MySQL
+  // Converte a data para o formato adequado
   const dataPedidoMySQL = formatDateToMySQL(pedido.data_pedido);
 
-  const query = `
+  const queryPedido = `
     INSERT INTO pedidos (igreja_id, data_pedido, status, valor_total, recebedor)
     VALUES (?, ?, ?, ?, ?)
   `;
   
-  const params = [pedido.igreja_id, dataPedidoMySQL, pedido.status, pedido.valor_total, pedido.recebedor];
+  const paramsPedido = [
+    pedido.igreja_id,
+    dataPedidoMySQL,  // Data formatada corretamente
+    pedido.status,
+    pedido.valor_total,
+    pedido.recebedor
+  ];
 
-  connection.query(query, params, (err, result) => {
+  connection.query(queryPedido, paramsPedido, (err, result) => {
     if (err) {
       console.error("Erro ao inserir o pedido:", err);
       res.status(500).send("Erro ao inserir o pedido");
-    } else {
-      res.status(201).send("Pedido salvo com sucesso");
+      return;
     }
+
+    const pedidoId = result.insertId;
+
+    // Inserir itens do pedido
+    const itensPedido = pedido.pedido_itens.map(item => [
+      pedidoId,
+      item.produto_id,
+      item.quantidade,
+      item.valor_unitario,
+      item.valor_total
+    ]);
+
+    const queryItensPedido = `
+      INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, valor_unitario, valor_total)
+      VALUES ?
+    `;
+
+    connection.query(queryItensPedido, [itensPedido], (err) => {
+      if (err) {
+        console.error("Erro ao inserir itens do pedido:", err);
+        res.status(500).send("Erro ao inserir itens do pedido");
+        return;
+      }
+
+      res.status(201).send("Pedido e itens salvos com sucesso");
+    });
   });
 });
+
+
 // Rota para atualizar o saldo de estoque ao realizar um pedido
 app.put("/saldo-estoque/:produto_id", (req, res) => {
   const produtoId = req.params.produto_id;
@@ -962,6 +935,62 @@ app.post("/empresas/pesquisar", (req, res) => {
       return res.status(500).json({ error: 'Erro ao buscar empresas' });
     }
     res.json(results);
+  });
+});
+
+app.post("/pedidos", (req, res) => {
+  const pedido = req.body;
+  console.log("Pedido recebido:", pedido);  // Log dos dados recebidos
+
+  // Converte a data para o formato adequado
+  const dataPedidoMySQL = formatDateToMySQL(pedido.data_pedido);
+
+  const queryPedido = `
+    INSERT INTO pedidos (igreja_id, data_pedido, status, valor_total, recebedor)
+    VALUES (?, ?, ?, ?, ?)
+  `;
+  
+  const paramsPedido = [
+    pedido.igreja_id,
+    dataPedidoMySQL,  // Data formatada corretamente
+    pedido.status,
+    pedido.valor_total,
+    pedido.recebedor
+  ];
+
+  // Inserir o pedido
+  connection.query(queryPedido, paramsPedido, (err, result) => {
+    if (err) {
+      console.error("Erro ao inserir o pedido:", err);
+      res.status(500).send("Erro ao inserir o pedido");
+      return;
+    }
+
+    const pedidoId = result.insertId;
+
+    // Inserir os itens do pedido
+    const itensPedido = pedido.pedido_itens.map(item => [
+      pedidoId,
+      item.produto_id,
+      item.quantidade,
+      item.valor_unitario,
+      item.valor_total
+    ]);
+
+    const queryItensPedido = `
+      INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, valor_unitario, valor_total)
+      VALUES ?
+    `;
+
+    connection.query(queryItensPedido, [itensPedido], (err) => {
+      if (err) {
+        console.error("Erro ao inserir itens do pedido:", err);
+        res.status(500).send("Erro ao inserir itens do pedido");
+        return;
+      }
+
+      res.status(201).send("Pedido e itens salvos com sucesso");
+    });
   });
 });
 

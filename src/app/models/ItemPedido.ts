@@ -1,6 +1,7 @@
-export interface PedidoItem {
+export interface ItemPedido {
+  id?: number;
+  pedido_id: number;
   produto_id: number;
-  produto_nome: string;
   quantidade: number;
   valor_unitario: number;
   valor_total: number;

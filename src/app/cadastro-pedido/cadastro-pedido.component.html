@@ -1,147 +1,124 @@
-<div class="pedido-form">
-    <h1>Cadastro de Pedidos</h1>
-  
-    <form #pedidoForm="ngForm">
-      <!-- Seção de Cabeçalho - Igreja, Status e Data do Pedido -->
-      <mat-card class="pedido-form">
-        <div class="form-row">
-          <!-- Nome da Igreja -->
-          <mat-form-field style="width: 40%;">
-            <mat-select placeholder="Selecione a Igreja" [(ngModel)]="pedido.igreja_id" name="igreja_id">
-              <mat-option *ngFor="let igreja of igrejas" [value]="igreja.codigo">
+<h1>Cadastro de Pedidos</h1>
+
+<!-- Seção de Cabeçalho - Igreja, Status e Data do Pedido -->
+<mat-card class="header-section">
+    <form class="form-row-inline">
+       <!-- Nome da Igreja -->
+       <mat-form-field style="width: 40%;">
+          <mat-select placeholder="Selecione a Igreja" [(ngModel)]="pedido.igreja_id" name="igreja_id">
+             <mat-option *ngFor="let igreja of igrejas" [value]="igreja.codigo">
                 {{ igreja.nome }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-  
-          <!-- Status (select) -->
-          <mat-form-field style="width: 20%;">
-            <mat-label>Status</mat-label>
-            <mat-select [(ngModel)]="pedido.status" name="status">
-              <mat-option value="Pendente">Pendente</mat-option>
-              <mat-option value="Processando">Processando</mat-option>
-              <mat-option value="Entregue">Entregue</mat-option>
-            </mat-select>
-          </mat-form-field>
+             </mat-option>
+          </mat-select>
+       </mat-form-field>
 
-  
-          <!-- Data do Pedido -->
-          <mat-form-field appearance="fill" class="data-pedido">
-            <mat-label>Data do Pedido</mat-label>
-            <input matInput [matDatepicker]="picker" [(ngModel)]="pedido.data_pedido" name="data_pedido">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
-  
-        <!-- Recebedor -->
-        <div class="form-row">
-          <mat-form-field appearance="fill" class="recebedor">
+       <mat-form-field appearance="fill" style="flex: 1 1 20%;">
+         <mat-label>Status</mat-label>
+         <mat-select [(ngModel)]="pedido.status" name="status"> <!-- Bind com o pedido.status -->
+           <mat-option value="Pendente">Pendente</mat-option>
+           <mat-option value="Processando">Processando</mat-option>
+           <mat-option value="Entregue">Entregue</mat-option>
+         </mat-select>
+       </mat-form-field>
+       
+
+       <mat-form-field appearance="fill" style="flex: 1 1 20%;">
+          <mat-label>Data do Pedido</mat-label>
+          <input matInput [matDatepicker]="picker" placeholder="Data do Pedido">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+       </mat-form-field>
+    </form>
+
+    <!-- Campo Recebedor -->
+    <form class="form-row-inline">
+        <mat-form-field appearance="fill" style="flex: 0 0 40%; max-width: 40%;">
             <mat-label>Recebedor</mat-label>
-            <input matInput [(ngModel)]="pedido.recebedor" name="recebedor">
+            <input matInput placeholder="Nome do Recebedor" [(ngModel)]="pedido.recebedor" name="recebedor">
           </mat-form-field>
-        </div>
-      </mat-card>
-  
-  <!-- Seção de Itens do Pedido -->
-<mat-card class="pedido-form">
-  <div class="pedido-itens">
-    <!-- Produto -->
-    <mat-form-field appearance="fill" class="produto">
-      <mat-label>Produto</mat-label>
-      <mat-select [(ngModel)]="pedido.produto_id" (selectionChange)="atualizarValorUnitario($event)" name="produto_id">
-        <mat-option *ngFor="let produto of produtos" [value]="produto.id">
-          {{ produto.nome }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    </form>
+</mat-card>
 
-    <!-- Quantidade -->
-    <mat-form-field appearance="fill" class="quantidade">
-      <mat-label>Quantidade</mat-label>
-      <input matInput type="number" [(ngModel)]="pedido.quantidade" (input)="calcularValorTotal()" name="quantidade">
-    </mat-form-field>
+<!-- Seção de Itens do Pedido -->
+<mat-card class="items-section">
+    <form class="form-row-inline">
+       <!-- Campo Produto -->
+       <mat-form-field appearance="fill" style="flex: 1 1 40%;">
+          <mat-label>Produto</mat-label>
+          <mat-select [(ngModel)]="produtoSelecionado" name="produtoSelecionado" (selectionChange)="onProdutoSelecionado($event)" placeholder="Nome do Produto">
+             <mat-option *ngFor="let produto of produtos" [value]="produto.id">{{produto.nome}}</mat-option>
+          </mat-select>
+       </mat-form-field>
 
-    <!-- Valor Unitário -->
-    <mat-form-field appearance="fill" class="valor-unitario">
-      <mat-label>Valor Unitário</mat-label>
-      <input matInput type="text" [value]="pedido.valor_unitario | currency:'BRL':'symbol':'1.2-2'" readonly>
-    </mat-form-field>
+       <mat-form-field appearance="fill" style="flex: 1 1 15%;">
+          <mat-label>Quantidade</mat-label>
+          <input matInput type="number" [(ngModel)]="quantidade" name="quantidade" placeholder="Quantidade">
+       </mat-form-field>
 
-   
-    <!-- Botão Adicionar Item -->
-    <div class="adicionar-item">
-      <button mat-raised-button color="primary" (click)="adicionarItem()">Adicionar</button>
+       <!-- Campo Valor Unitário -->
+       <mat-form-field appearance="fill" style="flex: 1 1 20%;">
+          <mat-label>Valor Unitário</mat-label>
+          <input matInput type="number" [(ngModel)]="valorUnitario" name="valorUnitario" placeholder="Valor Unitário" [value]="valorUnitario | number:'1.2-2'">
+       </mat-form-field>
 
-    </div>
-  </div>
+       <!-- Botão Adicionar Item -->
+       <button mat-raised-button color="primary" (click)="adicionarItem()">Adicionar</button>
+    </form>
 </mat-card>
 
 <!-- Tabela de Itens -->
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <!-- Coluna Produto -->
-  <ng-container matColumnDef="produto">
-    <th mat-header-cell *matHeaderCellDef> Produto </th>
-    <td mat-cell *matCellDef="let element"> {{ element.produto_nome }} </td>
-  </ng-container>
+    <!-- Coluna Produto -->
+    <ng-container matColumnDef="produto">
+       <th mat-header-cell *matHeaderCellDef> Produto </th>
+       <td mat-cell *matCellDef="let element"> {{element.produto}} </td>
+    </ng-container>
 
-  <!-- Coluna Quantidade -->
-  <ng-container matColumnDef="quantidade">
-    <th mat-header-cell *matHeaderCellDef> Quantidade </th>
-    <td mat-cell *matCellDef="let element"> {{ element.quantidade }} </td>
-  </ng-container>
+    <!-- Coluna Quantidade -->
+    <ng-container matColumnDef="quantidade">
+       <th mat-header-cell *matHeaderCellDef> Quantidade </th>
+       <td mat-cell *matCellDef="let element"> {{element.quantidade}} </td>
+    </ng-container>
 
-  <!-- Coluna Valor Unitário -->
-  <ng-container matColumnDef="valor_unitario">
-    <th mat-header-cell *matHeaderCellDef> Valor Unitário </th>
-    <td mat-cell *matCellDef="let element">
-      {{ element.valor_unitario | currency:'BRL':'symbol':'1.2-2' }}
-    </td>
-  </ng-container>
+    <!-- Coluna Valor Unitário -->
+    <ng-container matColumnDef="valorUnitario">
+       <th mat-header-cell *matHeaderCellDef> Valor Unitário </th>
+       <td mat-cell *matCellDef="let element"> {{element.valorUnitario | number:'1.2-2'}} </td>
+    </ng-container>
 
-  <!-- Coluna Valor Total -->
-  <ng-container matColumnDef="valor_total">
-    <th mat-header-cell *matHeaderCellDef> Valor Total </th>
-    <td mat-cell *matCellDef="let element">
-      {{ element.valor_total | currency:'BRL':'symbol':'1.2-2' }}
-    </td>
-  </ng-container>
+    <!-- Coluna Valor Total -->
+    <ng-container matColumnDef="valorTotal">
+       <th mat-header-cell *matHeaderCellDef> Valor Total </th>
+       <td mat-cell *matCellDef="let element"> {{element.valorTotal | number:'1.2-2'}} </td>
+    </ng-container>
 
-  <!-- Coluna Ações -->
-  <ng-container matColumnDef="acoes">
-    <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Ações </th>
-    <td mat-cell *matCellDef="let element" style="text-align: center;">
-      <button mat-icon-button color="primary" (click)="onEdit(element)">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-icon-button color="warn" (click)="onDelete(element)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </td>
-  </ng-container>
+    <!-- Coluna Ações -->
+    <ng-container matColumnDef="acoes">
+       <th mat-header-cell *matHeaderCellDef> Ações </th>
+       <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="primary" (click)="editarItem(element)">
+             <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="removerItem(element)">
+             <mat-icon>delete</mat-icon>
+          </button>
+       </td>
+    </ng-container>
 
-  <!-- Cabeçalhos e Linhas -->
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <!-- Cabeçalho da Tabela -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <!-- Linhas da Tabela -->
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 
-<!-- Valor Total do pedido -->
-<!-- Seção Valor Total do Pedido e Botões -->
-<div class="valor-total-e-botoes">
-  <!-- Valor Total do pedido -->
-  <mat-form-field appearance="fill" class="valor-total-pedido">
-    <mat-label>Valor Total do pedido</mat-label>
-    <input matInput type="text" [value]="pedido.valor_total | currency:'BRL':'symbol':'1.2-2'" readonly>
-  </mat-form-field>
+<!-- Valor Total do Pedido e Botões -->
+<div class="valor-total-e-botoes form-row-inline" style="justify-content: space-between; align-items: center;">
+    <!-- Valor Total do Pedido -->
+    <h3>Valor Total do pedido: {{valorTotalPedido | number:'1.2-2'}}</h3>
 
-  <!-- Botões de Ação -->
-  <div class="button-row">
-    <button mat-raised-button color="primary" (click)="finalizarPedido()">Finalizar Pedido</button>
-    <button mat-raised-button color="primary" (click)="limparCampos()" style="background-color: #CD5C5C;">Limpar</button>
-  </div>
+    <!-- Botões de Ação -->
+    <div class="button-row">
+       <button mat-raised-button color="primary" (click)="finalizarPedido()">Finalizar Pedido</button>
+       <button mat-raised-button color="warn" (click)="limparFormulario()">Limpar</button>
+    </div>
 </div>
-<br><br><br><br>
-    </form>
-
-  </div>
-  
