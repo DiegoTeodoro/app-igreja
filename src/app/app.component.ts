@@ -34,7 +34,8 @@ export class AppComponent {
     {
       title: 'Notas Fiscais',
       links: [
-        { title: 'Entrada de Nota', route: '/cadastro-nota-fiscal' }
+        { title: 'Entrada de Nota', route: '/cadastro-nota-fiscal' },
+        { title: 'Consultar Nota', route: '/consulta-nota-fiscal' }
       ]
     },
     {

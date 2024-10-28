@@ -52,32 +52,8 @@ mensagemSucesso: any;
   ngOnInit(): void {
     this.carregarFornecedores();
     this.carregarProdutos();
-    
-    // Verificar se há dados de nota fiscal na navegação
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras?.state?.['notaFiscal']) {
-      this.popularFormulario(navigation.extras.state['notaFiscal']);
-    }
+  
   }
-  
-  // Método para popular o formulário com os dados da nota fiscal
-  popularFormulario(notaFiscal: any): void {
-    this.notaFiscalForm.patchValue({
-      numeroNota: notaFiscal.numero_nota,
-      serie: notaFiscal.serie,
-      chaveAcesso: notaFiscal.chave_acesso,
-      fornecedor: notaFiscal.fornecedor_id,
-      dataEmissao: new Date(notaFiscal.data_emissao), // Certifique-se de converter para Date se necessário
-      observacao: notaFiscal.observacoes,
-      valorTotalNota: notaFiscal.valor_total
-    });
-  
-    // Supondo que os itens da nota fiscal também sejam passados, você pode carregar os itens na tabela
-    if (notaFiscal.itensNotaFiscal) {
-      this.itens.data = notaFiscal.itensNotaFiscal;
-    }
-  }
-  
   
   carregarFornecedores(): void {
     this.notaFiscalService.getFornecedores().subscribe(
@@ -264,7 +240,6 @@ mensagemSucesso: any;
     this.router.navigate(['/cadastro-nota-fiscal'], { state: { notaFiscal: nota } });
   }
 
-
-  
+    
   
 }

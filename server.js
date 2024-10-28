@@ -543,6 +543,20 @@ app.put("/saldo-estoque/update/:produto_id", (req, res) => {
     }
   });
 });
+app.get("/notas-fiscais", (req, res) => {
+  console.log("Rota /notas-fiscais foi chamada");
+  connection.query("SELECT * FROM nota_fiscal", (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar notas fiscais:", err);
+      res.status(500).send("Erro ao buscar notas fiscais");
+      return;
+    }
+    console.log("Notas Fiscais encontradas:", results); // Log para ver o resultado
+    res.json(results);
+  });
+});
+
+
 
 
 // Função para formatar data no formato 'YYYY-MM-DD'
@@ -633,23 +647,6 @@ app.post("/itens-nota-fiscal", (req, res) => {
   });
 });
 
-// Rota para buscar todas as notas fiscais
-app.get("/notas-fiscais", (req, res) => {
-  const query = `
-    SELECT nf.*, f.nome_fantasia AS fornecedor_nome
-    FROM nota_fiscal nf
-    JOIN fornecedor f ON nf.fornecedor_id = f.id
-  `;
-
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error("Erro ao buscar notas fiscais:", err);
-      res.status(500).send("Erro ao buscar notas fiscais");
-    } else {
-      res.json(results); // Retorna todas as notas fiscais encontradas
-    }
-  });
-});
 
 
 

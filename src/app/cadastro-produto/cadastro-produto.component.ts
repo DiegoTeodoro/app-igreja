@@ -28,12 +28,13 @@ export class CadastroProdutoComponent implements OnInit {
       id: [null],
       nome: ['', Validators.required],
       marca: ['', Validators.required],
-      codigo_barras: ['', Validators.required],
+      codigo_barras: ['', Validators.required], // Corrigir para 'codigo_barras' ao invés de 'codigo_barra'
       volume: ['', Validators.required],
       categoria_id: [null, Validators.required],
       fornecedor_id: [null, Validators.required],
       observacao: ['']
     });
+    
     this.produtoForm.reset({
       id: null,
       nome: '',

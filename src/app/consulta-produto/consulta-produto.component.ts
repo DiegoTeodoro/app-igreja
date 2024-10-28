@@ -23,6 +23,7 @@ export class ConfirmDialog {
     public dialogRef: MatDialogRef<ConfirmDialog>,
     @Inject(MAT_DIALOG_DATA) public data: { message: string }
   ) {}
+  
 
   onNoClick(): void {
     this.dialogRef.close();
