@@ -3,7 +3,6 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { NotaFiscalService } from '../nota-fiscal.service'; // Importando o serviço
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
@@ -13,25 +12,23 @@ import { Router } from '@angular/router';
   styleUrls: ['./cadastro-nota-fiscal.component.css'],
 })
 export class CadastroNotaFiscalComponent implements OnInit {
-
-
   notaFiscalForm: FormGroup;
   itens = new MatTableDataSource<any>([]);
   displayedColumns: string[] = ['nomeProduto', 'quantidade', 'valorUnitario', 'valorTotal', 'acoes'];
   fornecedores: any[] = [];
   produtos: any[] = [];
   showSuccessMessage: boolean = false; // Variável para controlar a mensagem de sucesso
-mensagemSucesso: any;
-  
+  numeroNotaPesquisa: string = ''; // Armazena o número da nota para pesquisa
 
   constructor(
     private fb: FormBuilder,
-  private notaFiscalService: NotaFiscalService, 
-  private snackBar: MatSnackBar, 
-  private dialog: MatDialog, // Injetar MatDialog aqui
-  private router: Router
+    private notaFiscalService: NotaFiscalService, 
+    private snackBar: MatSnackBar, 
+    private dialog: MatDialog, // Injetar MatDialog aqui
+    private router: Router
   ) {
     this.notaFiscalForm = this.fb.group({
+      numeroNotaPesquisa: [''],
       numeroNota: [''],
       serie: [''],
       chaveAcesso: [''],
@@ -48,13 +45,11 @@ mensagemSucesso: any;
     });
   }
 
-  
   ngOnInit(): void {
     this.carregarFornecedores();
     this.carregarProdutos();
-  
   }
-  
+
   carregarFornecedores(): void {
     this.notaFiscalService.getFornecedores().subscribe(
       (data: any[]) => {
@@ -63,10 +58,14 @@ mensagemSucesso: any;
       },
       (error: any) => {
         console.error('Erro ao carregar fornecedores:', error);
+        this.snackBar.open('Erro ao carregar fornecedores.', 'Fechar', {
+          duration: 3000,
+          verticalPosition: 'top'
+        });
       }
     );
   }
-  
+
   carregarProdutos(): void {
     this.notaFiscalService.getProdutos().subscribe(
       (data: any[]) => {
@@ -75,6 +74,10 @@ mensagemSucesso: any;
       },
       (error: any) => {
         console.error('Erro ao carregar produtos:', error);
+        this.snackBar.open('Erro ao carregar produtos.', 'Fechar', {
+          duration: 3000,
+          verticalPosition: 'top'
+        });
       }
     );
   }
@@ -91,7 +94,10 @@ mensagemSucesso: any;
     const quantidade = this.notaFiscalForm.value.quantidade;
   
     if (!valorUnitario || !quantidade) {
-      console.error("Erro: Valor Unitário ou Quantidade inválidos.");
+      this.snackBar.open('Preencha todos os campos obrigatórios.', 'Fechar', {
+        duration: 3000,
+        verticalPosition: 'top'
+      });
       return;
     }
   
@@ -103,7 +109,6 @@ mensagemSucesso: any;
       valorTotal: quantidade * valorUnitario
     };
     
-  
     this.itens.data = [...this.itens.data, item];
   
     this.notaFiscalForm.patchValue({
@@ -116,6 +121,69 @@ mensagemSucesso: any;
     this.calcularValorTotalNota();
   }
 
+  pesquisarNota(): void {
+    const numeroNota = this.numeroNotaPesquisa;
+    if (!numeroNota) {
+      this.snackBar.open('Informe o número da nota para consulta.', 'Fechar', {
+        duration: 3000,
+        verticalPosition: 'top'
+      });
+      return;
+    }
+
+    this.notaFiscalService.getNotaFiscalByNumero(numeroNota).subscribe(
+      (notas: any[]) => {
+        if (notas.length > 0) {
+          const nota = notas[0];
+          this.notaFiscalForm.patchValue({
+            numeroNota: nota.numero_nota,
+            serie: nota.serie,
+            chaveAcesso: nota.chave_acesso,
+            fornecedor: nota.fornecedor_id,
+            dataEmissao: new Date(nota.data_emissao),
+            observacao: nota.observacoes,
+            valorTotalNota: nota.valor_total
+          });
+          this.carregarItensNotaFiscal(nota.id);
+        } else {
+          this.snackBar.open('Nota Fiscal não encontrada.', 'Fechar', {
+            duration: 3000,
+            verticalPosition: 'top'
+          });
+        }
+      },
+      (error: any) => {
+        console.error('Erro ao consultar nota fiscal:', error);
+        this.snackBar.open('Erro ao consultar a Nota Fiscal.', 'Fechar', {
+          duration: 3000,
+          verticalPosition: 'top'
+        });
+      }
+    );
+  }
+
+  carregarItensNotaFiscal(notaFiscalId: number): void {
+    this.notaFiscalService.getItensNotaFiscal(notaFiscalId).subscribe(
+      (itens: any[]) => {
+        this.itens.data = itens.map(item => ({
+          produto_id: item.produto_id,
+          nomeProduto: this.produtos.find(p => p.id === item.produto_id)?.nome || '',
+          quantidade: item.quantidade,
+          valorUnitario: item.valor_unitario,
+          valorTotal: item.valor_total
+        }));
+        this.calcularValorTotalNota();
+      },
+      error => {
+        console.error('Erro ao carregar itens da nota fiscal:', error);
+        this.snackBar.open('Erro ao carregar itens da nota fiscal.', 'Fechar', {
+          duration: 3000,
+          verticalPosition: 'top'
+        });
+      }
+    );
+  }
+
   calcularValorTotalNota(): void {
     const desconto = this.notaFiscalForm.value.desconto || 0;
     const outros = this.notaFiscalForm.value.outros || 0;
@@ -124,31 +192,21 @@ mensagemSucesso: any;
     this.notaFiscalForm.patchValue({ valorTotalNota: valorTotalNota });
   }
 
-  formatarData(data: Date): string {
-    const d = new Date(data);
-    const ano = d.getFullYear();
-    const mes = ('0' + (d.getMonth() + 1)).slice(-2);
-    const dia = ('0' + d.getDate()).slice(-2);
-    return `${ano}-${mes}-${dia}`;
-  }
-
   salvarNotaFiscal(): void {
     const dataEmissao = this.formatarData(this.notaFiscalForm.value.dataEmissao);
     
-    // Verifique se os campos obrigatórios estão preenchidos
     if (!this.notaFiscalForm.value.numeroNota || 
         !this.notaFiscalForm.value.serie || 
         !this.notaFiscalForm.value.chaveAcesso || 
         !dataEmissao || 
         !this.itens.data.length) {
-      console.error('Campos obrigatórios ausentes.');
       this.snackBar.open('Preencha todos os campos obrigatórios.', 'Fechar', {
         duration: 3000,
+        verticalPosition: 'top'
       });
       return;
     }
   
-    // Cria o objeto notaFiscal com os dados do formulário
     const notaFiscal = {
       numero_nota: this.notaFiscalForm.value.numeroNota,
       serie: this.notaFiscalForm.value.serie,
@@ -160,86 +218,50 @@ mensagemSucesso: any;
       itensNotaFiscal: this.itens.data
     };
   
-    // Envia a nota fiscal para o backend
     this.notaFiscalService.salvarNotaFiscal(notaFiscal).subscribe(
       (response: any) => {
-        // Exibe uma mensagem de sucesso ao salvar a nota fiscal
         this.snackBar.open('Nota Fiscal salva com sucesso!', 'Fechar', {
-          duration: 3000, // Duração de 3 segundos
+          duration: 3000,
+          verticalPosition: 'top'
         });
   
-        // Limpa o formulário e a tabela de itens
         this.notaFiscalForm.reset();
-        this.itens.data = []; // Limpa a tabela de itens
-        this.notaFiscalForm.patchValue({ valorTotalNota: 0 }); // Reinicia o valor total da nota
+        this.itens.data = [];
+        this.notaFiscalForm.patchValue({ valorTotalNota: 0 });
       },
       (error: any) => {
-        console.error('Erro ao salvar nota fiscal:', error);
-  
-        // Exibe uma mensagem de erro ao falhar o salvamento
-        this.snackBar.open('Erro ao salvar a Nota Fiscal!', 'Fechar', {
-          duration: 3000, // Duração de 3 segundos
-        });
+        if (error.status === 400 && error.error === 'Erro: O número da nota fiscal já existe.') {
+          this.snackBar.open('Já existe uma nota cadastrada no sistema com esse número.', 'Fechar', {
+            duration: 3000,
+            verticalPosition: 'top'
+          });
+        } else {
+          console.error('Erro ao salvar nota fiscal:', error);
+          this.snackBar.open('Erro ao salvar a Nota Fiscal!', 'Fechar', {
+            duration: 3000,
+            verticalPosition: 'top'
+          });
+        }
       }
     );
-  }
-  
-  resetSuccessMessage(): void {
-    setTimeout(() => {
-      this.showSuccessMessage = false;
-    }, 3000); // A mensagem de sucesso será ocultada após 3 segundos
   }
 
   cancelar(): void {
     this.notaFiscalForm.reset();
     this.itens.data = [];
     this.notaFiscalForm.patchValue({ valorTotalNota: 0 });
-  }
-   // Método para confirmar remoção do item
-   confirmarRemoverItem(item: any): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '250px',
-      data: { message: `Deseja excluir o item ${item.nomeProduto}?` }
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        this.removerItem(item);
-      }
+    this.numeroNotaPesquisa = '';
+    this.snackBar.open('Cadastro cancelado.', 'Fechar', {
+      duration: 3000,
+      verticalPosition: 'top'
     });
   }
-
-  // Método para remover o item
-  removerItem(item: any): void {
-    const index = this.itens.data.findIndex(i => i.produto_id === item.produto_id);
-    if (index !== -1) {
-      const data = this.itens.data.slice();
-      data.splice(index, 1);
-      this.itens.data = data;
-      this.calcularValorTotalNota(); // Atualizar o valor total
-    }
-  }
-  editarItem(item: any): void {
-    // Aqui você pode carregar os dados do item no formulário para edição
-    this.notaFiscalForm.patchValue({
-      produto: item.produto_id,
-      quantidade: item.quantidade,
-      valorUnitario: item.valorUnitario,
-      valorTotalProduto: item.valorTotal,
-      // Outros campos, se necessário
-    });
   
-    // Agora o item estará disponível no formulário para edição
-    console.log('Editando item:', item);
+  formatarData(data: Date): string {
+    const d = new Date(data);
+    const ano = d.getFullYear();
+    const mes = ('0' + (d.getMonth() + 1)).slice(-2);
+    const dia = ('0' + d.getDate()).slice(-2);
+    return `${ano}-${mes}-${dia}`;
   }
-  
-  abrirConsultaProduto(): void {
-    this.router.navigate(['/consulta-nota-fiscal']); // Certifique-se de que o path esteja correto
-  }
-  abrirCadastroNotaFiscal(nota: any): void {
-    this.router.navigate(['/cadastro-nota-fiscal'], { state: { notaFiscal: nota } });
-  }
-
-    
-  
 }

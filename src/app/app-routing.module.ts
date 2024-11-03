@@ -11,7 +11,7 @@ import { CadastroProdutoComponent } from './cadastro-produto/cadastro-produto.co
 import { ConsultaProdutoComponent } from './consulta-produto/consulta-produto.component';
 import { CadastroNotaFiscalComponent } from './cadastro-nota-fiscal/cadastro-nota-fiscal.component';
 import { CadastroPedidoComponent } from './cadastro-pedido/cadastro-pedido.component';
-import { ConsultaNotaFiscalComponent } from './consulta-nota-fiscal/consulta-nota-fiscal.component';
+
 
 
 
@@ -31,7 +31,7 @@ const routes: Routes = [
   { path: 'cadastro-produto/:id', component: CadastroProdutoComponent },  // Rota para editar com o ID
   { path: 'cadastro-nota-fiscal', component: CadastroNotaFiscalComponent},
   { path: 'cadastro-pedido', component: CadastroPedidoComponent},
-  { path: 'consulta-nota-fiscal', component:ConsultaNotaFiscalComponent}
+
 
 
 

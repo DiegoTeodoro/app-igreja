@@ -41,7 +41,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CadastroNotaFiscalComponent } from './cadastro-nota-fiscal/cadastro-nota-fiscal.component';
 import { CadastroPedidoComponent } from './cadastro-pedido/cadastro-pedido.component';
 import { RouterModule } from '@angular/router';
-import { ConsultaNotaFiscalComponent } from './consulta-nota-fiscal/consulta-nota-fiscal.component';
+
 
 
 
@@ -64,7 +64,7 @@ registerLocaleData(localePt);
     ConfirmDialog,
     CadastroNotaFiscalComponent,
     CadastroPedidoComponent,
-    ConsultaNotaFiscalComponent,
+
 
 
   

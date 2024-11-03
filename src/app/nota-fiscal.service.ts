@@ -9,6 +9,7 @@ import { Produto } from './models/produto';
   providedIn: 'root'
 })
 export class NotaFiscalService {
+  
  
   private apiUrl = 'http://localhost:3000/notas-fiscais'; // Certifique-se de que a URL está correta
   httpClient: any;
@@ -19,7 +20,6 @@ export class NotaFiscalService {
     return this.http.post('http://localhost:3000/notas-fiscais', notaFiscal, { responseType: 'json' });
   }
   
-
  // Método para atualizar uma nota fiscal existente
   atualizarNotaFiscal(id: number, notaFiscal: NotaFiscal): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, notaFiscal);
@@ -53,12 +53,12 @@ export class NotaFiscalService {
     return this.http.post<any[]>('http://localhost:3000/notas-fiscais/consultar', filtro);
   }
   
-  
-  
-
-  getNotaFiscalByNumero(numeroNota: string): Observable<NotaFiscal[]> {
-    return this.http.get<NotaFiscal[]>(`${this.apiUrl}?numero_nota=${numeroNota}`);
+  getNotaFiscalByNumero(numeroNota: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/numero/${numeroNota}`);
   }
- 
+  getItensNotaFiscal(notaId: number): Observable<any[]> {
+    return this.http.get<any[]>(`http://localhost:3000/itens-nota-fiscal/${notaId}`);
+  }
+  
   
 }

@@ -556,7 +556,50 @@ app.get("/notas-fiscais", (req, res) => {
   });
 });
 
+app.get('/notas-fiscais/numero/:numeroNota', (req, res) => {
+  const numeroNota = req.params.numeroNota;
+  const query = 'SELECT * FROM nota_fiscal WHERE numero_nota = ?';
 
+  connection.query(query, [numeroNota], (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar nota fiscal pelo número:', err);
+      res.status(500).send('Erro ao buscar nota fiscal');
+    } else {
+      res.json(results); // Retorna um array de notas, vazio se não houver duplicidade
+    }
+  });
+});
+app.get("/itens-nota-fiscal/:nota_fiscal_id", (req, res) => {
+  const notaFiscalId = req.params.nota_fiscal_id;
+
+  const query = `
+    SELECT * FROM itens_nota_fiscal 
+    WHERE nota_fiscal_id = ?
+  `;
+
+  connection.query(query, [notaFiscalId], (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar itens da nota fiscal:", err);
+      res.status(500).send("Erro ao buscar itens da nota fiscal");
+      return;
+    }
+    res.json(results);
+  });
+});
+
+app.get('/notas-fiscais/numero/:numeroNota', (req, res) => {
+  const numeroNota = req.params.numeroNota;
+  const query = 'SELECT * FROM nota_fiscal WHERE numero_nota = ?';
+
+  connection.query(query, [numeroNota], (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar nota fiscal pelo número:', err);
+      res.status(500).send('Erro ao buscar nota fiscal');
+    } else {
+      res.json(results); // Retorna um array de notas, vazio se não houver duplicidade
+    }
+  });
+});
 
 
 // Função para formatar data no formato 'YYYY-MM-DD'
@@ -587,8 +630,12 @@ app.post("/notas-fiscais", (req, res) => {
 
   connection.query(queryNotaFiscal, paramsNotaFiscal, (err, result) => {
     if (err) {
-      console.error("Erro ao inserir nota fiscal:", err);
-      res.status(500).send("Erro ao inserir nota fiscal");
+      if (err.code === 'ER_DUP_ENTRY') {
+        res.status(400).send("Erro: O número da nota fiscal já existe.");
+      } else {
+        console.error("Erro ao inserir nota fiscal:", err);
+        res.status(500).send("Erro ao inserir nota fiscal");
+      }
       return;
     }
 
@@ -614,11 +661,11 @@ app.post("/notas-fiscais", (req, res) => {
         return;
       }
 
-      // Retornando a resposta no formato JSON
       res.status(201).json({ message: "Nota Fiscal e itens salvos com sucesso" });
     });
   });
 });
+
 
 
 app.post("/itens-nota-fiscal", (req, res) => {
