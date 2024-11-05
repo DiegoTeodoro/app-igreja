@@ -610,61 +610,64 @@ function formatDateToMySQL(date) {
   const day = ('0' + d.getDate()).slice(-2);
   return `${year}-${month}-${day}`;
 }
+
 // Rota para salvar a nota fiscal e os itens da nota fiscal
 app.post("/notas-fiscais", (req, res) => {
   const notaFiscal = req.body;
 
   const queryNotaFiscal = `
-    INSERT INTO nota_fiscal (numero_nota, serie, chave_acesso, fornecedor_id, data_emissao, valor_total)
-    VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO nota_fiscal (
+          numero_nota, serie, chave_acesso, fornecedor_id, data_emissao, valor_total, desconto, outros
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   const paramsNotaFiscal = [
-    notaFiscal.numero_nota,
-    notaFiscal.serie,
-    notaFiscal.chave_acesso,
-    notaFiscal.fornecedor_id,
-    notaFiscal.data_emissao,
-    notaFiscal.valor_total,
+      notaFiscal.numero_nota,
+      notaFiscal.serie,
+      notaFiscal.chave_acesso,
+      notaFiscal.fornecedor_id,
+      notaFiscal.data_emissao,
+      notaFiscal.valor_total,
+      notaFiscal.desconto,
+      notaFiscal.outros
   ];
 
+  // Inserindo o cabeçalho da nota fiscal
   connection.query(queryNotaFiscal, paramsNotaFiscal, (err, result) => {
-    if (err) {
-      if (err.code === 'ER_DUP_ENTRY') {
-        res.status(400).send("Erro: O número da nota fiscal já existe.");
-      } else {
-        console.error("Erro ao inserir nota fiscal:", err);
-        res.status(500).send("Erro ao inserir nota fiscal");
-      }
-      return;
-    }
-
-    const notaFiscalId = result.insertId;
-
-    const itensNotaFiscal = notaFiscal.itensNotaFiscal.map(item => [
-      notaFiscalId, // O ID da nota fiscal inserida
-      item.produto_id,
-      item.quantidade,
-      item.valorUnitario,
-      item.valorTotal
-    ]);
-
-    const queryItensNotaFiscal = `
-      INSERT INTO itens_nota_fiscal (nota_fiscal_id, produto_id, quantidade, valor_unitario, valor_total)
-      VALUES ?
-    `;
-
-    connection.query(queryItensNotaFiscal, [itensNotaFiscal], (err) => {
       if (err) {
-        console.error("Erro ao inserir itens da nota fiscal:", err);
-        res.status(500).send("Erro ao inserir itens da nota fiscal");
-        return;
+          console.error("Erro ao inserir nota fiscal:", err);
+          res.status(500).send("Erro ao inserir nota fiscal");
+          return;
       }
 
-      res.status(201).json({ message: "Nota Fiscal e itens salvos com sucesso" });
-    });
+      const notaFiscalId = result.insertId; // ID da nota fiscal inserida
+
+      // Inserir itens da nota fiscal
+      const itensNotaFiscal = notaFiscal.itensNotaFiscal.map(item => [
+          notaFiscalId,                // Usar o ID da nota fiscal
+          item.produto_id,              // ID do produto
+          item.quantidade,              // Quantidade do item
+          item.valorUnitario,           // Valor unitário do item
+          item.valorTotal               // Valor total do item
+      ]);
+
+      const queryItensNotaFiscal = `
+          INSERT INTO itens_nota_fiscal (nota_fiscal_id, produto_id, quantidade, valor_unitario, valor_total)
+          VALUES ?
+      `;
+
+      connection.query(queryItensNotaFiscal, [itensNotaFiscal], (err) => {
+          if (err) {
+              console.error("Erro ao inserir itens da nota fiscal:", err);
+              res.status(500).send("Erro ao inserir itens da nota fiscal");
+              return;
+          }
+
+          res.status(201).json({ message: "Nota Fiscal e itens salvos com sucesso" });
+      });
   });
 });
+
 
 
 

@@ -18,8 +18,8 @@ export class NotaFiscalService {
 
   salvarNotaFiscal(notaFiscal: any): Observable<any> {
     return this.http.post('http://localhost:3000/notas-fiscais', notaFiscal, { responseType: 'json' });
-  }
-  
+}
+
  // Método para atualizar uma nota fiscal existente
   atualizarNotaFiscal(id: number, notaFiscal: NotaFiscal): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, notaFiscal);

@@ -12,12 +12,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./cadastro-nota-fiscal.component.css'],
 })
 export class CadastroNotaFiscalComponent implements OnInit {
-confirmarRemoverItem(_t201: any) {
+pesquisarNota() {
 throw new Error('Method not implemented.');
 }
-editarItem(_t201: any) {
-throw new Error('Method not implemented.');
-}
+
 
   notaFiscalForm: FormGroup;
   itens = new MatTableDataSource<any>([]);
@@ -27,7 +25,7 @@ throw new Error('Method not implemented.');
   showSuccessMessage: boolean = false; // Variável para controlar a mensagem de sucesso
   mensagemSucesso: any;
   numeroNotaPesquisa: string = ''; // Armazena o número da nota para pesquisa
-
+  itemEditando: any = null; // Variável para armazenar o item em edição
   constructor(
     private fb: FormBuilder,
     private notaFiscalService: NotaFiscalService, 
@@ -92,31 +90,36 @@ throw new Error('Method not implemented.');
   adicionarItem(): void {
     const valorUnitario = this.notaFiscalForm.value.valorUnitario;
     const quantidade = this.notaFiscalForm.value.quantidade;
-  
-    if (!valorUnitario || !quantidade) {
-      console.error("Erro: Valor Unitário ou Quantidade inválidos.");
-      return;
+
+    // Verificar se os valores são válidos
+    if (valorUnitario === null || valorUnitario <= 0 || quantidade === null || quantidade <= 0) {
+        console.error("Erro: Valor Unitário ou Quantidade inválidos.");
+        this.snackBar.open("Valor Unitário e Quantidade devem ser maiores que zero.", "Fechar", {
+            duration: 3000,
+        });
+        return;
     }
-  
+
     const item = {
-      nomeProduto: this.produtos.find(p => p.id === this.notaFiscalForm.value.produto)?.nome,
-      produto_id: this.notaFiscalForm.value.produto,
-      quantidade: quantidade,
-      valorUnitario: valorUnitario,
-      valorTotal: quantidade * valorUnitario
+        nomeProduto: this.produtos.find(p => p.id === this.notaFiscalForm.value.produto)?.nome,
+        produto_id: this.notaFiscalForm.value.produto,
+        quantidade: quantidade,
+        valorUnitario: valorUnitario,
+        valorTotal: quantidade * valorUnitario
     };
-    
+
     this.itens.data = [...this.itens.data, item];
-  
+
     this.notaFiscalForm.patchValue({
-      produto: '',
-      quantidade: '',
-      valorUnitario: '',
-      valorTotalProduto: ''
+        produto: '',
+        quantidade: '',
+        valorUnitario: '',
+        valorTotalProduto: ''
     });
-  
+
     this.calcularValorTotalNota();
-  }
+}
+
 
   calcularValorTotalNota(): void {
     const desconto = this.notaFiscalForm.value.desconto || 0;
@@ -124,52 +127,40 @@ throw new Error('Method not implemented.');
     const valorItens = this.itens.data.reduce((total, item) => total + item.valorTotal, 0);
     const valorTotalNota = valorItens - desconto + outros;
     this.notaFiscalForm.patchValue({ valorTotalNota: valorTotalNota });
-  }
+}
 
-  salvarNotaFiscal(): void {
-    const dataEmissao = this.formatarData(this.notaFiscalForm.value.dataEmissao);
-    
-    if (!this.notaFiscalForm.value.numeroNota || 
-        !this.notaFiscalForm.value.serie || 
-        !this.notaFiscalForm.value.chaveAcesso || 
-        !dataEmissao || 
-        !this.itens.data.length) {
-      console.error('Campos obrigatórios ausentes.');
-      this.snackBar.open('Preencha todos os campos obrigatórios.', 'Fechar', {
-        duration: 3000,
-      });
-      return;
-    }
-  
-    const notaFiscal = {
+salvarNotaFiscal(): void {
+  const dataEmissao = this.formatarData(this.notaFiscalForm.value.dataEmissao);
+
+  const notaFiscal = {
       numero_nota: this.notaFiscalForm.value.numeroNota,
       serie: this.notaFiscalForm.value.serie,
       chave_acesso: this.notaFiscalForm.value.chaveAcesso,
       fornecedor_id: this.notaFiscalForm.value.fornecedor,
       data_emissao: dataEmissao,
       valor_total: this.notaFiscalForm.value.valorTotalNota || 0,
+      desconto: this.notaFiscalForm.value.desconto || 0,
+      outros: this.notaFiscalForm.value.outros || 0,
       observacoes: this.notaFiscalForm.value.observacao || '',
       itensNotaFiscal: this.itens.data
-    };
-  
-    this.notaFiscalService.salvarNotaFiscal(notaFiscal).subscribe(
+  };
+
+  console.log("Nota Fiscal a ser salva:", notaFiscal);  // Log para verificar os dados
+
+  this.notaFiscalService.salvarNotaFiscal(notaFiscal).subscribe(
       (response: any) => {
-        this.snackBar.open('Nota Fiscal salva com sucesso!', 'Fechar', {
-          duration: 3000,
-        });
-  
-        this.notaFiscalForm.reset();
-        this.itens.data = [];
-        this.notaFiscalForm.patchValue({ valorTotalNota: 0 });
+          this.snackBar.open('Nota Fiscal salva com sucesso!', 'Fechar', { duration: 3000 });
+          this.notaFiscalForm.reset();
+          this.itens.data = [];
+          this.notaFiscalForm.patchValue({ valorTotalNota: 0 });
       },
       (error: any) => {
-        console.error('Erro ao salvar nota fiscal:', error);
-        this.snackBar.open('Erro ao salvar a Nota Fiscal!', 'Fechar', {
-          duration: 3000,
-        });
+          console.error('Erro ao salvar nota fiscal:', error);
+          this.snackBar.open('Erro ao salvar a Nota Fiscal!', 'Fechar', { duration: 3000 });
       }
-    );
-  }
+  );
+}
+
 
   consultarNotaFiscal(): void {
     const numeroNota = this.notaFiscalForm.get('numeroNotaPesquisa')?.value;
@@ -228,6 +219,21 @@ throw new Error('Method not implemented.');
         });
       }
     );
+  }
+  editarItem(item: any): void {
+    this.itemEditando = item;
+    this.notaFiscalForm.patchValue({
+      produto: item.produto_id,
+      quantidade: item.quantidade,
+      valorUnitario: item.valorUnitario,
+      valorTotalProduto: item.valorTotal
+    });
+  }
+
+  confirmarRemoverItem(item: any): void {
+    this.itens.data = this.itens.data.filter(i => i !== item);
+    this.calcularValorTotalNota();
+    this.snackBar.open("Item removido com sucesso.", "Fechar", { duration: 3000 });
   }
 
   formatarData(data: Date): string {

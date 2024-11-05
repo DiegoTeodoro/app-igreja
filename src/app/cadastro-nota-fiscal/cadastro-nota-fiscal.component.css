@@ -67,4 +67,16 @@
     justify-content: flex-end; /* Alinha os botões à direita */
     gap: 10px; /* Espaçamento entre os botões */
   }
+  .pesquisar-numero-nota {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Ajuste este valor para reduzir o espaço entre o campo e o botão */
+  }
+  .linha-separacao {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 2px; /* Aumenta a espessura da linha */
+    background-color: #636161; /* Define uma cor para a linha */
+    border: none; /* Remove qualquer borda para evitar conflitos */
+  }
   

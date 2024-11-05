@@ -1,15 +1,18 @@
 <div class="cadastro-nota-fiscal">
   <mat-card>
     <mat-card-title>Cadastro de Nota Fiscal</mat-card-title>
-
+<br>
     <!-- Campo para Pesquisar Número da Nota -->
-    <div class="pesquisar-numero-nota">
-      <mat-form-field appearance="fill">
-        <mat-label>Número da Nota</mat-label>
-        <input matInput [(ngModel)]="numeroNotaPesquisa" placeholder="Digite o número da nota para pesquisar" />
-      </mat-form-field>
-      <button mat-raised-button color="primary" (click)="pesquisarNota()">Pesquisar</button>
-    </div>
+<div class="pesquisar-numero-nota reduz-espaco">
+  <mat-form-field appearance="fill">
+    <mat-label>Número da Nota</mat-label>
+    <input matInput [(ngModel)]="numeroNotaPesquisa" placeholder="Digite o número da nota para pesquisar" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="pesquisarNota()">Pesquisar</button>
+</div>
+
+<!-- Linha de Separação -->
+<hr class="linha-separacao">
 
     <!-- Mensagem de Sucesso -->
     <div *ngIf="showSuccessMessage" class="mensagem-sucesso">
@@ -140,23 +143,22 @@
         <!-- Outros campos e botões -->
         <div class="nota-fiscal-campos">
          <!-- Desconto -->
-            <mat-form-field appearance="fill">
-                <mat-label>Desconto</mat-label>
-                <input matInput type="number" formControlName="desconto"/>
-            </mat-form-field>
-            
-            <!-- Outros -->
-            <mat-form-field appearance="fill">
-                <mat-label>Outros</mat-label>
-                <input matInput type="number" formControlName="outros"/>
-            </mat-form-field>
-            
-            <!-- Valor Total da Nota (somente leitura) -->
-            <mat-form-field appearance="fill">
-                <mat-label>Valor Total da Nota</mat-label>
-                <input matInput type="text" [value]="notaFiscalForm.get('valorTotalNota').value | currency:'BRL'" readonly/>
-            </mat-form-field>
-  
+            <!-- Campos para Desconto e Outros -->
+      <mat-form-field appearance="fill">
+        <mat-label>Desconto</mat-label>
+        <input matInput type="number" formControlName="desconto" (input)="calcularValorTotalNota()" placeholder="0.00"/>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Outros</mat-label>
+        <input matInput type="number" formControlName="outros" (input)="calcularValorTotalNota()" placeholder="0.00"/>
+      </mat-form-field>
+
+      <!-- Valor Total da Nota (somente leitura) -->
+      <mat-form-field appearance="fill">
+        <mat-label>Valor Total da Nota</mat-label>
+        <input matInput type="text" [value]="notaFiscalForm.get('valorTotalNota').value | currency:'BRL'" readonly/>
+      </mat-form-field>
         </div>
 
         <!-- Botões de Ação -->
@@ -165,7 +167,7 @@
           <button mat-raised-button color="primary" (click)="salvarNotaFiscal()">Salvar</button>
          
         </div>
-        <br><br>
+        <br><br><br>
       </form>
     </mat-card-content>
   </mat-card>
