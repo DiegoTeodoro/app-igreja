@@ -23,6 +23,7 @@ export class AppComponent {
         { title: 'Cidades', route: '/cidades' },
         { title: 'Igreja', route: '/igreja' },
         { title: 'Categorias', route: '/categoria' },
+        { title: 'Inventario', route: '/cadastro-inventario' },
       ]
     },
     {

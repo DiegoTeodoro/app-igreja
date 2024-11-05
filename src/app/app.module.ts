@@ -45,6 +45,7 @@ import { RouterModule } from '@angular/router';
 
 
 
+
 // Registre o locale `pt-BR`
 registerLocaleData(localePt);
 
@@ -64,6 +65,7 @@ registerLocaleData(localePt);
     ConfirmDialog,
     CadastroNotaFiscalComponent,
     CadastroPedidoComponent,
+
 
 
 
