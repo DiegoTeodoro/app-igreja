@@ -12,10 +12,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./cadastro-nota-fiscal.component.css'],
 })
 export class CadastroNotaFiscalComponent implements OnInit {
-pesquisarNota() {
-throw new Error('Method not implemented.');
-}
-
 
   notaFiscalForm: FormGroup;
   itens = new MatTableDataSource<any>([]);
@@ -212,14 +208,14 @@ salvarNotaFiscal(): void {
         }));
         this.calcularValorTotalNota();
       },
-      error => {
+      (error: any) => {
         console.error('Erro ao carregar itens da nota fiscal:', error);
-        this.snackBar.open('Erro ao carregar itens da nota fiscal.', 'Fechar', {
-          duration: 3000,
-        });
+        this.snackBar.open('Erro ao carregar itens da nota fiscal.', 'Fechar', { duration: 3000 });
       }
     );
   }
+  
+  
   editarItem(item: any): void {
     this.itemEditando = item;
     this.notaFiscalForm.patchValue({
@@ -236,6 +232,7 @@ salvarNotaFiscal(): void {
     this.snackBar.open("Item removido com sucesso.", "Fechar", { duration: 3000 });
   }
 
+  
   formatarData(data: Date): string {
     const d = new Date(data);
     const ano = d.getFullYear();
@@ -243,6 +240,39 @@ salvarNotaFiscal(): void {
     const dia = ('0' + d.getDate()).slice(-2);
     return `${ano}-${mes}-${dia}`;
   }
+
+  pesquisarNota(): void {
+    const numeroNota = this.numeroNotaPesquisa;
+    if (!numeroNota) {
+      this.snackBar.open('Informe o número da nota para pesquisa.', 'Fechar', { duration: 3000 });
+      return;
+    }
+  
+    this.notaFiscalService.getNotaFiscalByNumero(numeroNota).subscribe(
+      (notas: any[]) => {
+        if (notas.length > 0) {
+          const nota = notas[0];
+          this.notaFiscalForm.patchValue({
+            numeroNota: nota.numero_nota,
+            serie: nota.serie,
+            chaveAcesso: nota.chave_acesso,
+            fornecedor: nota.fornecedor_id,
+            dataEmissao: new Date(nota.data_emissao),
+            observacao: nota.observacoes,
+            valorTotalNota: nota.valor_total
+          });
+          this.carregarItensNotaFiscal(nota.id);
+        } else {
+          this.snackBar.open('Nota Fiscal não encontrada.', 'Fechar', { duration: 3000 });
+        }
+      },
+      (error: any) => {
+        console.error('Erro ao consultar nota fiscal:', error);
+        this.snackBar.open('Erro ao consultar a Nota Fiscal.', 'Fechar', { duration: 3000 });
+      }
+    );
+  }
+  
 
   cancelar(): void {
     this.notaFiscalForm.reset();

@@ -668,9 +668,6 @@ app.post("/notas-fiscais", (req, res) => {
   });
 });
 
-
-
-
 app.post("/itens-nota-fiscal", (req, res) => {
   const itensNotaFiscal = req.body.itensNotaFiscal;
 
