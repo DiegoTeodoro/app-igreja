@@ -1,0 +1,6 @@
+.paginator-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px; /* Ajuste o espaçamento superior conforme necessário */
+  }
+  
