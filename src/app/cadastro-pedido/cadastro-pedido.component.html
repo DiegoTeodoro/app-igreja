@@ -85,13 +85,13 @@
     <!-- Coluna Valor Unitário -->
     <ng-container matColumnDef="valorUnitario">
        <th mat-header-cell *matHeaderCellDef> Valor Unitário </th>
-       <td mat-cell *matCellDef="let element"> {{element.valorUnitario | number:'1.2-2'}} </td>
+       <td mat-cell *matCellDef="let element"> {{element.valorUnitario | currency:'BRL':'symbol':'1.2-2'}} </td>
     </ng-container>
 
     <!-- Coluna Valor Total -->
     <ng-container matColumnDef="valorTotal">
        <th mat-header-cell *matHeaderCellDef> Valor Total </th>
-       <td mat-cell *matCellDef="let element"> {{element.valorTotal | number:'1.2-2'}} </td>
+       <td mat-cell *matCellDef="let element"> {{element.valorTotal | currency:'BRL':'symbol':'1.2-2'}} </td>
     </ng-container>
 
     <!-- Coluna Ações -->
@@ -116,7 +116,7 @@
 <!-- Valor Total do Pedido e Botões -->
 <div class="valor-total-e-botoes form-row-inline" style="justify-content: space-between; align-items: center;">
     <!-- Valor Total do Pedido -->
-    <h3>Valor Total do pedido: {{valorTotalPedido | number:'1.2-2'}}</h3>
+    <h3 style="font-weight: bold;">Valor Total do pedido: {{valorTotalPedido | currency:'BRL':'symbol':'1.2-2'}}</h3>
 
     <!-- Botões de Ação -->
     <div class="button-row">

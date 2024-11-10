@@ -21,9 +21,10 @@ export class AppComponent {
         { title: 'Setor', route: '/setor' },
         { title: 'Estados', route: '/estados' },
         { title: 'Cidades', route: '/cidades' },
-        { title: 'Igreja', route: '/igreja' },
+        { title: 'Igreja', route: '/igreja',icon: 'assets/igreja.svg' },
         { title: 'Categorias', route: '/categoria' },
         { title: 'Inventario', route: '/cadastro-inventario' },
+        { title: 'Usuario', route: '/cadastro-usuario' },
       ]
     },
     {
@@ -44,9 +45,18 @@ export class AppComponent {
       links: [
         { title: 'Cadastro pedidos', route: '/cadastro-pedido' }
       ]
+    },
+    {
+      title: 'Relatorios',
+      links: [
+        { title: 'Saldo estoque', route: '/saldo-estoque' },
+        { title: 'Pedidos', route: '/relatorio-pedido' }
+      ]
     }
   ];
+section: any;
 
+  
   logout() {
     console.log('Sair do sistema');
     // Aqui você pode implementar a lógica de logout, como redirecionar para a tela de login

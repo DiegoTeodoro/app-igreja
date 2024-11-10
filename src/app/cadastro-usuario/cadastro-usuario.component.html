@@ -1,0 +1,38 @@
+<mat-card class="form-container">
+    <mat-card-title>Cadastro de Usuário</mat-card-title>
+    <form [formGroup]="userForm" (ngSubmit)="onRegister()">
+      
+      <!-- Usuário Field -->
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Usuário</mat-label>
+        <input matInput formControlName="login" placeholder="Digite o usuário">
+      </mat-form-field>
+      
+      <!-- Senha Field -->
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Senha</mat-label>
+        <input matInput formControlName="senha" type="password" placeholder="Digite a senha">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Perfil do Usuário</mat-label>
+        <mat-select formControlName="perfil" placeholder="Selecione">
+          <mat-option value="administrador">Administrador</mat-option>
+          <mat-option value="auxiliar">Auxiliar</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+
+      <mat-radio-group formControlName="ativo" class="radio-group">
+        <mat-radio-button value="1">Ativo</mat-radio-button>
+        <mat-radio-button value="0">Inativo</mat-radio-button>
+      </mat-radio-group>
+      
+  
+      <!-- Botão Cadastrar -->
+      <div class="button-container">
+        <button mat-raised-button color="primary" type="submit">Cadastrar</button>
+      </div>
+    </form>
+  </mat-card>
+  

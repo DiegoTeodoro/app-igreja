@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mysql = require("mysql");
 
+
 const app = express();
 const port = 3000;
 
@@ -23,6 +24,7 @@ connection.connect((err) => {
   }
   console.log("Connected to MySQL database.");
 });
+
 
 // CRUD APIs for 'setor'
 app.get("/setores", (req, res) => {
@@ -465,9 +467,10 @@ app.get("/saldo-estoque/preco/:produto_id", (req, res) => {
 // Rota para buscar todos os registros de saldo_estoque
 app.get("/saldo-estoque", (req, res) => {
   const query = `
-    SELECT se.*, p.nome AS produto_nome
-    FROM saldo_estoque se
-    JOIN produtos p ON se.produto_id = p.id
+    SELECT se.produto_id, p.nome AS produto_nome, se.quantidade, se.valor_unitario, se.valor_total
+FROM saldo_estoque se
+JOIN produtos p ON se.produto_id = p.id;
+
   `;
   connection.query(query, (err, results) => {
     if (err) {
@@ -763,28 +766,27 @@ app.post("/pedidos", (req, res) => {
     const pedidoId = result.insertId;
 
     // Inserir itens do pedido
-    const itensPedido = pedido.pedido_itens.map(item => [
-      pedidoId,
-      item.produto_id,
-      item.quantidade,
-      item.valor_unitario,
-      item.valor_total
-    ]);
+const itensPedido = pedido.pedido_itens.map(item => [
+  pedidoId,
+  item.produto_id,
+  item.quantidade,
+  item.valor_unitario
+]);
 
-    const queryItensPedido = `
-      INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, valor_unitario, valor_total)
-      VALUES ?
-    `;
+const queryItensPedido = `
+  INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, valor_unitario)
+  VALUES ?
+`;
 
-    connection.query(queryItensPedido, [itensPedido], (err) => {
-      if (err) {
-        console.error("Erro ao inserir itens do pedido:", err);
-        res.status(500).send("Erro ao inserir itens do pedido");
-        return;
-      }
+connection.query(queryItensPedido, [itensPedido], (err) => {
+  if (err) {
+    console.error("Erro ao inserir itens do pedido:", err);
+    res.status(500).send("Erro ao inserir itens do pedido");
+    return;
+  }
 
-      res.status(201).send("Pedido e itens salvos com sucesso");
-    });
+  res.status(201).send("Pedido e itens salvos com sucesso");
+});
   });
 });
 
@@ -922,40 +924,43 @@ app.post("/pedidos", (req, res) => {
   ];
 
   // Inserir o pedido
-  connection.query(queryPedido, paramsPedido, (err, result) => {
+connection.query(queryPedido, paramsPedido, (err, result) => {
+  if (err) {
+    console.error("Erro ao inserir o pedido:", err); // <-- Verifique a mensagem de erro aqui
+    res.status(500).send("Erro ao inserir o pedido");
+    return;
+  }
+
+  const pedidoId = result.insertId;
+
+  // Inserir os itens do pedido
+  const itensPedido = pedido.pedido_itens.map(item => [
+    pedidoId,
+    item.produto_id,
+    item.quantidade,
+    item.valor_unitario
+  ]);
+
+  const queryItensPedido = `
+    INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, valor_unitario)
+    VALUES ?
+  `;
+
+  connection.query(queryItensPedido, [itensPedido], (err) => {
     if (err) {
-      console.error("Erro ao inserir o pedido:", err);
-      res.status(500).send("Erro ao inserir o pedido");
+      console.error("Erro ao inserir itens do pedido:", err); // <-- Verifique a mensagem de erro aqui
+      res.status(500).send("Erro ao inserir itens do pedido");
       return;
     }
 
-    const pedidoId = result.insertId;
-
-    // Inserir os itens do pedido
-    const itensPedido = pedido.pedido_itens.map(item => [
-      pedidoId,
-      item.produto_id,
-      item.quantidade,
-      item.valor_unitario,
-      item.valor_total
-    ]);
-
-    const queryItensPedido = `
-      INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, valor_unitario, valor_total)
-      VALUES ?
-    `;
-
-    connection.query(queryItensPedido, [itensPedido], (err) => {
-      if (err) {
-        console.error("Erro ao inserir itens do pedido:", err);
-        res.status(500).send("Erro ao inserir itens do pedido");
-        return;
-      }
-
-      res.status(201).send("Pedido e itens salvos com sucesso");
-    });
+    res.status(201).send("Pedido e itens salvos com sucesso");
   });
 });
+
+});
+
+
+
 
 const server = app.listen(port, () => {
   // Mantido apenas uma chamada para app.listen

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { Empresa } from './models/empresa';
-import { catchError } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +24,7 @@ export class PedidoService {
     return this.http.post('http://localhost:3000/pedidos', pedido, { responseType: 'text' });
   }
   
-  
+
+}
 
   
-}

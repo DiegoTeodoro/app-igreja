@@ -15,6 +15,7 @@ export class SaldoEstoqueService {
   getSaldoEstoque(): Observable<SaldoEstoque[]> {
     return this.http.get<SaldoEstoque[]>(this.apiUrl);
   }
+  
 
   // Método para buscar o valor unitário com base no produto_id
   getPrecoUnitario(produtoId: number): Observable<any> {

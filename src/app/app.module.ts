@@ -42,9 +42,8 @@ import { CadastroNotaFiscalComponent } from './cadastro-nota-fiscal/cadastro-not
 import { CadastroPedidoComponent } from './cadastro-pedido/cadastro-pedido.component';
 import { RouterModule } from '@angular/router';
 import { ConsultaNotaFiscalComponent } from './consulta-nota-fiscal/consulta-nota-fiscal.component';
-
-
-
+import { CadastroUsuarioComponent } from './cadastro-usuario/cadastro-usuario.component';
+import { RelatorioSaldoEstoqueComponent } from './relatorio-saldo-estoque/relatorio-saldo-estoque.component';
 
 
 // Registre o locale `pt-BR`
@@ -67,6 +66,10 @@ registerLocaleData(localePt);
     CadastroNotaFiscalComponent,
     CadastroPedidoComponent,
     ConsultaNotaFiscalComponent,
+    CadastroUsuarioComponent,
+    RelatorioSaldoEstoqueComponent,
+
+
 
 
 

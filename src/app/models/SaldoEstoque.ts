@@ -1,4 +1,5 @@
 export interface SaldoEstoque {
+    produto_nome: string;
     id: number;
     produto_id: number;
     quantidade: number;
