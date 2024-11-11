@@ -790,6 +790,61 @@ connection.query(queryItensPedido, [itensPedido], (err) => {
   });
 });
 
+// relatorio de pedido
+app.get('/pedidos', (req, res) => {
+  const { igreja, dataInicio, dataFim } = req.query;
+
+  // Adjusted query to include the `codigo` column
+  let query = 'SELECT p.id AS codigo, p.*, i.nome AS igreja_nome FROM pedidos p JOIN igreja i ON p.igreja_id = i.codigo WHERE 1=1';
+
+  const params = [];
+
+  if (igreja) {
+    query += ' AND i.nome LIKE ?';
+    params.push(`%${igreja}%`);
+  }
+
+  if (dataInicio) {
+    query += ' AND p.data_pedido >= ?';
+    params.push(dataInicio);
+  }
+
+  if (dataFim) {
+    query += ' AND p.data_pedido <= ?';
+    params.push(dataFim);
+  }
+
+  connection.query(query, params, (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar pedidos:', err);
+      res.status(500).send('Erro ao buscar pedidos');
+      return;
+    }
+
+    res.send(results);
+  });
+});
+
+app.get("/pedidos/:id", (req, res) => {
+  const id = req.params.id;
+  const query = `
+    SELECT p.id AS codigo, p.*, i.nome AS igreja_nome 
+    FROM pedidos p 
+    JOIN igreja i ON p.igreja_id = i.codigo 
+    WHERE p.id = ?
+  `;
+  connection.query(query, [id], (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar pedido:", err);
+      res.status(500).send("Erro ao buscar pedido");
+    } else if (results.length > 0) {
+      res.json(results[0]); // Retorna o pedido encontrado com o nome da igreja
+    } else {
+      res.status(404).send("Pedido não encontrado");
+    }
+  });
+});
+
 
 // Rota para atualizar o saldo de estoque ao realizar um pedido
 app.put("/saldo-estoque/:produto_id", (req, res) => {

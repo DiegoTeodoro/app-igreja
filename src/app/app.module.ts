@@ -44,6 +44,10 @@ import { RouterModule } from '@angular/router';
 import { ConsultaNotaFiscalComponent } from './consulta-nota-fiscal/consulta-nota-fiscal.component';
 import { CadastroUsuarioComponent } from './cadastro-usuario/cadastro-usuario.component';
 import { RelatorioSaldoEstoqueComponent } from './relatorio-saldo-estoque/relatorio-saldo-estoque.component';
+import { RelatorioPedidosComponent } from './relatorio-pedidos/relatorio-pedidos.component';
+import { ConsultaPedidoComponent } from './consulta-pedido/consulta-pedido.component';
+
+
 
 
 // Registre o locale `pt-BR`
@@ -68,16 +72,10 @@ registerLocaleData(localePt);
     ConsultaNotaFiscalComponent,
     CadastroUsuarioComponent,
     RelatorioSaldoEstoqueComponent,
+    RelatorioPedidosComponent,
+    ConsultaPedidoComponent,
 
 
-
-
-
-
-  
-
-
-   
    
   ],
   imports: [

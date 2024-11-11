@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component'; // Importando o componente Home
+import { HomeComponent } from './home/home.component';
 import { CadastroEmpresaComponent } from './cadastro-empresa/cadastro-empresa.component';
 import { CadastroSetorComponent } from './cadastro-setor/cadastro-setor.component';
 import { CadastroEstadosComponent } from './cadastro-estados/cadastro-estados.component';
@@ -14,39 +14,29 @@ import { CadastroPedidoComponent } from './cadastro-pedido/cadastro-pedido.compo
 import { ConsultaNotaFiscalComponent } from './consulta-nota-fiscal/consulta-nota-fiscal.component';
 import { CadastroUsuarioComponent } from './cadastro-usuario/cadastro-usuario.component';
 import { RelatorioSaldoEstoqueComponent } from './relatorio-saldo-estoque/relatorio-saldo-estoque.component';
-
-
-
-
-
-
+import { RelatorioPedidosComponent } from './relatorio-pedidos/relatorio-pedidos.component';
+import { ConsultaPedidoComponent } from './consulta-pedido/consulta-pedido.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },  // Redireciona para Home por padrão
-  { path: 'home', component: HomeComponent },            // Rota para a Home
-  { path: 'empresa', component: CadastroEmpresaComponent },  // Rota para cadastro de empresa
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { path: 'empresa', component: CadastroEmpresaComponent },
   { path: 'setor', component: CadastroSetorComponent },
-  { path:'estados', component: CadastroEstadosComponent},
-  { path:'cidades', component: CadastroCidadesComponent},
-  { path:'igreja', component: CadastroIgrejaComponent},
-  { path:'categoria', component: CadastroCategoriaComponent},
-  { path: 'produto', component: CadastroProdutoComponent},
+  { path: 'estados', component: CadastroEstadosComponent },
+  { path: 'cidades', component: CadastroCidadesComponent },
+  { path: 'igreja', component: CadastroIgrejaComponent },
+  { path: 'categoria', component: CadastroCategoriaComponent },
+  { path: 'produto', component: CadastroProdutoComponent },
   { path: 'consulta-produto', component: ConsultaProdutoComponent },
-  { path: 'cadastro-produto/:id', component: CadastroProdutoComponent },  // Rota para editar com o ID
-  { path: 'cadastro-nota-fiscal', component: CadastroNotaFiscalComponent},
-  { path: 'consulta-nota-fiscal', component: ConsultaNotaFiscalComponent},
-  { path: 'cadastro-pedido', component: CadastroPedidoComponent},
-  { path: 'cadastro-usuario', component: CadastroUsuarioComponent},
-  { path: 'saldo-estoque', component: RelatorioSaldoEstoqueComponent},
-
-
-
-
-
-
-
-
+  { path: 'cadastro-produto/:id', component: CadastroProdutoComponent },
+  { path: 'cadastro-nota-fiscal', component: CadastroNotaFiscalComponent },
+  { path: 'consulta-nota-fiscal', component: ConsultaNotaFiscalComponent },
+  { path: 'cadastro-pedido', component: CadastroPedidoComponent },
+  { path: 'cadastro-usuario', component: CadastroUsuarioComponent },
+  { path: 'saldo-estoque', component: RelatorioSaldoEstoqueComponent },
+  { path: 'relatorio-pedidos', component: RelatorioPedidosComponent },
+  { path: 'consulta-pedido', component: ConsultaPedidoComponent},
 
 ];
 
@@ -54,4 +44,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

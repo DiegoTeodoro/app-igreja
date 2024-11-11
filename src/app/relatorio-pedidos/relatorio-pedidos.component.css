@@ -1,0 +1,16 @@
+.filtros-container {
+    display: flex;
+    gap: 16px; /* Adiciona espaçamento entre os elementos */
+    flex-wrap: wrap;
+  }
+  
+  .filtro-campo {
+    width: 15%; /* Define a largura dos campos de filtro */
+    min-width: 200px; /* Define uma largura mínima opcional */
+  }
+  
+  .centralizar-titulo {
+    text-align: center;
+    width: 100%;
+  }
+  

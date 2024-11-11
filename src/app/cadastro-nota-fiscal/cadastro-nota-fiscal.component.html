@@ -95,7 +95,7 @@
             <!-- Valor Total do Produto -->
             <mat-form-field appearance="fill" class="valor-total-15">
                 <mat-label>Valor Total do Produto</mat-label>
-                <input matInput type="text" [value]="notaFiscalForm.get('valorTotalProduto').value | currency:'BRL'" readonly/>
+                <input matInput type="text" [value]="notaFiscalForm.get('valorTotalProduto')?.value | currency:'BRL'" readonly/>
             </mat-form-field>
             
 
@@ -158,7 +158,7 @@
       <!-- Valor Total da Nota (somente leitura) -->
       <mat-form-field appearance="fill">
         <mat-label>Valor Total da Nota</mat-label>
-        <input matInput type="text" [value]="notaFiscalForm.get('valorTotalNota').value | currency:'BRL'" readonly/>
+        <input matInput type="text" [value]="notaFiscalForm.get('valorTotalNota')?.value | currency:'BRL'" readonly/>
       </mat-form-field>
         </div>
 
