@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { UsuarioService } from '../usuario.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-cadastro-usuario',
@@ -7,25 +10,57 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./cadastro-usuario.component.css']
 })
 export class CadastroUsuarioComponent {
-  userForm: FormGroup; // Ensure it's not marked as possibly undefined
+  usuarioForm: FormGroup;
+  displayedColumns: string[] = ['id', 'login', 'senha', 'perfil', 'ativo'];
 
-  constructor(private fb: FormBuilder) {
-    // Create the form group using FormBuilder
-    this.userForm = this.fb.group({
-      login: ['', [Validators.required]],
-      senha: ['', [Validators.required]],
-      perfil: [null, [Validators.required]], // Valor padrão como null para não selecionar automaticamente
-      ativo: [1, [Validators.required]] // Valor padrão como 1 para o radio button "Ativo"
+  usuarios = new MatTableDataSource<any>();
+
+  constructor(
+    private fb: FormBuilder,
+    private usuarioService: UsuarioService,
+    private snackBar: MatSnackBar
+  ) {
+    this.usuarioForm = this.fb.group({
+      login: ['', [Validators.required, Validators.maxLength(50)]],
+      senha: ['', [Validators.required, Validators.maxLength(20)]],
+      perfil: ['', Validators.required],
+      ativo: [1]
     });
-    
-  }    
 
-  onRegister() {
-    if (this.userForm.valid) {
-      console.log('User form data:', this.userForm.value);
-      // Your form submission logic here
-    } else {
-      console.log('Form is invalid');
+    // Carrega os usuários ao inicializar
+    this.loadUsuarios();
+  }
+
+  onRegister(): void {
+    if (this.usuarioForm.valid) {
+      this.usuarioService.createUsuario(this.usuarioForm.value).subscribe(
+        () => {
+          this.snackBar.open('Usuário cadastrado com sucesso!', 'Fechar', {
+            duration: 3000,
+          });
+          this.usuarioForm.reset({ ativo: 1 });
+          this.loadUsuarios(); // Recarrega os usuários após o cadastro
+        },
+        () => {
+          this.snackBar.open('Erro ao cadastrar o usuário.', 'Fechar', {
+            duration: 3000,
+          });
+        }
+      );
     }
+  }
+
+  // Método para carregar usuários
+  loadUsuarios(): void {
+    this.usuarioService.getUsuarios().subscribe(
+      (data: any[]) => {
+        this.usuarios.data = data;
+      },
+      () => {
+        this.snackBar.open('Erro ao carregar usuários.', 'Fechar', {
+          duration: 3000,
+        });
+      }
+    );
   }
 }

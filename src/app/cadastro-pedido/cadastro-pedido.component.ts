@@ -3,6 +3,8 @@ import { MatTableDataSource } from "@angular/material/table";
 import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar"; // Importar o MatSnackBar para exibir mensagens
 import { PedidoService } from "../pedido.service";
 import { SaldoEstoqueService } from "../Saldo_Estoque.service";
+import { jsPDF } from "jspdf";
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: "app-cadastro-pedido",
@@ -131,13 +133,9 @@ export class CadastroPedidoComponent implements OnInit {
 
     this.pedidoService.salvarPedido(pedido).subscribe(
       response => {
+        this.gerarPdfPedido();
         this.mostrarMensagem('Pedido realizado com sucesso!');
         this.limparFormulario();
-  
-        // Recarregar a página após 3 segundos (duração da snackbar)
-        setTimeout(() => {
-          window.location.reload();  // Recarrega a página
-        }, 3000);
       },
       error => {
         this.snackBar.open('Erro ao salvar o pedido. Tente novamente.', 'Fechar', { duration: 3000 });
@@ -145,6 +143,54 @@ export class CadastroPedidoComponent implements OnInit {
       }
     );
   }
+
+  gerarPdfPedido() {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    // Cabeçalho centralizado
+    doc.setFontSize(16);
+    const title = 'Congregação - Parque São Jorge';
+    const titleWidth = doc.getTextWidth(title);
+    doc.text(title, (pageWidth - titleWidth) / 2, 20);
+
+    doc.setFontSize(12);
+    const address = 'Rua Antônio Paiva Catalão, Nº 548';
+    const addressWidth = doc.getTextWidth(address);
+    doc.text(address, (pageWidth - addressWidth) / 2, 30);
+
+    const subTitle = 'CCLIMP - Uberlândia';
+    const subTitleWidth = doc.getTextWidth(subTitle);
+    doc.text(subTitle, (pageWidth - subTitleWidth) / 2, 40);
+
+    // Recebedor
+    doc.setFontSize(14);
+    doc.text('Recebedor: ' + this.pedido.recebedor, 10, 60);
+
+    // Tabela de Itens do Pedido
+    const tableY = 70;
+    autoTable(doc, {
+      startY: tableY,
+      head: [['Produto', 'Quantidade', 'Valor Unitário', 'Valor Total']],
+      body: this.dataSource.data.map(item => [
+        item.produto,
+        item.quantidade.toString(),
+        item.valorUnitario.toFixed(2),
+        item.valorTotal.toFixed(2)
+      ])
+    });
+
+    // Valor Total do Pedido alinhado à direita
+    const finalY = (doc as any).lastAutoTable.finalY;
+    doc.setFontSize(14);
+    const valorTotalText = 'Valor Total: ' + this.valorTotalPedido.toFixed(2);
+    const valorTotalWidth = doc.getTextWidth(valorTotalText);
+    doc.text(valorTotalText, pageWidth - valorTotalWidth - 10, finalY + 10);
+
+    // Gerar PDF na tela para visualização
+    doc.output('dataurlnewwindow');
+  }
+
   limparFormulario() {
     this.pedido = { igreja_id: null, recebedor: '', pedido_itens: [] };
     this.igrejaSelecionada = null;
@@ -168,4 +214,3 @@ mostrarMensagem(mensagem: string) {
 
   
 }
-

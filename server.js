@@ -697,9 +697,6 @@ app.post("/itens-nota-fiscal", (req, res) => {
   });
 });
 
-
-
-
 // Rota para buscar o saldo de estoque de um produto específico
 app.get("/saldo-estoque/:produto_id", (req, res) => {
   const produtoId = req.params.produto_id;
@@ -868,10 +865,6 @@ app.put("/saldo-estoque/:produto_id", (req, res) => {
   });
 });
 
-
-
-// CRUD APIs for 'empresa'
-
 // Get all empresas
 app.get("/empresas", (req, res) => {
   connection.query("SELECT * FROM empresa", (err, results) => {
@@ -1014,7 +1007,33 @@ connection.query(queryPedido, paramsPedido, (err, result) => {
 
 });
 
+// CRUD APIs for 'usuario'
+app.post("/usuarios", (req, res) => {
+  const usuario = req.body;
 
+  console.log("Dados recebidos para cadastro de usuário:", usuario);
+
+  const query = "INSERT INTO usuarios SET ?";
+  connection.query(query, usuario, (err, results) => {
+    if (err) {
+      console.error("Erro ao inserir usuário:", err.message, err.code);
+      res.status(500).send("Erro ao inserir usuário");
+    } else {
+      res.status(201).send({ id: results.insertId, ...usuario });
+    }
+  });
+});
+
+app.get("/usuarios", (req, res) => {
+  connection.query("SELECT * FROM usuarios", (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar usuários:", err);
+      res.status(500).send("Erro ao buscar usuários");
+      return;
+    }
+    res.send(results);
+  });
+});
 
 
 const server = app.listen(port, () => {

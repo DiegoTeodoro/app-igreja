@@ -1,38 +1,76 @@
 <mat-card class="form-container">
-    <mat-card-title>Cadastro de Usuário</mat-card-title>
-    <form [formGroup]="userForm" (ngSubmit)="onRegister()">
-      
-      <!-- Usuário Field -->
-      <mat-form-field appearance="fill" class="form-field">
+  <mat-card-title>Cadastro de Usuário</mat-card-title>
+  <form [formGroup]="usuarioForm" (ngSubmit)="onRegister()">
+    <!-- Usuário e Senha na mesma linha -->
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="form-field" style="width: 40%; margin-right: 16px;">
         <mat-label>Usuário</mat-label>
         <input matInput formControlName="login" placeholder="Digite o usuário">
       </mat-form-field>
-      
-      <!-- Senha Field -->
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="fill" class="form-field" style="width: 40%;">
         <mat-label>Senha</mat-label>
         <input matInput formControlName="senha" type="password" placeholder="Digite a senha">
       </mat-form-field>
-      
-      <mat-form-field appearance="fill" class="form-field">
+    </div>
+
+    <!-- Perfil do Usuário e Status Ativo/Inativo na mesma linha -->
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="form-field" style="width: 40%; margin-right: 16px;">
         <mat-label>Perfil do Usuário</mat-label>
         <mat-select formControlName="perfil" placeholder="Selecione">
           <mat-option value="administrador">Administrador</mat-option>
           <mat-option value="auxiliar">Auxiliar</mat-option>
         </mat-select>
       </mat-form-field>
-      
-
       <mat-radio-group formControlName="ativo" class="radio-group">
         <mat-radio-button value="1">Ativo</mat-radio-button>
         <mat-radio-button value="0">Inativo</mat-radio-button>
       </mat-radio-group>
-      
-  
-      <!-- Botão Cadastrar -->
-      <div class="button-container">
-        <button mat-raised-button color="primary" type="submit">Cadastrar</button>
-      </div>
-    </form>
-  </mat-card>
-  
+    </div>
+
+    <!-- Botão Cadastrar em uma linha separada -->
+    <div class="form-row button-container">
+      <button mat-raised-button color="primary" type="submit">Cadastrar</button>
+    </div>
+  </form>
+<br><br>
+  <!-- Tabela de Usuários Cadastrados -->
+  <mat-card-title>Usuários Cadastrados</mat-card-title>
+  <table mat-table [dataSource]="usuarios" class="mat-elevation-z8" *ngIf="usuarios.data?.length">
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <!-- Login Column -->
+    <ng-container matColumnDef="login">
+      <th mat-header-cell *matHeaderCellDef> Login </th>
+      <td mat-cell *matCellDef="let element"> {{element.login}} </td>
+    </ng-container>
+
+    <!-- Senha Column -->
+      <ng-container matColumnDef="senha">
+        <th mat-header-cell *matHeaderCellDef> Senha </th>
+        <td mat-cell *matCellDef="let element"> {{element.senha}} </td>
+      </ng-container>
+
+
+    <!-- Perfil Column -->
+    <ng-container matColumnDef="perfil">
+      <th mat-header-cell *matHeaderCellDef> Perfil </th>
+      <td mat-cell *matCellDef="let element"> {{element.perfil}} </td>
+    </ng-container>
+
+    <!-- Ativo Column -->
+    <ng-container matColumnDef="ativo">
+      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <td mat-cell *matCellDef="let element"> {{element.ativo ? 'Ativo' : 'Inativo'}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <p *ngIf="!usuarios.data?.length">Nenhum usuário cadastrado.</p>
+
+</mat-card>
