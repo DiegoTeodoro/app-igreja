@@ -38,6 +38,14 @@ export class PedidoService {
       })
     );
   }
+  getItensPedidoById(pedidoId: number): Observable<any[]> {
+    return this.http.get<any[]>(`http://localhost:3000/pedido-itens/${pedidoId}`).pipe(
+      catchError((error) => {
+        console.error('Erro ao buscar itens do pedido:', error);
+        return throwError(() => new Error('Erro ao buscar itens do pedido'));
+      })
+    );
+  }
   
   
 }

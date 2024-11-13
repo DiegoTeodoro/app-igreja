@@ -46,6 +46,7 @@ import { CadastroUsuarioComponent } from './cadastro-usuario/cadastro-usuario.co
 import { RelatorioSaldoEstoqueComponent } from './relatorio-saldo-estoque/relatorio-saldo-estoque.component';
 import { RelatorioPedidosComponent } from './relatorio-pedidos/relatorio-pedidos.component';
 import { ConsultaPedidoComponent } from './consulta-pedido/consulta-pedido.component';
+import { InventarioComponent } from './inventario/inventario.component';
 
 
 
@@ -74,6 +75,7 @@ registerLocaleData(localePt);
     RelatorioSaldoEstoqueComponent,
     RelatorioPedidosComponent,
     ConsultaPedidoComponent,
+    InventarioComponent,
 
 
    

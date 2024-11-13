@@ -1,36 +1,42 @@
-<h1></h1>
-
-<!-- Seção de Cabeçalho - Igreja, Status e Data do Pedido -->
 <mat-card class="header-section">
    <mat-card-title>Cadastro de Pedidos</mat-card-title>
-   <br>
-    <form class="form-row-inline">
-       <!-- Nome da Igreja -->
-       <mat-form-field style="width: 40%;">
-          <mat-select placeholder="Selecione a Igreja" [(ngModel)]="pedido.igreja_id" name="igreja_id">
-             <mat-option *ngFor="let igreja of igrejas" [value]="igreja.codigo">
-                {{ igreja.nome }}
-             </mat-option>
-          </mat-select>
-       </mat-form-field>
-
-       <mat-form-field appearance="fill" style="flex: 1 1 20%;">
-         <mat-label>Status</mat-label>
-         <mat-select [(ngModel)]="pedido.status" name="status"> <!-- Bind com o pedido.status -->
-           <mat-option value="Pendente">Pendente</mat-option>
-           <mat-option value="Processando">Processando</mat-option>
-           <mat-option value="Entregue">Entregue</mat-option>
-         </mat-select>
-       </mat-form-field>
-       
-
-       <mat-form-field appearance="fill" style="flex: 1 1 20%;">
-          <mat-label>Data do Pedido</mat-label>
-          <input matInput [matDatepicker]="picker" placeholder="Data do Pedido">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-       </mat-form-field>
-    </form>
+ 
+   <!-- Container para alinhar campo e botão na mesma linha -->
+   <div class="form-row-inline">
+     <mat-form-field appearance="fill" style="width: 15%;">
+       <mat-label>Código pedido</mat-label> 
+       <input matInput type="text" [(ngModel)]="codigoPedido" />
+     </mat-form-field>
+     <button mat-raised-button color="primary" (click)="pesquisarPedido()" style="width: 10%;">Pesquisar</button>
+   </div>
+ 
+   <!-- Restante do conteúdo do cabeçalho -->
+   <form class="form-row-inline">
+     <!-- Nome da Igreja -->
+     <mat-form-field style="width: 40%;">
+       <mat-select placeholder="Selecione a Igreja" [(ngModel)]="pedido.igreja_id" name="igreja_id">
+         <mat-option *ngFor="let igreja of igrejas" [value]="igreja.codigo">
+           {{ igreja.nome }}
+         </mat-option>
+       </mat-select>
+     </mat-form-field>
+     <mat-form-field appearance="fill" style="flex: 1 1 20%;">
+       <mat-label>Status</mat-label>
+       <mat-select [(ngModel)]="pedido.status" name="status">
+         <mat-option value="Pendente">Pendente</mat-option>
+         <mat-option value="Processando">Processando</mat-option>
+         <mat-option value="Entregue">Entregue</mat-option>
+       </mat-select>
+     </mat-form-field>
+     <mat-form-field appearance="fill" style="flex: 1 1 20%;">
+       <mat-label>Data do Pedido</mat-label>
+       <input matInput [matDatepicker]="picker" placeholder="Data do Pedido">
+       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+       <mat-datepicker #picker></mat-datepicker>
+     </mat-form-field>
+   </form>
+ </mat-card>
+ 
 
     <!-- Campo Recebedor -->
     <form class="form-row-inline">
@@ -39,7 +45,7 @@
             <input matInput placeholder="Nome do Recebedor" [(ngModel)]="pedido.recebedor" name="recebedor">
           </mat-form-field>
     </form>
-</mat-card>
+
 
 <!-- Seção de Itens do Pedido -->
 <mat-card class="items-section">
@@ -123,4 +129,5 @@
        <button mat-raised-button color="primary" (click)="finalizarPedido()">Finalizar Pedido</button>
        <button mat-raised-button color="warn" (click)="limparFormulario()">Limpar</button>
     </div>
+  
 </div>

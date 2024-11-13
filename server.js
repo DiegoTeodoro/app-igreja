@@ -1007,6 +1007,49 @@ connection.query(queryPedido, paramsPedido, (err, result) => {
 
 });
 
+// Rota para buscar pedido por código do pedido
+app.get("/pedidos/:codigoPedido", (req, res) => {
+  const codigoPedido = req.params.codigoPedido;
+  const query = `
+    SELECT p.*, i.nome AS igreja_nome 
+    FROM pedidos p
+    JOIN igreja i ON p.igreja_id = i.codigo 
+    WHERE p.id = ?
+  `;
+  
+  connection.query(query, [codigoPedido], (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar pedido:", err);
+      res.status(500).send("Erro ao buscar pedido");
+    } else if (results.length > 0) {
+      res.json(results[0]);
+    } else {
+      res.status(404).send("Pedido não encontrado");
+    }
+  });
+});
+
+app.get("/pedido-itens/:pedidoId", (req, res) => {
+  const pedidoId = req.params.pedidoId;
+  const query = `
+    SELECT ip.*, p.nome AS produto_nome
+    FROM itens_pedido ip
+    JOIN produtos p ON ip.produto_id = p.id
+    WHERE ip.pedido_id = ?
+  `;
+  
+  connection.query(query, [pedidoId], (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar itens do pedido:", err);
+      res.status(500).send("Erro ao buscar itens do pedido");
+    } else {
+      res.json(results); // Deve retornar um array de itens, mesmo que vazio
+    }
+  });
+});
+
+
+
 // CRUD APIs for 'usuario'
 app.post("/usuarios", (req, res) => {
   const usuario = req.body;
@@ -1032,6 +1075,61 @@ app.get("/usuarios", (req, res) => {
       return;
     }
     res.send(results);
+  });
+});
+
+// CRUD APIs for 'inventarios'
+app.get("/inventarios/produtos", (req, res) => {
+  const query = `
+    SELECT p.id, p.nome, p.volume, p.codigo_barras, p.marca, c.nome AS categoria_nome, f.nome_fantasia AS fornecedor_nome
+    FROM produtos p
+    JOIN categoria c ON p.categoria_id = c.id
+    JOIN fornecedor f ON p.fornecedor_id = f.id
+  `;
+
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar produtos:", err);
+      res.status(500).send("Erro ao buscar produtos");
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+// Get a single product by ID
+app.get("/inventarios/produtos/:id", (req, res) => {
+  const id = req.params.id;
+  const query = "SELECT * FROM produtos WHERE id = ?";
+  connection.query(query, [id], (err, results) => {
+    if (err) {
+      res.status(500).send(err);
+    } else if (results.length > 0) {
+      res.json(results[0]);
+    } else {
+      res.status(404).send("Produto não encontrado");
+    }
+  });
+});
+
+// Update inventory stock balance
+app.put("/inventarios/saldo-estoque", (req, res) => {
+  const { produto_id, quantidade } = req.body;
+
+  const query = `
+    UPDATE saldo_estoque 
+    SET quantidade = quantidade + ?
+    WHERE produto_id = ?
+  `;
+
+  connection.query(query, [quantidade, produto_id], (err, result) => {
+    if (err) {
+      console.error("Erro ao atualizar saldo de estoque:", err);
+      res.status(500).send("Erro ao atualizar saldo de estoque");
+      return;
+    }
+
+    res.send("Saldo de estoque atualizado com sucesso");
   });
 });
 

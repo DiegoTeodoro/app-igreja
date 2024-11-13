@@ -23,7 +23,7 @@ export class AppComponent {
         { title: 'Cidades', route: '/cidades' },
         { title: 'Igreja', route: '/igreja', icon: 'assets/igreja.svg' },
         { title: 'Categorias', route: '/categoria' },
-        { title: 'Inventario', route: '/cadastro-inventario' },
+        { title: 'Inventario', route: '/inventario' },
         { title: 'Usuario', route: '/cadastro-usuario' },
       ]
     },

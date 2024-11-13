@@ -16,6 +16,7 @@ import { RelatorioSaldoEstoqueComponent } from './relatorio-saldo-estoque/relato
 import { RelatorioPedidosComponent } from './relatorio-pedidos/relatorio-pedidos.component';
 import { ConsultaPedidoComponent } from './consulta-pedido/consulta-pedido.component';
 import { CadastroUsuarioComponent } from './cadastro-usuario/cadastro-usuario.component';
+import { InventarioComponent } from './inventario/inventario.component';
 
 
 const routes: Routes = [
@@ -37,7 +38,7 @@ const routes: Routes = [
   { path: 'relatorio-pedidos', component: RelatorioPedidosComponent },
   { path: 'consulta-pedido', component: ConsultaPedidoComponent},
   { path: 'cadastro-usuario', component: CadastroUsuarioComponent},
-
+  { path: 'inventario', component: InventarioComponent},
 
 ];
 

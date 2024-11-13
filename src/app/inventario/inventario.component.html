@@ -1,0 +1,32 @@
+<mat-card>
+    <mat-card-title>Cadastro de Inventario</mat-card-title>
+    <form [formGroup]="inventarioForm" (ngSubmit)="saveInventario()">
+      <mat-form-field appearance="fill" style="width: 40%;">
+        <mat-label>Produto</mat-label>
+        <input type="text" matInput [matAutocomplete]="auto" formControlName="produto_nome" (input)="filterProdutos()">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onProdutoSelected($event)">
+          <mat-option *ngFor="let produto of filteredProdutos" [value]="produto.nome">
+            {{ produto.nome }} - {{ produto.volume }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" style="width: 20%;">
+        <mat-label>Usuário</mat-label>
+        <input matInput type="text" formControlName="usuario_id" />
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" style="width: 10%;">
+        <mat-label>Quantidade</mat-label>
+        <input matInput type="number" formControlName="quantidade" />
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" style="width: 15%;">
+        <mat-label>Data</mat-label>
+        <input matInput type="date" formControlName="data" />
+      </mat-form-field>
+  
+      <button mat-raised-button color="primary" type="submit">Salvar</button>
+    </form>
+  </mat-card>
+  

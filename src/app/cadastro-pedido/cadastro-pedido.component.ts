@@ -12,6 +12,8 @@ import autoTable from 'jspdf-autotable';
   styleUrls: ["./cadastro-pedido.component.css"],
 })
 export class CadastroPedidoComponent implements OnInit {
+codigoPedido: any;
+
   editarItem(_t151: any) {
     throw new Error('Method not implemented.');
   }
@@ -212,5 +214,49 @@ mostrarMensagem(mensagem: string) {
   this.snackBar.open(mensagem, 'Fechar', config);
 }
 
-  
+pesquisarPedido() {
+  if (!this.codigoPedido) {
+    this.snackBar.open('Por favor, insira um código de pedido.', 'Fechar', { duration: 3000 });
+    return;
+  }
+
+  this.pedidoService.getPedidoById(this.codigoPedido).subscribe(
+    (pedido) => {
+      this.pedido = pedido; // Popula os dados do cabeçalho do pedido
+      this.carregarItensPedido(pedido.id); // Carrega os itens do pedido
+    },
+    (error) => {
+      console.error("Erro ao buscar pedido:", error);
+      this.snackBar.open('Erro ao buscar o pedido. Verifique o código e tente novamente.', 'Fechar', { duration: 3000 });
+    }
+  );
 }
+
+carregarItensPedido(pedidoId: number) {
+  this.pedidoService.getItensPedidoById(pedidoId).subscribe(
+    (itens) => {
+      if (Array.isArray(itens)) {
+        this.dataSource.data = itens.map(item => ({
+          produto: item.produto_nome, // Nome do produto vindo da resposta
+          quantidade: item.quantidade,
+          valorUnitario: item.valor_unitario,
+          valorTotal: item.valor_total
+        }));
+        this.valorTotalPedido = itens.reduce((acc, item) => acc + item.valor_total, 0); // Calcula o valor total do pedido
+      } else {
+        console.error('Erro: itens não é um array.', itens);
+        this.dataSource.data = [];
+        this.valorTotalPedido = 0;
+      }
+    },
+    (error) => {
+      console.error("Erro ao buscar itens do pedido:", error);
+    }
+  );
+}
+
+
+}
+
+  
+
