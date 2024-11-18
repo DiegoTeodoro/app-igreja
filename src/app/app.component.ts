@@ -1,18 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   pageTitle = 'CCLIMP';
   isSidenavOpen = true;
+  isAuthenticated = false;
+  userName: string | null = '';
 
-  // Definir a Home separada da seção de Cadastros
   homeLink = { title: 'Home', route: '/home' };
-
-  // Seção de Cadastros
+  
   menuSections = [
     {
       title: 'Cadastros',
@@ -25,6 +26,7 @@ export class AppComponent {
         { title: 'Categorias', route: '/categoria' },
         { title: 'Inventario', route: '/inventario' },
         { title: 'Usuario', route: '/cadastro-usuario' },
+        { title: 'Login', route: '/login' },
       ]
     },
     {
@@ -51,14 +53,31 @@ export class AppComponent {
       title: 'Relatorios',
       links: [
         { title: 'Saldo estoque', route: '/saldo-estoque' },
-        { title: 'Pedidos', route: '/relatorio-pedidos' }
+        { title: 'Pedidos', route: '/relatorio-pedidos' },
+        { title: 'Produtos', route: '/relatorio-produto' }
       ]
     }
   ];
-  section: any;
+sidenav: any;
 
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.isAuthenticated = !this.router.url.includes('login');
+        this.isSidenavOpen = this.isAuthenticated;
+  
+        // Recupera o nome do usuário do localStorage
+        this.userName = localStorage.getItem('userName') || 'Usuário';
+      }
+    });
+  }
+  
   logout() {
-    console.log('Sair do sistema');
-    // Aqui você pode implementar a lógica de logout, como redirecionar para a tela de login
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userName'); // Remove o nome do usuário ao sair
+    this.isAuthenticated = false;
+    this.router.navigate(['/login']);
   }
 }

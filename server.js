@@ -1078,6 +1078,23 @@ app.get("/usuarios", (req, res) => {
   });
 });
 
+app.post('/usuarios/login', (req, res) => {
+  const { login, senha } = req.body;
+  const query = 'SELECT * FROM usuarios WHERE login = ? AND senha = ?';
+
+  connection.query(query, [login, senha], (err, results) => {
+    if (err) {
+      res.status(500).send('Erro ao buscar usuário');
+    } else if (results.length > 0) {
+      res.status(200).json({ message: 'Login bem-sucedido', usuario: results[0] });
+    } else {
+      res.status(401).send('Usuário ou senha inválidos');
+    }
+  });
+});
+
+
+
 // CRUD APIs for 'inventarios'
 app.get("/inventarios/produtos", (req, res) => {
   const query = `

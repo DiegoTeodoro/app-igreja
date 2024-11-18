@@ -17,28 +17,33 @@ import { RelatorioPedidosComponent } from './relatorio-pedidos/relatorio-pedidos
 import { ConsultaPedidoComponent } from './consulta-pedido/consulta-pedido.component';
 import { CadastroUsuarioComponent } from './cadastro-usuario/cadastro-usuario.component';
 import { InventarioComponent } from './inventario/inventario.component';
+import { RelatorioProdutoComponent } from './relatorio-produto/relatorio-produto.component';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './auth.guard';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'empresa', component: CadastroEmpresaComponent },
-  { path: 'setor', component: CadastroSetorComponent },
-  { path: 'estados', component: CadastroEstadosComponent },
-  { path: 'cidades', component: CadastroCidadesComponent },
-  { path: 'igreja', component: CadastroIgrejaComponent },
-  { path: 'categoria', component: CadastroCategoriaComponent },
-  { path: 'produto', component: CadastroProdutoComponent },
-  { path: 'consulta-produto', component: ConsultaProdutoComponent },
-  { path: 'cadastro-produto/:id', component: CadastroProdutoComponent },
-  { path: 'cadastro-nota-fiscal', component: CadastroNotaFiscalComponent },
-  { path: 'consulta-nota-fiscal', component: ConsultaNotaFiscalComponent },
-  { path: 'cadastro-pedido', component: CadastroPedidoComponent },
-  { path: 'saldo-estoque', component: RelatorioSaldoEstoqueComponent },
-  { path: 'relatorio-pedidos', component: RelatorioPedidosComponent },
-  { path: 'consulta-pedido', component: ConsultaPedidoComponent},
-  { path: 'cadastro-usuario', component: CadastroUsuarioComponent},
-  { path: 'inventario', component: InventarioComponent},
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'empresa', component: CadastroEmpresaComponent, canActivate: [AuthGuard] },
+  { path: 'setor', component: CadastroSetorComponent, canActivate: [AuthGuard] },
+  { path: 'estados', component: CadastroEstadosComponent, canActivate: [AuthGuard] },
+  { path: 'cidades', component: CadastroCidadesComponent, canActivate: [AuthGuard] },
+  { path: 'igreja', component: CadastroIgrejaComponent, canActivate: [AuthGuard] },
+  { path: 'categoria', component: CadastroCategoriaComponent, canActivate: [AuthGuard] },
+  { path: 'produto', component: CadastroProdutoComponent, canActivate: [AuthGuard] },
+  { path: 'consulta-produto', component: ConsultaProdutoComponent, canActivate: [AuthGuard] },
+  { path: 'cadastro-produto/:id', component: CadastroProdutoComponent, canActivate: [AuthGuard] },
+  { path: 'cadastro-nota-fiscal', component: CadastroNotaFiscalComponent, canActivate: [AuthGuard] },
+  { path: 'consulta-nota-fiscal', component: ConsultaNotaFiscalComponent, canActivate: [AuthGuard] },
+  { path: 'cadastro-pedido', component: CadastroPedidoComponent, canActivate: [AuthGuard] },
+  { path: 'saldo-estoque', component: RelatorioSaldoEstoqueComponent, canActivate: [AuthGuard] },
+  { path: 'relatorio-pedidos', component: RelatorioPedidosComponent, canActivate: [AuthGuard] },
+  { path: 'consulta-pedido', component: ConsultaPedidoComponent, canActivate: [AuthGuard]},
+  { path: 'cadastro-usuario', component: CadastroUsuarioComponent, canActivate: [AuthGuard]},
+  { path: 'inventario', component: InventarioComponent, canActivate: [AuthGuard]},
+  { path: 'relatorio-produto', component: RelatorioProdutoComponent, canActivate: [AuthGuard]},
+  { path: 'login', component: LoginComponent},
 
 ];
 

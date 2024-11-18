@@ -17,4 +17,10 @@ export class UsuarioService {
   getUsuarios(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}`);
   }
+
+
+  login(credentials: { login: string; senha: string }): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/login`, credentials); // Certifique-se de que a rota está correta
+  }
+  
 }
