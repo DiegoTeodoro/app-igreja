@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../usuario.service'; // Ajuste o caminho conforme necessário
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -9,6 +10,7 @@ import { UsuarioService } from '../usuario.service'; // Ajuste o caminho conform
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup; // Use "!" para indicar que ele será inicializado na ngOnInit
+  hidePassword = true;
 
   constructor(
     private fb: FormBuilder,
@@ -21,6 +23,10 @@ export class LoginComponent implements OnInit {
       login: ['', [Validators.required]],
       senha: ['', [Validators.required]]
     });
+  }
+
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
   }
 
   onLogin(): void {
@@ -40,11 +46,4 @@ export class LoginComponent implements OnInit {
       );
     }
   }
-  
-  
-  }
-  
-  
-  
-  
-
+}

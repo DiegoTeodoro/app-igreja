@@ -7,14 +7,15 @@
   <button *ngIf="isAuthenticated" mat-button (click)="logout()" style="margin-right: 16px;">Sair</button>
 </mat-toolbar>
 
-
-
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav mode="side" [(opened)]="isSidenavOpen" class="custom-sidenav">
     <mat-nav-list>
       <!-- Link da Home separado -->
       <mat-list-item>
-        <a mat-list-item [routerLink]="homeLink.route">{{ homeLink.title }}</a>
+        <a mat-list-item [routerLink]="homeLink.route">
+          <mat-icon>home</mat-icon>
+          {{ homeLink.title }}
+        </a>
       </mat-list-item>
 
       <!-- Usar *ngFor para percorrer as seções de menu -->
@@ -28,7 +29,10 @@
         <!-- Percorrer os links dentro de cada seção -->
         <mat-list>
           <mat-list-item *ngFor="let link of section.links">
-            <a mat-list-item [routerLink]="link.route">{{ link.title }}</a> <!-- Links dinâmicos -->
+            <a mat-list-item [routerLink]="link.route">
+              <mat-icon *ngIf="link.icon" [svgIcon]="link.icon"></mat-icon>
+              {{ link.title }}
+            </a> <!-- Links dinâmicos -->
           </mat-list-item>
         </mat-list>
       </mat-expansion-panel>

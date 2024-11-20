@@ -15,15 +15,7 @@ export class InventarioService {
     return this.http.get<any[]>(`${this.apiUrl}/produtos`);
   }
 
-  getUsuarios(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/usuarios`);
-  }
-
-  getProdutoById(produtoId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/produtos/${produtoId}`);
-  }
-
-  updateSaldoEstoque(inventarioData: Inventario): Observable<any> {
-    return this.http.put(`${this.apiUrl}/saldo-estoque`, inventarioData);
+  saveInventario(inventarioData: Inventario[]): Observable<any> {
+    return this.http.post(`${this.apiUrl}/lote`, inventarioData);
   }
 }

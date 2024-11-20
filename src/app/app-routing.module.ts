@@ -16,10 +16,10 @@ import { RelatorioSaldoEstoqueComponent } from './relatorio-saldo-estoque/relato
 import { RelatorioPedidosComponent } from './relatorio-pedidos/relatorio-pedidos.component';
 import { ConsultaPedidoComponent } from './consulta-pedido/consulta-pedido.component';
 import { CadastroUsuarioComponent } from './cadastro-usuario/cadastro-usuario.component';
-import { InventarioComponent } from './inventario/inventario.component';
 import { RelatorioProdutoComponent } from './relatorio-produto/relatorio-produto.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
+import { InventarioComponent } from './inventario/inventario.component';
 
 
 const routes: Routes = [
@@ -41,8 +41,8 @@ const routes: Routes = [
   { path: 'relatorio-pedidos', component: RelatorioPedidosComponent, canActivate: [AuthGuard] },
   { path: 'consulta-pedido', component: ConsultaPedidoComponent, canActivate: [AuthGuard]},
   { path: 'cadastro-usuario', component: CadastroUsuarioComponent, canActivate: [AuthGuard]},
-  { path: 'inventario', component: InventarioComponent, canActivate: [AuthGuard]},
   { path: 'relatorio-produto', component: RelatorioProdutoComponent, canActivate: [AuthGuard]},
+  { path: 'inventario', component: InventarioComponent, canActivate: [AuthGuard]},
   { path: 'login', component: LoginComponent},
 
 ];

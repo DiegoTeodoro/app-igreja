@@ -1129,6 +1129,35 @@ app.get("/inventarios/produtos/:id", (req, res) => {
   });
 });
 
+// Rota para salvar o inventário em lote
+app.post("/inventarios/lote", (req, res) => {
+  const inventarioData = req.body; // Array de dados do inventário
+
+  const query = `
+    INSERT INTO inventario (produto_id, usuario_id, quantidade, data)
+    VALUES ?
+  `;
+
+  const values = inventarioData.map((item) => [
+    item.produto_id,
+    item.usuario_id,
+    item.quantidade,
+    item.data,
+  ]);
+
+  connection.query(query, [values], (err, result) => {
+    if (err) {
+      console.error("Erro ao inserir inventário:", err);
+      res.status(500).send("Erro ao inserir inventário");
+    } else {
+      res.status(201).json({ message: "Inventário inserido com sucesso" });
+
+    }
+  });
+});
+
+
+
 // Update inventory stock balance
 app.put("/inventarios/saldo-estoque", (req, res) => {
   const { produto_id, quantidade } = req.body;

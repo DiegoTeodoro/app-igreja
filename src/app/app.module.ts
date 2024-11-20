@@ -46,11 +46,11 @@ import { CadastroUsuarioComponent } from './cadastro-usuario/cadastro-usuario.co
 import { RelatorioSaldoEstoqueComponent } from './relatorio-saldo-estoque/relatorio-saldo-estoque.component';
 import { RelatorioPedidosComponent } from './relatorio-pedidos/relatorio-pedidos.component';
 import { ConsultaPedidoComponent } from './consulta-pedido/consulta-pedido.component';
-import { InventarioComponent } from './inventario/inventario.component';
 import { RelatorioProdutoComponent } from './relatorio-produto/relatorio-produto.component';
 import { LoginComponent } from './login/login.component';
 import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { InventarioComponent } from './inventario/inventario.component';
 
 
 
@@ -79,11 +79,11 @@ registerLocaleData(localePt);
     RelatorioSaldoEstoqueComponent,
     RelatorioPedidosComponent,
     ConsultaPedidoComponent,
-    InventarioComponent,
     RelatorioProdutoComponent,
     LoginComponent,
     AuthLayoutComponent,
     MainLayoutComponent,
+    InventarioComponent,
 
 
    
