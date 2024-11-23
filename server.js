@@ -2,13 +2,17 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mysql = require("mysql");
-
+const { SECRET_KEY } = require('./config'); // Importando a chave secreta
+const verifyToken = require('./middlewares/auth'); // Ajuste o caminho conforme necessário
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
 app.use(cors());
+
+
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -24,6 +28,7 @@ connection.connect((err) => {
   }
   console.log("Connected to MySQL database.");
 });
+
 
 
 // CRUD APIs for 'setor'
@@ -1084,15 +1089,60 @@ app.post('/usuarios/login', (req, res) => {
 
   connection.query(query, [login, senha], (err, results) => {
     if (err) {
-      res.status(500).send('Erro ao buscar usuário');
-    } else if (results.length > 0) {
-      res.status(200).json({ message: 'Login bem-sucedido', usuario: results[0] });
+      return res.status(500).send('Erro ao buscar usuário');
+    }
+    if (results.length > 0) {
+      const usuario = results[0];
+      const token = jwt.sign(
+        { id: usuario.id, perfil: usuario.perfil },
+        SECRET_KEY,
+        { expiresIn: '1h' }
+      );
+      res.status(200).json({ message: 'Login bem-sucedido', token, usuario });
     } else {
       res.status(401).send('Usuário ou senha inválidos');
     }
   });
 });
 
+
+
+
+app.put('/usuarios/:id', (req, res) => {
+  const id = req.params.id; // Obtém o ID da rota
+  const { login, senha, perfil, ativo } = req.body; // Obtém os dados do corpo da requisição
+
+  const query = 'UPDATE usuarios SET login = ?, senha = ?, perfil = ?, ativo = ? WHERE id = ?';
+  connection.query(query, [login, senha, perfil, ativo, id], (err, result) => {
+    if (err) {
+      console.error('Erro ao atualizar usuário:', err.message);
+      return res.status(500).send('Erro ao atualizar usuário');
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).send({ message: 'Usuário não encontrado.' });
+    }
+    res.status(200).send({ message: 'Usuário atualizado com sucesso!' });
+  });
+});
+
+const verifyAdmin = (req, res, next) => {
+  if (req.userProfile !== 'Administrador') {
+    return res.status(403).json({ message: 'Acesso negado: Apenas administradores podem acessar' });
+  }
+  next();
+};
+
+app.post('/usuarios', verifyToken, verifyAdmin, (req, res) => {
+  const usuario = req.body;
+  connection.query("INSERT INTO usuarios SET ?", usuario, (err, results) => {
+    if (err) {
+      console.error("Erro ao inserir usuário:", err);
+      res.status(500).send("Erro ao inserir usuário");
+    } else {
+      res.status(201).send({ id: results.insertId, ...usuario });
+    }
+  });
+});
 
 
 // CRUD APIs for 'inventarios'

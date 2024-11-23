@@ -34,9 +34,9 @@ export class LoginComponent implements OnInit {
       const { login, senha } = this.loginForm.value;
       this.usuarioService.login({ login, senha }).subscribe(
         (response) => {
-          // Suponha que response.token seja o token retornado
           localStorage.setItem('authToken', response.token); // Salva o token
           localStorage.setItem('userName', response.usuario.nome); // Salva o nome do usuário (opcional)
+          localStorage.setItem('userProfile', response.usuario.perfil.toLowerCase()); // Salva o perfil do usuário em letras minúsculas
           this.router.navigate(['/home']); // Redireciona para a página inicial
         },
         (error) => {
@@ -46,4 +46,29 @@ export class LoginComponent implements OnInit {
       );
     }
   }
+  
+
+  login(): void {
+    if (this.loginForm.valid) {
+      const credentials = this.loginForm.value;
+  
+      this.usuarioService.login(credentials).subscribe(
+        (response) => {
+          if (response.authToken) {
+            localStorage.setItem('authToken', response.authToken);
+            localStorage.setItem('userName', response.userName);
+            localStorage.setItem('userProfile', response.userProfile); // Salva o perfil do usuário
+            this.router.navigate(['/home']);
+          } else {
+            alert('Login ou senha inválidos.');
+          }
+        },
+        (error) => {
+          console.error('Erro no login:', error);
+          alert('Erro ao tentar logar. Verifique suas credenciais.');
+        }
+      );
+    }
+  }
+  
 }

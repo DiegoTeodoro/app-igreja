@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   isSidenavOpen = true;
   isAuthenticated = false;
   userName: string | null = '';
+  userProfile: string | null = ''; // Variável para armazenar o perfil do usuário
 
   homeLink = { title: 'Home', route: '/home', icon: 'home' };
   
@@ -61,6 +62,12 @@ export class AppComponent implements OnInit {
     }
   ];
   sidenav: any;
+
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: Event): void {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userName');
+  }
 
   constructor(private router: Router, private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
     this.matIconRegistry.addSvgIcon(
@@ -140,14 +147,23 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.isAuthenticated = !this.router.url.includes('login');
+        const authToken = localStorage.getItem('authToken');
+        this.isAuthenticated = !!authToken; // Autenticado apenas se o token existir
         this.isSidenavOpen = this.isAuthenticated;
-  
+
+        if (!this.isAuthenticated) {
+          this.router.navigate(['/login']); // Redireciona para o login se não autenticado
+        } else {
+          // Recupera o perfil do usuário do localStorage
+          this.userProfile = localStorage.getItem('userProfile');
+        }
+
         // Recupera o nome do usuário do localStorage
         this.userName = localStorage.getItem('userName') || 'Usuário';
       }
     });
   }
+
   
   logout() {
     localStorage.removeItem('authToken');
@@ -155,4 +171,5 @@ export class AppComponent implements OnInit {
     this.isAuthenticated = false;
     this.router.navigate(['/login']);
   }
+  
 }

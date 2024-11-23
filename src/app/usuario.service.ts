@@ -14,6 +14,10 @@ export class UsuarioService {
     return this.http.post<any>(`${this.baseUrl}`, usuario);
   }
 
+  updateUsuario(usuario: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/${usuario.id}`, usuario);
+  }
+  
   getUsuarios(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}`);
   }

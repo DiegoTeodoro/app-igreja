@@ -10,11 +10,18 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const token = localStorage.getItem('authToken');
+    const userProfile = localStorage.getItem('userProfile');
+  
     if (token) {
-      // Se existir um token, permite o acesso
+      // Converte o perfil do usuário para letras minúsculas para garantir a comparação correta
+      if (route.url[0].path === 'cadastro-usuario' && userProfile?.toLowerCase() !== 'administrador') {
+        alert('Acesso negado!');
+        this.router.navigate(['/home']); // Redireciona para a tela inicial
+        return false;
+      }
       return true;
     } else {
-      // Se não existir um token, redireciona para a página de login
+      // Redireciona para login se não autenticado
       this.router.navigate(['/login']);
       return false;
     }

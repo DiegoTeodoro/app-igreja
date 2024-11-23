@@ -105,6 +105,7 @@ export class InventarioComponent implements OnInit {
           this.inventarioForm.reset();
           this.inventarios = [];
           this.setUsuario(); // Repopular o usuário no formulário
+          location.reload(); // Recarrega a página
         },
         (error) => {
           console.error('Erro ao salvar inventário', error);
@@ -114,5 +115,6 @@ export class InventarioComponent implements OnInit {
       alert('Nenhum item foi adicionado ao inventário.');
     }
   }
+  
   
 }
