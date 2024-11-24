@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
         { title: 'Cidades', route: '/cidades', icon: 'location_city' },
         { title: 'Igreja', route: '/igreja', icon: 'church' },
         { title: 'Categorias', route: '/categoria', icon: 'category' },
-        { title: 'Inventario', route: '/inventario', icon: 'inventory' },
+        { title: 'Inventario', route: '/cadastro-inventario', icon: 'inventory' },
         { title: 'Usuario', route: '/cadastro-usuario', icon: 'person' },
         { title: 'Login', route: '/login', icon: 'login' },
       ]
@@ -63,11 +63,11 @@ export class AppComponent implements OnInit {
   ];
   sidenav: any;
 
-  @HostListener('window:beforeunload', ['$event'])
-  onBeforeUnload(event: Event): void {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userName');
-  }
+  // @HostListener('window:beforeunload', ['$event'])
+  // onBeforeUnload(event: Event): void {
+  //   localStorage.removeItem('authToken');
+  //   localStorage.removeItem('userName');
+  // }
 
   constructor(private router: Router, private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
     this.matIconRegistry.addSvgIcon(
@@ -144,32 +144,52 @@ export class AppComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
+  isLoginRoute(): boolean {
+    return this.router.url === '/login';
+  }
+  
+
+  ngOnInit(): void {
+    this.checkAuthentication();
+  
+    // Monitora mudanças de rota para atualizar a autenticação
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        const authToken = localStorage.getItem('authToken');
-        this.isAuthenticated = !!authToken; // Autenticado apenas se o token existir
-        this.isSidenavOpen = this.isAuthenticated;
-
-        if (!this.isAuthenticated) {
-          this.router.navigate(['/login']); // Redireciona para o login se não autenticado
-        } else {
-          // Recupera o perfil do usuário do localStorage
-          this.userProfile = localStorage.getItem('userProfile');
-        }
-
-        // Recupera o nome do usuário do localStorage
-        this.userName = localStorage.getItem('userName') || 'Usuário';
+        this.checkAuthentication();
+      }
+    });
+  
+    // Gerencia múltiplas abas
+    const openTabs = parseInt(sessionStorage.getItem('openTabs') || '0', 10);
+    sessionStorage.setItem('openTabs', (openTabs + 1).toString());
+  
+    window.addEventListener('beforeunload', () => {
+      const currentTabs = parseInt(sessionStorage.getItem('openTabs') || '1', 10);
+      if (currentTabs > 1) {
+        sessionStorage.setItem('openTabs', (currentTabs - 1).toString());
+      } else {
+        sessionStorage.clear(); // Limpa apenas o sessionStorage
       }
     });
   }
-
   
-  logout() {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userName'); // Remove o nome do usuário ao sair
+
+  checkAuthentication(): void {
+    const authToken = localStorage.getItem('authToken');
+    this.isAuthenticated = !!authToken;
+
+    if (this.isAuthenticated) {
+      this.userName = localStorage.getItem('userName') || 'Usuário';
+      this.userProfile = localStorage.getItem('userProfile') || '';
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
+
+  logout(): void {
+    localStorage.clear();
+    sessionStorage.clear();
     this.isAuthenticated = false;
     this.router.navigate(['/login']);
   }
-  
 }

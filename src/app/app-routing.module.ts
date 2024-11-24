@@ -19,11 +19,13 @@ import { CadastroUsuarioComponent } from './cadastro-usuario/cadastro-usuario.co
 import { RelatorioProdutoComponent } from './relatorio-produto/relatorio-produto.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
-import { InventarioComponent } from './inventario/inventario.component';
+import { CadastroInventarioComponent } from './cadastro-inventario/cadastro-inventario.component';
+
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent},
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'empresa', component: CadastroEmpresaComponent, canActivate: [AuthGuard] },
   { path: 'setor', component: CadastroSetorComponent, canActivate: [AuthGuard] },
@@ -42,8 +44,9 @@ const routes: Routes = [
   { path: 'consulta-pedido', component: ConsultaPedidoComponent, canActivate: [AuthGuard]},
   { path: 'cadastro-usuario', component: CadastroUsuarioComponent, canActivate: [AuthGuard]},
   { path: 'relatorio-produto', component: RelatorioProdutoComponent, canActivate: [AuthGuard]},
-  { path: 'inventario', component: InventarioComponent, canActivate: [AuthGuard]},
-  { path: 'login', component: LoginComponent},
+  { path: 'cadastro-inventario', component: CadastroInventarioComponent, canActivate: [AuthGuard]},
+
+
 
 ];
 

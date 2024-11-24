@@ -50,7 +50,8 @@ import { RelatorioProdutoComponent } from './relatorio-produto/relatorio-produto
 import { LoginComponent } from './login/login.component';
 import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
-import { InventarioComponent } from './inventario/inventario.component';
+import { CadastroInventarioComponent } from './cadastro-inventario/cadastro-inventario.component';
+
 
 
 
@@ -83,7 +84,8 @@ registerLocaleData(localePt);
     LoginComponent,
     AuthLayoutComponent,
     MainLayoutComponent,
-    InventarioComponent,
+    CadastroInventarioComponent,
+  
 
 
    

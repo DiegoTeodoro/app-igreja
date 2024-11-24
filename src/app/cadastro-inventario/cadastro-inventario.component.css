@@ -1,0 +1,99 @@
+/* Espaçamento entre as linhas do formulário */
+form div[fxLayout] {
+  margin-bottom: 20px; /* Espaçamento inferior entre as linhas */
+}
+
+/* Usuário e Data */
+mat-form-field.usuario {
+  width: 15%; /* Campo Usuário com 15% de largura */
+  margin-right: 20px;
+}
+
+mat-form-field.data {
+  width: 15%; /* Campo Data com 15% de largura */
+}
+
+/* Produto e Quantidade */
+mat-form-field.produto {
+  width: 40%; /* Campo Produto com 40% de largura */
+  margin-right: 20px; /* Espaçamento entre campos */
+}
+
+mat-form-field.quantidade {
+  width: 15%; /* Campo Quantidade com 15% de largura */
+  margin-right: 20px;
+}
+
+/* Observação */
+mat-form-field.observacao {
+  width: 50%; /* Campo Observação com 50% de largura */
+}
+
+/* Botão Adicionar alinhado */
+button {
+  margin-left: 10px; /* Espaçamento à esquerda do botão */
+  min-width: 100px; /* Tamanho mínimo do botão */
+}
+
+/* Espaçamento entre o título e o formulário */
+mat-card-title {
+  margin-bottom: 20px; /* Espaçamento inferior ao título */
+}
+
+/* Espaçamento adicional na tabela */
+mat-table {
+  margin-top: 20px; /* Espaçamento acima da tabela */
+}
+
+/* Estilo do card para espaçamento interno */
+mat-card {
+  padding: 20px;
+  margin: 20px;
+}
+
+/* Define altura mínima para os campos */
+mat-form-field {
+  min-height: 56px; /* Altura padrão do Angular Material */
+}
+
+/* Estilo da Tabela */
+mat-table {
+  margin: 0 auto; /* Centraliza a tabela na página */
+  width: 50%; /* Define a largura da tabela como 50% */
+  margin-top: 20px; /* Espaçamento acima da tabela */
+}
+
+/* Centralizar conteúdo das colunas */
+.mat-column-quantidade, .mat-column-acoes {
+  text-align: center; /* Centraliza os valores das colunas */
+  justify-content: center; /* Ajusta o alinhamento horizontal */
+}
+.mat-cell, .mat-header-cell {
+  text-align: left; /* Define o padrão de alinhamento como à esquerda */
+}
+
+.mat-column-quantidade .mat-cell,
+.mat-column-acoes .mat-cell,
+.mat-column-quantidade .mat-header-cell,
+.mat-column-acoes .mat-header-cell {
+  text-align: center; /* Sobrescreve para centralizar especificamente estas colunas */
+}
+
+/* Ajusta o tamanho das colunas */
+.mat-column-produto {
+  width: 70%; /* Define largura da coluna Produto */
+}
+
+.mat-column-quantidade {
+  width: 15%; /* Define largura da coluna Quantidade */
+}
+
+.mat-column-acoes {
+  width: 15%; /* Define largura da coluna Ações */
+}
+
+/* Botões */
+button {
+  margin-left: 10px; /* Espaçamento entre botões */
+  min-width: 36px; /* Define tamanho mínimo */
+}

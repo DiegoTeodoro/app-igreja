@@ -11,6 +11,7 @@ import { UsuarioService } from '../usuario.service'; // Ajuste o caminho conform
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup; // Use "!" para indicar que ele será inicializado na ngOnInit
   hidePassword = true;
+  isAuthenticated: boolean | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -35,9 +36,11 @@ export class LoginComponent implements OnInit {
       this.usuarioService.login({ login, senha }).subscribe(
         (response) => {
           localStorage.setItem('authToken', response.token); // Salva o token
-          localStorage.setItem('userName', response.usuario.nome); // Salva o nome do usuário (opcional)
-          localStorage.setItem('userProfile', response.usuario.perfil.toLowerCase()); // Salva o perfil do usuário em letras minúsculas
-          this.router.navigate(['/home']); // Redireciona para a página inicial
+          localStorage.setItem('userId', response.usuario.id); // Salva o ID do usuário
+          localStorage.setItem('userName', response.usuario.nome); // Salva o nome do usuário
+          localStorage.setItem('userProfile', response.usuario.perfil.toLowerCase()); // Salva o perfil
+          this.isAuthenticated = true; // Atualiza a autenticação
+          this.router.navigate(['/home']); // Redireciona
         },
         (error) => {
           console.error('Erro ao autenticar:', error);
@@ -46,6 +49,7 @@ export class LoginComponent implements OnInit {
       );
     }
   }
+  
   
 
   login(): void {

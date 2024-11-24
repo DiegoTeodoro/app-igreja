@@ -1,21 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Inventario } from './models/inventario';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InventarioService {
-  private apiUrl = 'http://localhost:3000/inventarios';
+  private apiUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 
   getProdutos(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/produtos`);
+    return this.http.get<any[]>(`${this.apiUrl}/inventarios/produtos`);
   }
 
-  saveInventario(inventarioData: Inventario[]): Observable<any> {
-    return this.http.post(`${this.apiUrl}/lote`, inventarioData);
+  getUsuarios(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/usuarios`);
   }
+
+  saveInventario(inventarioData: any[]): Observable<any> {
+    return this.http.post(`${this.apiUrl}/inventarios/lote`, inventarioData);
+  }
+  
 }

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private baseUrl = 'http://localhost:3000'; // URL do backend
@@ -14,16 +14,12 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/login`, credentials);
   }
 
-  register(user: any) {
-    return this.http.post(`${this.baseUrl}/register`, user);
-  }
-
-  logout() {
-    localStorage.removeItem('token');
+  logout(): void {
+    localStorage.clear();
     this.router.navigate(['/login']);
   }
 
-  get isLoggedIn() {
-    return !!localStorage.getItem('token');
+  get isLoggedIn(): boolean {
+    return !!localStorage.getItem('authToken');
   }
 }

@@ -1098,7 +1098,11 @@ app.post('/usuarios/login', (req, res) => {
         SECRET_KEY,
         { expiresIn: '1h' }
       );
-      res.status(200).json({ message: 'Login bem-sucedido', token, usuario });
+      res.status(200).json({ 
+        message: 'Login bem-sucedido', 
+        token, 
+        usuario: { id: usuario.id, nome: usuario.login, perfil: usuario.perfil } 
+      });
     } else {
       res.status(401).send('Usuário ou senha inválidos');
     }
@@ -1184,7 +1188,7 @@ app.post("/inventarios/lote", (req, res) => {
   const inventarioData = req.body; // Array de dados do inventário
 
   const query = `
-    INSERT INTO inventario (produto_id, usuario_id, quantidade, data)
+    INSERT INTO inventario (produto_id, usuario_id, quantidade, data_inventario, observacao)
     VALUES ?
   `;
 
@@ -1192,7 +1196,8 @@ app.post("/inventarios/lote", (req, res) => {
     item.produto_id,
     item.usuario_id,
     item.quantidade,
-    item.data,
+    item.data, // Certifique-se de que 'data' está no formato correto (YYYY-MM-DD HH:MM:SS)
+    item.observacao,
   ]);
 
   connection.query(query, [values], (err, result) => {
@@ -1201,11 +1206,9 @@ app.post("/inventarios/lote", (req, res) => {
       res.status(500).send("Erro ao inserir inventário");
     } else {
       res.status(201).json({ message: "Inventário inserido com sucesso" });
-
     }
   });
 });
-
 
 
 // Update inventory stock balance
