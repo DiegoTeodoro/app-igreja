@@ -51,6 +51,8 @@ import { LoginComponent } from './login/login.component';
 import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { CadastroInventarioComponent } from './cadastro-inventario/cadastro-inventario.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { NgChartsModule } from 'ng2-charts';
 
 
 
@@ -85,6 +87,7 @@ registerLocaleData(localePt);
     AuthLayoutComponent,
     MainLayoutComponent,
     CadastroInventarioComponent,
+    DashboardComponent,
   
 
 
@@ -117,7 +120,10 @@ registerLocaleData(localePt);
     MatNativeDateModule,
     MatPaginatorModule,
     MatTableModule,
-    RouterModule
+    RouterModule,
+    MatSidenavModule,
+    NgChartsModule, // Adicione esta linha
+    
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' }  // Configuração do locale

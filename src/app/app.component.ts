@@ -59,6 +59,12 @@ export class AppComponent implements OnInit {
         { title: 'Pedidos', route: '/relatorio-pedidos', icon: 'assignment_turned_in' },
         { title: 'Produtos', route: '/relatorio-produto', icon: 'inventory_2' }
       ]
+    },
+    {
+      title: 'dashboard',
+      links: [
+        { title: 'Dashboard', route: '/dashboard', icon: 'bar_chart' }
+      ]
     }
   ];
   sidenav: any;
