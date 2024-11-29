@@ -1,4 +1,9 @@
 /* Estilizar a toolbar */
+.logout-button {
+  margin-right: 0;
+  background-color: red;
+  flex: 0 0 auto;
+}
 .custom-toolbar {
     background-color: #438EB9;
     color: white;
@@ -44,4 +49,3 @@
     margin-right: 8px; /* Espaço entre o ícone e o texto */
     vertical-align: middle;
   }
-  

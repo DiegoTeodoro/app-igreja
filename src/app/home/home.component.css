@@ -1,0 +1,17 @@
+.icon-info-sign {
+    font-size: 25px; /* Aumenta o tamanho do ícone */
+    margin-right: 10px; /* Espaço entre ícone e texto */
+}
+.bigger-120 {
+    font-size: 150%; /* Aumenta o tamanho do texto forte */
+}
+.text-large {
+    font-size: 18px; /* Define um tamanho maior para o texto */
+    line-height: 1.6; /* Melhora o espaçamento entre as linhas */
+}
+.alert {
+    font-size: 18px; /* Ajusta o tamanho da fonte */
+    line-height: 1.6; /* Melhora o espaçamento entre as linhas */
+    padding: 5px; /* Espaçamento interno em todos os lados */
+    border-radius: 5px; /* Arredonda os cantos (opcional) */
+}

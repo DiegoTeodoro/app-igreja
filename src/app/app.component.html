@@ -5,7 +5,9 @@
   </button>
   <span>{{ pageTitle }}</span>
   <span class="spacer"></span>
-  <button *ngIf="isAuthenticated && !isLoginRoute()" mat-button (click)="logout()" style="margin-right: 16px;">Sair</button>
+  <button *ngIf="isAuthenticated && !isLoginRoute()" mat-button (click)="logout()" class="logout-button">
+    <mat-icon svgIcon="assets/sair"></mat-icon> Sair
+  </button>
 </mat-toolbar>
 
 <!-- Menu lateral e conteúdo principal -->

@@ -12,6 +12,7 @@ import autoTable from 'jspdf-autotable'; // Importar desta forma
 export class RelatorioProdutoComponent implements OnInit {
   produtos: Produto[] = [];
   displayedColumns: string[] = ['nome', 'volume', 'codigoBarras', 'fornecedor', 'marca'];
+dataAtual: any;
 
   constructor(private produtoService: ProdutoService) {}
 
@@ -27,12 +28,12 @@ export class RelatorioProdutoComponent implements OnInit {
   }
 
   gerarPDF() {
-    const doc = new jsPDF();
+    const doc = new jsPDF({ orientation: 'landscape' });
     const date = new Date();
     const dataAtual = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 
-    doc.text('Relatório de Cadastro de Produtos - CCLIMP', 10, 10);
-    doc.text(`Data e Hora: ${dataAtual}`, 10, 20);
+    doc.text('Relatório de Cadastro de Produtos - CCLIMP', 140, 10, { align: 'center' });
+    doc.text(`Data e Hora: ${dataAtual}`, 260, 20, { align: 'right' });
 
     const rows = this.produtos.map(produto => [
       produto.nome ?? '', // Use um valor padrão vazio se `produto.nome` for null ou undefined
@@ -49,6 +50,11 @@ export class RelatorioProdutoComponent implements OnInit {
       startY: 30
     });
 
-    doc.save('relatorio-produtos.pdf');
+    const blob = doc.output('blob');
+    const url = URL.createObjectURL(blob);
+    const x = window.open(url, '_blank');
+    if (!x) {
+      alert('Habilite pop-ups para visualizar o relatório.');
+    }
   }
 }
