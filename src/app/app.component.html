@@ -5,10 +5,23 @@
   </button>
   <span>{{ pageTitle }}</span>
   <span class="spacer"></span>
-  <button *ngIf="isAuthenticated && !isLoginRoute()" mat-button (click)="logout()" class="logout-button">
-    <mat-icon svgIcon="assets/sair"></mat-icon> Sair
-  </button>
+
+  <!-- Contêiner para o nome do usuário e botão Sair -->
+  <div class="user-logout-wrapper" *ngIf="isAuthenticated && userName">
+    <!-- Nome do usuário -->
+    <div class="user-container">
+      <span>{{ userName }}</span>
+    </div>
+    <!-- Botão Sair -->
+    <button mat-button (click)="logout()" class="logout-button">
+      <mat-icon svgIcon="sair"></mat-icon>
+      Sair
+    </button>
+  </div>
 </mat-toolbar>
+
+
+
 
 <!-- Menu lateral e conteúdo principal -->
 <div *ngIf="!isLoginRoute()">

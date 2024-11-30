@@ -1,23 +1,65 @@
-/* Estilizar a toolbar */
+/* Botão Sair */
 .logout-button {
-  margin-right: 0;
   background-color: red;
-  flex: 0 0 auto;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 15px;
+  border-radius: 3px;
 }
+
+.logout-button mat-icon {
+  font-size: 24px; /* Ajuste do tamanho do ícone */
+  width: 24px;
+  height: 24px;
+}
+
 .custom-toolbar {
-    background-color: #438EB9;
-    color: white;
-    z-index: 3;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
-  
-  /* Espaço flexível para alinhar itens na toolbar */
-  .spacer {
-    flex: 1 1 auto;
-  }
+  background-color: #438EB9;
+  color: white;
+  z-index: 3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  height: 64px; /* Altura da toolbar */
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Contêiner para nome do usuário e botão Sair */
+.user-logout-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espaçamento entre o nome do usuário e o botão */
+}
+
+/* Contêiner para usuário e botão de logout */
+.user-logout-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #7aa3be; /* Fundo azul do contêiner */
+ 
+}
+
+/* Nome do usuário */
+.user-container {
+  background-color: #7aa3be; /* Fundo do nome do usuário */
+  color: white;
+  padding: 5px 10px;
+  font-weight: 500;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+}
   
   /* O container do sidenav ocupará a altura total da tela menos a altura da toolbar */
   .sidenav-container {
@@ -49,3 +91,5 @@
     margin-right: 8px; /* Espaço entre o ícone e o texto */
     vertical-align: middle;
   }
+  
+  

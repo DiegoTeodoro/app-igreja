@@ -552,6 +552,24 @@ app.put("/saldo-estoque/update/:produto_id", (req, res) => {
   });
 });
 app.get("/notas-fiscais", (req, res) => {
+  const query = `
+    SELECT nf.numero_nota, nf.serie, nf.data_emissao, nf.valor_total, 
+           f.nome_fantasia 
+    FROM nota_fiscal nf
+    JOIN fornecedor f ON nf.fornecedor_id = f.id
+  `;
+
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar notas fiscais:", err);
+      res.status(500).send("Erro ao buscar notas fiscais");
+      return;
+    }
+    res.json(results);
+  });
+});
+
+app.get("/notas-fiscais", (req, res) => {
   console.log("Rota /notas-fiscais foi chamada");
   connection.query("SELECT * FROM nota_fiscal", (err, results) => {
     if (err) {

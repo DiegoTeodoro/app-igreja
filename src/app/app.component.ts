@@ -57,7 +57,8 @@ export class AppComponent implements OnInit {
       links: [
         { title: 'Saldo estoque', route: '/saldo-estoque', icon: 'bar_chart' },
         { title: 'Pedidos', route: '/relatorio-pedidos', icon: 'assignment_turned_in' },
-        { title: 'Produtos', route: '/relatorio-produto', icon: 'inventory_2' }
+        { title: 'Produtos', route: '/relatorio-produto', icon: 'inventory_2' },
+        { title: 'Nota fiscal', route: '/relatorio-nota-fiscal', icon: 'assignment_turned_in' }
       ]
     },
     {
@@ -193,9 +194,17 @@ export class AppComponent implements OnInit {
   }
 
   logout(): void {
+    // Limpar dados do localStorage e sessionStorage
     localStorage.clear();
     sessionStorage.clear();
+  
+    // Atualizar estados locais
     this.isAuthenticated = false;
+    this.userName = null; // Zerar o nome do usuário
+    this.userProfile = null; // Zerar o perfil do usuário
+  
+    // Redirecionar para a tela de login
     this.router.navigate(['/login']);
   }
+  
 }

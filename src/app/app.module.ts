@@ -53,7 +53,9 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { CadastroInventarioComponent } from './cadastro-inventario/cadastro-inventario.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgChartsModule } from 'ng2-charts';
-
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+import { RelatorioNotaFiscalComponent } from './relatorio-nota-fiscal/relatorio-nota-fiscal.component';
 
 
 
@@ -88,6 +90,7 @@ registerLocaleData(localePt);
     MainLayoutComponent,
     CadastroInventarioComponent,
     DashboardComponent,
+    RelatorioNotaFiscalComponent,
   
 
 
@@ -130,4 +133,11 @@ registerLocaleData(localePt);
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
+    this.matIconRegistry.addSvgIcon(
+      'sair',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/sair.svg')
+    );
+  }
+}

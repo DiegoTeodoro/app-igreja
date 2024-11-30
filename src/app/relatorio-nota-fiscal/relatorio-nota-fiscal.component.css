@@ -1,0 +1,29 @@
+.mat-datepicker-content {
+    display: flex;
+    flex-direction: row; /* Alinha os elementos na horizontal */
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ocupa 100% da largura disponível */
+  }
+  .mat-calendar {
+    flex: 1; /* Permite que o calendário ocupe espaço igual */
+    max-width: 600px; /* Define uma largura máxima */
+  }
+  .mat-datepicker-popup {
+    width: 900px !important; /* Ajuste a largura do pop-up do calendário */
+  }
+  .mat-calendar {
+    width: 100%; /* Ajusta para preencher horizontalmente */
+    max-width: 900px; /* Tamanho máximo */
+    margin: 0 auto; /* Centraliza na tela */
+  }
+    
+  @media screen and (max-width: 768px) {
+    .mat-datepicker-popup {
+      width: 100vw !important; /* Preenche toda a largura */
+    }
+    .mat-calendar {
+      width: 90vw; /* Preenche 90% da largura */
+    }
+  }
+  

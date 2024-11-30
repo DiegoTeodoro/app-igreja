@@ -21,6 +21,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
 import { CadastroInventarioComponent } from './cadastro-inventario/cadastro-inventario.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { RelatorioNotaFiscalComponent } from './relatorio-nota-fiscal/relatorio-nota-fiscal.component';
 
 
 
@@ -47,6 +48,8 @@ const routes: Routes = [
   { path: 'relatorio-produto', component: RelatorioProdutoComponent, canActivate: [AuthGuard]},
   { path: 'cadastro-inventario', component: CadastroInventarioComponent, canActivate: [AuthGuard]},
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'relatorio-nota-fiscal', component: RelatorioNotaFiscalComponent },
+ 
 
 
 ];
