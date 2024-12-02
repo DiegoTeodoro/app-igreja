@@ -58,7 +58,8 @@ export class AppComponent implements OnInit {
         { title: 'Saldo estoque', route: '/saldo-estoque', icon: 'bar_chart' },
         { title: 'Pedidos', route: '/relatorio-pedidos', icon: 'assignment_turned_in' },
         { title: 'Produtos', route: '/relatorio-produto', icon: 'inventory_2' },
-        { title: 'Nota fiscal', route: '/relatorio-nota-fiscal', icon: 'assignment_turned_in' }
+        { title: 'Nota fiscal', route: '/relatorio-nota-fiscal', icon: 'assignment_turned_in' },
+        { title: 'Pedidos detalhado', route: '/relatorio-detalhado-pedidos', icon: 'assignment_turned_in' }
       ]
     },
     {

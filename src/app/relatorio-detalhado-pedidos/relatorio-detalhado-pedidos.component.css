@@ -1,0 +1,26 @@
+.relatorio-detalhado-pedidos-card {
+    margin: 16px;
+  }
+  
+  .centralizar-titulo {
+    text-align: center;
+  }
+  
+  .filtros-container {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  
+  .filtro-campo {
+    width: 15%;
+    min-width: 200px;
+  }
+  
+  .valor-total {
+    margin-top: 16px;
+    text-align: right;
+    font-weight: bold;
+  }
+  

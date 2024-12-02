@@ -815,7 +815,22 @@ app.get('/pedidos', (req, res) => {
   const { igreja, dataInicio, dataFim } = req.query;
 
   // Adjusted query to include the `codigo` column
-  let query = 'SELECT p.id AS codigo, p.*, i.nome AS igreja_nome FROM pedidos p JOIN igreja i ON p.igreja_id = i.codigo WHERE 1=1';
+   const query = `
+  SELECT 
+    p.id AS pedido_id, 
+    p.data_pedido, 
+    p.valor_total, 
+    i.nome AS igreja_nome,
+    ip.produto_id, 
+    pr.nome AS produto_nome,
+    ip.quantidade, 
+    ip.valor_unitario, 
+    ip.valor_total
+  FROM pedidos p
+  JOIN igreja i ON p.igreja_id = i.codigo
+  JOIN itens_pedido ip ON p.id = ip.pedido_id
+  JOIN produtos pr ON ip.produto_id = pr.id;
+`;
 
   const params = [];
 
@@ -865,6 +880,17 @@ app.get("/pedidos/:id", (req, res) => {
   });
 });
 
+app.get('/pedidos', (req, res) => {
+  connection.query('SELECT ...', (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar pedidos:', err);
+      res.status(500).send('Erro ao buscar pedidos');
+    } else {
+      console.log('Resultados:', results); // Verifique os dados aqui
+      res.json(results);
+    }
+  });
+});
 
 // Rota para atualizar o saldo de estoque ao realizar um pedido
 app.put("/saldo-estoque/:produto_id", (req, res) => {

@@ -47,5 +47,8 @@ export class PedidoService {
     );
   }
   
+  getPedidosDetalhados(): Observable<any[]> {
+    return this.http.get<any[]>('http://localhost:3000/pedidos?_expand=igreja&_embed=itens');
+  }
   
 }
