@@ -62,12 +62,13 @@ export class RelatorioDetalhadoPedidosComponent implements OnInit {
 
   aplicarFiltros(): void {
     this.pedidosFiltrados = this.pedidos.filter((pedido) => {
-      const filtroIgrejaValido = !this.filtroIgreja || pedido.igreja_id === this.filtroIgreja;
+      const filtroIgrejaValido = !this.filtroIgreja || pedido.igreja_nome === this.filtroIgreja;
       const filtroDataInicioValido = !this.dataInicio || new Date(pedido.data_pedido) >= this.dataInicio;
       const filtroDataFimValido = !this.dataFim || new Date(pedido.data_pedido) <= this.dataFim;
       return filtroIgrejaValido && filtroDataInicioValido && filtroDataFimValido;
     });
   }
+  
 
   limparFiltros(): void {
     this.filtroIgreja = null;
@@ -78,29 +79,58 @@ export class RelatorioDetalhadoPedidosComponent implements OnInit {
 
   gerarRelatorioPDF(): void {
     const doc = new jsPDF();
-    let yPosition = 10; // Posição inicial para o conteúdo
-
+  
+    // Adicionar cabeçalho ao PDF
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Relatorio detalhado de pedidos - CNS', 105, 10, { align: 'center' });
+  
+    let yPosition = 20; // Posição inicial para o conteúdo abaixo do cabeçalho
+  
     this.pedidosFiltrados.forEach((pedido) => {
+      // Nome da igreja com fonte menor
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
       doc.text(`${pedido.igreja_nome} - ${new Date(pedido.data_pedido).toLocaleDateString()}`, 10, yPosition);
-      
+  
+      // Adicionar tabela de itens
       autoTable(doc, {
-        startY: yPosition + 10,
+        startY: yPosition + 5,
         head: [['Produto', 'Quantidade', 'Valor Unitário', 'Valor Total']],
         body: pedido.itens.map((item: any) => [
           item.produto_nome,
           item.quantidade,
           item.valor_unitario.toFixed(2),
-          item.valor_total.toFixed(2)
-        ])
+          item.valor_total.toFixed(2),
+        ]),
+        headStyles: { fillColor: [41, 128, 185] }, // Cor do cabeçalho da tabela
       });
-
-      // Atualize yPosition após a tabela
-      yPosition = doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : yPosition + 30;
-
-      doc.text(`Valor Total do Pedido: R$ ${pedido.valor_total.toFixed(2)}`, 10, yPosition);
-      yPosition += 20; // Espaço entre pedidos
+  
+      // Atualizar posição após a tabela, verificando se `doc.lastAutoTable` está definido
+      if (doc.lastAutoTable?.finalY) {
+        yPosition = doc.lastAutoTable.finalY + 5;
+      }
+  
+      // Valor total do pedido do lado direito com fonte menor
+      doc.setFontSize(10);
+      doc.text(
+        `Valor Total do Pedido: R$ ${pedido.valor_total.toFixed(2)}`,
+        200,
+        yPosition,
+        { align: 'right' }
+      );
+  
+      yPosition += 10; // Espaço entre os pedidos
     });
-
-    doc.save('relatorio-detalhado-pedidos.pdf');
+  
+    // Criar blob e abrir nova janela com o PDF
+    const blob = doc.output('blob');
+    const url = URL.createObjectURL(blob);
+    const x = window.open(url, '_blank');
+    if (!x) {
+      alert('Habilite pop-ups para visualizar o relatório.');
+    }
   }
+  
+  
 }

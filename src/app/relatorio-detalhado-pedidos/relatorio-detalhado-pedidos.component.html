@@ -7,11 +7,13 @@
       <div class="filtros-container">
         <mat-form-field appearance="fill" class="filtro-campo">
           <mat-label>Filtrar por Igreja</mat-label>
+
           <mat-select [(ngModel)]="filtroIgreja" name="filtroIgreja">
-            <mat-option *ngFor="let igreja of igrejas" [value]="igreja.codigo">
+            <mat-option *ngFor="let igreja of igrejas" [value]="igreja.nome">
               {{ igreja.nome }}
             </mat-option>
           </mat-select>
+    
         </mat-form-field>
         <mat-form-field appearance="fill" class="filtro-campo">
           <mat-label>Data de Início</mat-label>
@@ -19,12 +21,14 @@
           <mat-datepicker-toggle matSuffix [for]="inicioPicker"></mat-datepicker-toggle>
           <mat-datepicker #inicioPicker></mat-datepicker>
         </mat-form-field>
+
         <mat-form-field appearance="fill" class="filtro-campo">
           <mat-label>Data de Fim</mat-label>
           <input matInput [matDatepicker]="fimPicker" [(ngModel)]="dataFim" />
           <mat-datepicker-toggle matSuffix [for]="fimPicker"></mat-datepicker-toggle>
           <mat-datepicker #fimPicker></mat-datepicker>
         </mat-form-field>
+
         <button mat-raised-button color="primary" (click)="aplicarFiltros()">Filtrar</button>
         <button mat-raised-button color="warn" (click)="limparFiltros()">Limpar</button>
         <button mat-raised-button color="primary" (click)="gerarRelatorioPDF()">Gerar PDF</button>
