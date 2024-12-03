@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar"; // Importar o MatSnackBar para exibir mensagens
-import { PedidoService } from "../pedido.service";
-import { SaldoEstoqueService } from "../Saldo_Estoque.service";
+import { PedidoService } from "../../services/pedido.service";
+import { SaldoEstoqueService } from "../../services/Saldo_Estoque.service";
 import { jsPDF } from "jspdf";
 import autoTable from 'jspdf-autotable';
 

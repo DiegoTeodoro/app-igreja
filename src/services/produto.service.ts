@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Produto } from './models/produto';
-import { Categoria } from './models/categoria';
-import { Fornecedor } from './models/fornecedores';
+import { Produto } from '../app/models/produto';
+import { Categoria } from '../app/models/categoria';
+import { Fornecedor } from '../app/models/fornecedores';
 
 
 @Injectable({

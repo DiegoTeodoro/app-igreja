@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ProdutoService } from '../produto.service';
+import { ProdutoService } from '../../services/produto.service';
 import { Produto } from '../models/produto';
 import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'; // Certifique-se de importar o MatDialog aqui

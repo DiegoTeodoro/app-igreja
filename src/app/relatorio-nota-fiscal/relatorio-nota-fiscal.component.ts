@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { NotaFiscalService } from '../nota-fiscal.service';
+import { NotaFiscalService } from '../../services/nota-fiscal.service';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 

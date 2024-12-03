@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoriaService } from '../categoria.service';
+import { CategoriaService } from '../../services/categoria.service';
 import { Categoria } from '../models/categoria';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../cadastro-categoria/delete-dialog.component';

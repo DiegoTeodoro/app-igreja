@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmpresaService } from '../empresa.service'; // Importe o serviço Empresa
+import { EmpresaService } from '../../services/empresa.service'; // Importe o serviço Empresa
 
 @Component({
   selector: 'app-cadastro-empresa',

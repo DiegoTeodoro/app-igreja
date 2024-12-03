@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { NotaFiscal } from '../app/models/nota-fiscal';
-import { Fornecedor } from './models/fornecedores';
-import { Produto } from './models/produto';
+import { Fornecedor } from '../app/models/fornecedores';
+import { Produto } from '../app/models/produto';
 
 @Injectable({
   providedIn: 'root'

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { InventarioService } from '../Inventario.Service';
+import { InventarioService } from '../../services/Inventario.Service';
 
 @Component({
   selector: 'app-cadastro-inventario',

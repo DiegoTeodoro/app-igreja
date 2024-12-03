@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PedidoService } from '../pedido.service';
+import { PedidoService } from '../../services/pedido.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({

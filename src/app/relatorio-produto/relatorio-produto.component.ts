@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProdutoService } from '../produto.service';
+import { ProdutoService } from '../../services/produto.service';
 import { Produto } from '../models/produto';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable'; // Importar desta forma

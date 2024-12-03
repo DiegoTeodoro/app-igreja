@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UsuarioService } from '../usuario.service';
+import { UsuarioService } from '../../services/usuario.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { NavigationEnd } from '@angular/router';
 

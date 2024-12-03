@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SaldoEstoque } from './models/SaldoEstoque';
+import { SaldoEstoque } from '../app/models/SaldoEstoque';
 
 @Injectable({
   providedIn: 'root'

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { PedidoService } from '../pedido.service';
+import { PedidoService } from '../../services/pedido.service';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -32,8 +32,9 @@ export class RelatorioPedidosComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSource._updateChangeSubscription(); // Força atualização dos dados
   }
-
+  
   carregarIgrejas() {
     this.pedidoService.getIgrejas().subscribe(
       (dados: any[]) => {
@@ -60,13 +61,14 @@ export class RelatorioPedidosComponent implements OnInit {
 
   aplicarFiltros() {
     this.pedidosFiltrados = this.pedidos.filter(pedido => {
-      const filtroIgrejaValido = !this.filtroIgreja || pedido.igreja_id === this.filtroIgreja;
-      const filtroDataInicioValido = !this.dataInicio || new Date(pedido.data_pedido) >= this.dataInicio;
-      const filtroDataFimValido = !this.dataFim || new Date(pedido.data_pedido) <= this.dataFim;
+      const filtroIgrejaValido = !this.filtroIgreja || pedido.igreja_id === +this.filtroIgreja; // Converte para número
+      const filtroDataInicioValido = !this.dataInicio || new Date(pedido.data_pedido).getTime() >= this.dataInicio.getTime();
+      const filtroDataFimValido = !this.dataFim || new Date(pedido.data_pedido).getTime() <= this.dataFim.getTime();
       return filtroIgrejaValido && filtroDataInicioValido && filtroDataFimValido;
     });
-    this.dataSource.data = this.pedidosFiltrados; // Atualiza a fonte de dados após aplicar os filtros
+    this.dataSource.data = this.pedidosFiltrados; // Atualiza a tabela
   }
+  
 
   limparFiltros() {
     this.filtroIgreja = null;
