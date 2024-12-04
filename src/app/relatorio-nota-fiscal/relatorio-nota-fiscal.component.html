@@ -81,12 +81,15 @@
       </table>
   
       <!-- Paginador -->
-      <mat-paginator *ngIf="notasFiltradas && notasFiltradas.length > 0" 
-        [length]="notasFiltradas.length" 
-        [pageSize]="5" 
-        [pageSizeOptions]="[5, 10, 20]" 
-        showFirstLastButtons>
-      </mat-paginator>
+      <mat-paginator 
+      *ngIf="notasFiltradas && notasFiltradas.length > 0" 
+      [length]="notasFiltradas.length" 
+      [pageSize]="5" 
+      [pageSizeOptions]="[5, 10, 20]" 
+      showFirstLastButtons>
+    </mat-paginator>
+
     </mat-card-content>
   </mat-card>
+  <br><br><br>
   

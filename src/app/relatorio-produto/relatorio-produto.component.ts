@@ -12,7 +12,7 @@ import autoTable from 'jspdf-autotable'; // Importar desta forma
 export class RelatorioProdutoComponent implements OnInit {
   produtos: Produto[] = [];
   displayedColumns: string[] = ['nome', 'volume', 'codigoBarras', 'fornecedor', 'marca'];
-dataAtual: any;
+  dataAtual: any;
 
   constructor(private produtoService: ProdutoService) {}
 
@@ -29,27 +29,41 @@ dataAtual: any;
 
   gerarPDF() {
     const doc = new jsPDF({ orientation: 'landscape' });
-    const date = new Date();
-    const dataAtual = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-
-    doc.text('Relatório de Cadastro de Produtos - CCLIMP', 140, 10, { align: 'center' });
-    doc.text(`Data e Hora: ${dataAtual}`, 260, 20, { align: 'right' });
-
+    const pageWidth = doc.internal.pageSize.getWidth();
+  
+    const title = 'Relatório de Cadastro de Produtos - CNS';
+    const subtitle = 'CCB - Parque São Jorge, R. Antônio Paiva Catalão, Nº 548.';
+    const dateTime = new Date().toLocaleString();
+  
+    // Centraliza o título no cabeçalho
+    doc.setFontSize(14);
+    const textWidth = doc.getTextWidth(title);
+    doc.text(title, (pageWidth - textWidth) / 2, 10);
+  
+    // Adiciona o subtítulo abaixo do título
+    doc.setFontSize(10);
+    const subtitleWidth = doc.getTextWidth(subtitle);
+    doc.text(subtitle, (pageWidth - subtitleWidth) / 2, 16);
+  
+    // Alinha a data e hora no canto direito
+    doc.setFontSize(10);
+    doc.text(dateTime, pageWidth - doc.getTextWidth(dateTime) - 10, 10);
+  
+    // Gerar tabela com os dados filtrados
     const rows = this.produtos.map(produto => [
-      produto.nome ?? '', // Use um valor padrão vazio se `produto.nome` for null ou undefined
+      produto.nome ?? '',
       produto.volume ?? '',
       produto.codigo_barras ?? '',
-      produto.fornecedor_id ?? '',
+      produto.fornecedor_nome ?? '', // Exibe o nome do fornecedor
       produto.marca ?? ''
     ]);
-    
-    // Use autoTable com a função importada
+  
     autoTable(doc, {
       head: [['Nome', 'Volume', 'Código de Barras', 'Fornecedor', 'Marca']],
       body: rows,
-      startY: 30
+      startY: 22
     });
-
+  
     const blob = doc.output('blob');
     const url = URL.createObjectURL(blob);
     const x = window.open(url, '_blank');
@@ -57,4 +71,6 @@ dataAtual: any;
       alert('Habilite pop-ups para visualizar o relatório.');
     }
   }
+  
+  
 }

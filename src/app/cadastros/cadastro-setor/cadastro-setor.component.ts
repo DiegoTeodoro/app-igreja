@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { SetorService } from '../../services/setor.service'; // Importe o serviço Setor
+import { SetorService } from '../../../services/setor.service'; // Importe o serviço Setor
 
 @Component({
   selector: 'app-cadastro-setor',

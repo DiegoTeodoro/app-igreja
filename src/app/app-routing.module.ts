@@ -1,26 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { CadastroEmpresaComponent } from './cadastro-empresa/cadastro-empresa.component';
-import { CadastroSetorComponent } from './cadastro-setor/cadastro-setor.component';
-import { CadastroEstadosComponent } from './cadastro-estados/cadastro-estados.component';
-import { CadastroCidadesComponent } from './cadastro-cidades/cadastro-cidades.component';
-import { CadastroIgrejaComponent } from './cadastro-igreja/cadastro-igreja.component';
-import { CadastroCategoriaComponent } from './cadastro-categoria/cadastro-categoria.component';
-import { CadastroProdutoComponent } from './cadastro-produto/cadastro-produto.component';
+import { CadastroEmpresaComponent } from './cadastros/cadastro-empresa/cadastro-empresa.component';
+import { CadastroSetorComponent } from './cadastros/cadastro-setor/cadastro-setor.component';
+import { CadastroEstadosComponent } from './cadastros/cadastro-estados/cadastro-estados.component';
+import { CadastroCidadesComponent } from './cadastros/cadastro-cidades/cadastro-cidades.component';
+import { CadastroIgrejaComponent } from './cadastros/cadastro-igreja/cadastro-igreja.component';
+import { CadastroCategoriaComponent } from './cadastros/cadastro-categoria/cadastro-categoria.component';
+import { CadastroProdutoComponent } from './cadastros/cadastro-produto/cadastro-produto.component';
 import { ConsultaProdutoComponent } from './consulta-produto/consulta-produto.component';
-import { CadastroNotaFiscalComponent } from './cadastro-nota-fiscal/cadastro-nota-fiscal.component';
-import { CadastroPedidoComponent } from './cadastro-pedido/cadastro-pedido.component';
+import { CadastroNotaFiscalComponent } from './cadastros/cadastro-nota-fiscal/cadastro-nota-fiscal.component';
+import { CadastroPedidoComponent } from './cadastros/cadastro-pedido/cadastro-pedido.component';
 import { ConsultaNotaFiscalComponent } from './consulta-nota-fiscal/consulta-nota-fiscal.component';
 import { RelatorioSaldoEstoqueComponent } from './relatorio-saldo-estoque/relatorio-saldo-estoque.component';
 import { RelatorioPedidosComponent } from './relatorio-pedidos/relatorio-pedidos.component';
 import { ConsultaPedidoComponent } from './consulta-pedido/consulta-pedido.component';
-import { CadastroUsuarioComponent } from './cadastro-usuario/cadastro-usuario.component';
+import { CadastroUsuarioComponent } from './cadastros/cadastro-usuario/cadastro-usuario.component';
 import { RelatorioProdutoComponent } from './relatorio-produto/relatorio-produto.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
-import { CadastroInventarioComponent } from './cadastro-inventario/cadastro-inventario.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { CadastroInventarioComponent } from './cadastros/cadastro-inventario/cadastro-inventario.component';
 import { RelatorioNotaFiscalComponent } from './relatorio-nota-fiscal/relatorio-nota-fiscal.component';
 import { RelatorioDetalhadoPedidosComponent } from './relatorio-detalhado-pedidos/relatorio-detalhado-pedidos.component';
 
@@ -48,7 +47,6 @@ const routes: Routes = [
   { path: 'cadastro-usuario', component: CadastroUsuarioComponent, canActivate: [AuthGuard]},
   { path: 'relatorio-produto', component: RelatorioProdutoComponent, canActivate: [AuthGuard]},
   { path: 'cadastro-inventario', component: CadastroInventarioComponent, canActivate: [AuthGuard]},
-  { path: 'dashboard', component: DashboardComponent },
   { path: 'relatorio-nota-fiscal', component: RelatorioNotaFiscalComponent },
   { path: 'relatorio-detalhado-pedidos', component: RelatorioDetalhadoPedidosComponent },
  

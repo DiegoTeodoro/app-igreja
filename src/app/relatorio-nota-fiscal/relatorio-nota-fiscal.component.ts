@@ -32,8 +32,11 @@ export class RelatorioNotaFiscalComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator; // Associa o paginator
+    // Atribui o paginator ao dataSource
+    this.dataSource.paginator = this.paginator;
   }
+  
+  
 
   carregarFornecedores() {
     this.notaFiscalService.getFornecedores().subscribe(
@@ -71,17 +74,19 @@ export class RelatorioNotaFiscalComponent implements OnInit {
       const filtroDataFimValido = !this.dataFim || new Date(nota.data_emissao) <= this.dataFim;
       return filtroFornecedorValido && filtroDataInicioValido && filtroDataFimValido;
     });
-    this.dataSource.data = this.notasFiltradas; // Atualiza o dataSource com os dados filtrados
+    this.dataSource.data = this.notasFiltradas;
+    this.dataSource.paginator = this.paginator; // Atualiza o paginator sempre que os dados mudam
   }
-
+  
   limparFiltros() {
     this.filtroFornecedor = null;
     this.dataInicio = null;
     this.dataFim = null;
-    this.notasFiltradas = [...this.notasFiscais]; // Reseta para os dados originais
+    this.notasFiltradas = [...this.notasFiscais];
     this.dataSource.data = this.notasFiltradas;
+    this.dataSource.paginator = this.paginator; // Atualiza o paginator sempre que os dados mudam
   }
-
+  
   gerarRelatorioPDF() {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();

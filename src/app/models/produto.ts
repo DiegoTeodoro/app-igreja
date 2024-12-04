@@ -7,5 +7,6 @@ export interface Produto {
   volume: string;
   categoria_id?: number | null;
   fornecedor_id?: number | null;
+  fornecedor_nome?: string; // Nome do fornecedor adicionado como opcional
   observacao?: string;
 }

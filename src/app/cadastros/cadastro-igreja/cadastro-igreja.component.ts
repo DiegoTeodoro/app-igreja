@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
-import { Igreja, IgrejaDetalhes } from '../models/igreja';
+import { Igreja, IgrejaDetalhes } from '../../models/igreja';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

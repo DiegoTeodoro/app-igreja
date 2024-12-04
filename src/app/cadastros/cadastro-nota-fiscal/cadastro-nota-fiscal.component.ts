@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { NotaFiscalService } from '../../services/nota-fiscal.service'; // Importando o serviço
+import { NotaFiscalService } from '../../../services/nota-fiscal.service'; // Importando o serviço
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';

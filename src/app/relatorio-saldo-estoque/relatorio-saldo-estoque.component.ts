@@ -36,16 +36,22 @@ export class RelatorioSaldoEstoqueComponent implements OnInit {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
     const title = 'Saldo de Estoque - CCLIMP';
+    const subtitle = 'CCB - Parque São Jorge, R. Antônio Paiva Catalão, Nº 548.';
     const dateTime = new Date().toLocaleString();
+    
+      // Centraliza o título no cabeçalho
+      doc.setFontSize(14);
+      const textWidth = doc.getTextWidth(title);
+      doc.text(title, (pageWidth - textWidth) / 2, 10); // Centraliza horizontalmente na página
 
-    // Centraliza o título no cabeçalho
-    doc.setFontSize(14);
-    const textWidth = doc.getTextWidth(title);
-    doc.text(title, (pageWidth - textWidth) / 2, 10); // Centraliza horizontalmente na página
+      // Adiciona o subtítulo abaixo do título
+      doc.setFontSize(10); // Fonte menor para o subtítulo
+      const subtitleWidth = doc.getTextWidth(subtitle);
+      doc.text(subtitle, (pageWidth - subtitleWidth) / 2, 16); // Centraliza horizontalmente
 
-    // Alinha a data e hora no canto direito
-    doc.setFontSize(10);
-    doc.text(dateTime, pageWidth - doc.getTextWidth(dateTime) - 10, 10); // Alinha à direita com margem de 10 unidades
+      // Alinha a data e hora no canto direito
+      doc.setFontSize(10);
+      doc.text(dateTime, pageWidth - doc.getTextWidth(dateTime) - 10, 10); // Alinha à direita com margem de 10 unidades
 
     // Gerar tabela com os dados
     autoTable(doc, {

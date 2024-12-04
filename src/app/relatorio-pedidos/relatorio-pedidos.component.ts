@@ -39,35 +39,43 @@ export class RelatorioPedidosComponent implements OnInit {
     this.pedidoService.getIgrejas().subscribe(
       (dados: any[]) => {
         this.igrejas = dados;
+        console.log('Igrejas carregadas:', this.igrejas); // Verifique os dados
       },
       error => {
         console.error('Erro ao carregar igrejas:', error);
       }
     );
   }
-
+  
   carregarPedidos() {
     this.pedidoService.getPedidos().subscribe(
       (dados: any[]) => {
         this.pedidos = dados;
+        console.log('Pedidos carregados:', this.pedidos); // Verifique se o campo 'recebedor' está presente
         this.pedidosFiltrados = dados;
-        this.dataSource.data = this.pedidosFiltrados; // Atualiza a fonte de dados
+        this.dataSource.data = this.pedidosFiltrados;
       },
       error => {
         console.error('Erro ao carregar pedidos:', error);
       }
     );
   }
+  
+  
 
   aplicarFiltros() {
     this.pedidosFiltrados = this.pedidos.filter(pedido => {
-      const filtroIgrejaValido = !this.filtroIgreja || pedido.igreja_id === +this.filtroIgreja; // Converte para número
+      const filtroIgrejaValido = !this.filtroIgreja || pedido.igreja_nome === this.filtroIgreja; // Comparar com igreja_nome
       const filtroDataInicioValido = !this.dataInicio || new Date(pedido.data_pedido).getTime() >= this.dataInicio.getTime();
       const filtroDataFimValido = !this.dataFim || new Date(pedido.data_pedido).getTime() <= this.dataFim.getTime();
+  
       return filtroIgrejaValido && filtroDataInicioValido && filtroDataFimValido;
     });
+  
     this.dataSource.data = this.pedidosFiltrados; // Atualiza a tabela
+    console.log('Pedidos filtrados:', this.pedidosFiltrados); // Verifique os resultados
   }
+  
   
 
   limparFiltros() {
@@ -81,49 +89,55 @@ export class RelatorioPedidosComponent implements OnInit {
   gerarRelatorioPDF() {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
-    const title = 'Relatório de Pedidos - CCLIMP';
+    const title = 'Relatório de Pedidos - CNS';
+    const subtitle = 'CCB - Parque São Jorge, R. Antônio Paiva Catalão, Nº 548.';
     const dateTime = new Date().toLocaleString();
-  
+
     // Centraliza o título no cabeçalho
     doc.setFontSize(14);
     const textWidth = doc.getTextWidth(title);
     doc.text(title, (pageWidth - textWidth) / 2, 10); // Centraliza horizontalmente na página
-  
+
+    // Adiciona o subtítulo abaixo do título
+    doc.setFontSize(10); // Fonte menor para o subtítulo
+    const subtitleWidth = doc.getTextWidth(subtitle);
+    doc.text(subtitle, (pageWidth - subtitleWidth) / 2, 16); // Centraliza horizontalmente
+
     // Alinha a data e hora no canto direito
     doc.setFontSize(10);
     doc.text(dateTime, pageWidth - doc.getTextWidth(dateTime) - 10, 10); // Alinha à direita com margem de 10 unidades
-  
+
     // Gerar tabela com os dados filtrados
     autoTable(doc, {
-      startY: 22,
-      head: [['Nome da Igreja', 'Data do Pedido', 'Recebedor', 'Valor Total']],
-      body: this.pedidosFiltrados.map(pedido => [
-        pedido.igreja_nome,
-        new Date(pedido.data_pedido).toLocaleDateString(),
-        pedido.recebedor,
-        `R$ ${pedido.valor_total.toFixed(2)}`
-      ])
+        startY: 22,
+        head: [['Nome da Igreja', 'Data do Pedido', 'Valor Total']],
+        body: this.pedidosFiltrados.map(pedido => [
+            pedido.igreja_nome,
+            new Date(pedido.data_pedido).toLocaleDateString(),
+            `R$ ${pedido.valor_total ? pedido.valor_total.toFixed(2) : '0.00'}`
+        ])
     });
-  
+
     // Obtenha a posição Y após a última tabela
     const finalY = (doc as any).lastAutoTable.finalY;
     const valorTotal = this.calcularValorTotal().toFixed(2);
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold'); // Definir a fonte para negrito
     doc.text(
-      `Valor Total: R$ ${valorTotal}`,
-      pageWidth - doc.getTextWidth(`Valor Total: R$ ${valorTotal}`) - 10,
-      finalY + 10
+        `Valor Total: R$ ${valorTotal}`,
+        pageWidth - doc.getTextWidth(`Valor Total: R$ ${valorTotal}`) - 10,
+        finalY + 10
     );
-  
+
     // Criar blob e abrir nova janela com o PDF
     const blob = doc.output('blob');
     const url = URL.createObjectURL(blob);
     const x = window.open(url, '_blank');
     if (!x) {
-      alert('Habilite pop-ups para visualizar o relatório.');
+        alert('Habilite pop-ups para visualizar o relatório.');
     }
-  }
+}
+
   
 calcularValorTotal() {
   return this.pedidosFiltrados.reduce((total, pedido) => total + pedido.valor_total, 0);
