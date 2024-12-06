@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { NotaFiscalService } from '../../services/nota-fiscal.service';
+import { NotaFiscalService } from '../../../services/nota-fiscal.service';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -11,12 +11,12 @@ import autoTable from 'jspdf-autotable';
   styleUrls: ['./relatorio-nota-fiscal.component.css']
 })
 export class RelatorioNotaFiscalComponent implements OnInit {
+
   fornecedores: any[] = [];
   notasFiscais: any[] = [];
   notasFiltradas: any[] = [];
   dataSource = new MatTableDataSource<any>([]); // Inicializa como MatTableDataSource vazio
 
-  filtroFornecedor: number | null = null;
   dataInicio: Date | null = null;
   dataFim: Date | null = null;
 
@@ -27,26 +27,12 @@ export class RelatorioNotaFiscalComponent implements OnInit {
   constructor(private notaFiscalService: NotaFiscalService) {}
 
   ngOnInit(): void {
-    this.carregarFornecedores();
     this.carregarNotasFiscais();
   }
 
   ngAfterViewInit() {
     // Atribui o paginator ao dataSource
     this.dataSource.paginator = this.paginator;
-  }
-  
-  
-
-  carregarFornecedores() {
-    this.notaFiscalService.getFornecedores().subscribe(
-      (dados: any[]) => {
-        this.fornecedores = dados;
-      },
-      error => {
-        console.error('Erro ao carregar fornecedores:', error);
-      }
-    );
   }
 
   carregarNotasFiscais() {
@@ -66,26 +52,25 @@ export class RelatorioNotaFiscalComponent implements OnInit {
     );
   }
   
-
-  aplicarFiltros() {
+  FiltrarCampos() {
     this.notasFiltradas = this.notasFiscais.filter(nota => {
-      const filtroFornecedorValido = !this.filtroFornecedor || nota.fornecedor_id === this.filtroFornecedor;
-      const filtroDataInicioValido = !this.dataInicio || new Date(nota.data_emissao) >= this.dataInicio;
-      const filtroDataFimValido = !this.dataFim || new Date(nota.data_emissao) <= this.dataFim;
-      return filtroFornecedorValido && filtroDataInicioValido && filtroDataFimValido;
+      const dataInicioMatches = this.dataInicio ? new Date(nota.data_emissao) >= this.dataInicio : true;
+      const dataFimMatches = this.dataFim ? new Date(nota.data_emissao) <= this.dataFim : true;
+      return dataInicioMatches && dataFimMatches;
     });
     this.dataSource.data = this.notasFiltradas;
-    this.dataSource.paginator = this.paginator; // Atualiza o paginator sempre que os dados mudam
+    this.dataSource.paginator = this.paginator;
   }
   
+
   limparFiltros() {
-    this.filtroFornecedor = null;
     this.dataInicio = null;
     this.dataFim = null;
     this.notasFiltradas = [...this.notasFiscais];
     this.dataSource.data = this.notasFiltradas;
     this.dataSource.paginator = this.paginator; // Atualiza o paginator sempre que os dados mudam
   }
+  
   
   gerarRelatorioPDF() {
     const doc = new jsPDF();

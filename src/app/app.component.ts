@@ -63,9 +63,9 @@ export class AppComponent implements OnInit {
       ]
     },
     {
-      title: 'dashboard',
+      title: 'Pedido de compra',
       links: [
-        { title: 'Dashboard', route: '/dashboard', icon: 'bar_chart' }
+        { title: 'Solicitação de compra', route: '/pedido-compra', icon: 'assignment_turned_in' }
       ]
     }
   ];

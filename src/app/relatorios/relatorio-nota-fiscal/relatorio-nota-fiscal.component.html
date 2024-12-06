@@ -3,16 +3,7 @@
     <mat-card-content>
       <!-- Filtros -->
       <div class="filtros-container" style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
-        <!-- Filtro por Fornecedor -->
-        <mat-form-field appearance="fill" class="filtro-campo">
-          <mat-label>Filtrar por Fornecedor</mat-label>
-          <mat-select [(ngModel)]="filtroFornecedor" name="filtroFornecedor">
-            <mat-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor.id">
-              {{ fornecedor.nome_fantasia }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-  
+       
         <!-- Filtro por Data de Início -->
         <mat-form-field appearance="fill" class="filtro-campo">
           <mat-label>Data de Início</mat-label>
@@ -42,7 +33,7 @@
         
   
         <!-- Botão para Filtrar -->
-        <button mat-raised-button color="primary" style="margin-top: 8px;" (click)="aplicarFiltros()">Filtrar</button>
+        <button mat-raised-button color="primary" style="margin-top: 8px;" (click)="FiltrarCampos()">Filtrar</button>
         <!-- Botão para Limpar Filtros -->
         <button mat-raised-button color="warn" style="margin-top: 8px; margin-left: 8px;" (click)="limparFiltros()">Limpar</button>
         <!-- Botão para Gerar PDF -->

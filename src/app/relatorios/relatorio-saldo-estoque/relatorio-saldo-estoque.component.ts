@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SaldoEstoqueService } from '../../services/Saldo_Estoque.service';
+import { SaldoEstoqueService } from '../../../services/Saldo_Estoque.service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 

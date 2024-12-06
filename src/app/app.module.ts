@@ -43,10 +43,10 @@ import { CadastroPedidoComponent } from './cadastros/cadastro-pedido/cadastro-pe
 import { RouterModule } from '@angular/router';
 import { ConsultaNotaFiscalComponent } from './consulta-nota-fiscal/consulta-nota-fiscal.component';
 import { CadastroUsuarioComponent } from './cadastros/cadastro-usuario/cadastro-usuario.component';
-import { RelatorioSaldoEstoqueComponent } from './relatorio-saldo-estoque/relatorio-saldo-estoque.component';
-import { RelatorioPedidosComponent } from './relatorio-pedidos/relatorio-pedidos.component';
+import { RelatorioSaldoEstoqueComponent } from './relatorios/relatorio-saldo-estoque/relatorio-saldo-estoque.component';
+import { RelatorioPedidosComponent } from './relatorios/relatorio-pedidos/relatorio-pedidos.component';
 import { ConsultaPedidoComponent } from './consulta-pedido/consulta-pedido.component';
-import { RelatorioProdutoComponent } from './relatorio-produto/relatorio-produto.component';
+import { RelatorioProdutoComponent } from './relatorios/relatorio-produto/relatorio-produto.component';
 import { LoginComponent } from './login/login.component';
 import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
@@ -54,8 +54,9 @@ import { CadastroInventarioComponent } from './cadastros/cadastro-inventario/cad
 import { NgChartsModule } from 'ng2-charts';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { RelatorioNotaFiscalComponent } from './relatorio-nota-fiscal/relatorio-nota-fiscal.component';
-import { RelatorioDetalhadoPedidosComponent } from './relatorio-detalhado-pedidos/relatorio-detalhado-pedidos.component';
+import { RelatorioNotaFiscalComponent } from './relatorios/relatorio-nota-fiscal/relatorio-nota-fiscal.component';
+import { RelatorioDetalhadoPedidosComponent } from './relatorios/relatorio-detalhado-pedidos/relatorio-detalhado-pedidos.component';
+import { PedidoCompraComponent } from './cadastros/pedido-compra/pedido-compra.component';
 
 
 // Registre o locale `pt-BR`
@@ -89,6 +90,7 @@ registerLocaleData(localePt);
     CadastroInventarioComponent,
     RelatorioNotaFiscalComponent,
     RelatorioDetalhadoPedidosComponent,
+    PedidoCompraComponent,
   
 
 

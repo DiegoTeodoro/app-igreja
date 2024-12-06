@@ -264,6 +264,23 @@ app.get("/produtos/:id", (req, res) => {
   });
 });
 
+app.get("/produtos/nome/:nome", (req, res) => {
+  const nome = req.params.nome;
+  const query = "SELECT * FROM produtos WHERE nome = ?";
+  connection.query(query, [nome], (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar produto pelo nome:", err);
+      res.status(500).send("Erro ao buscar produto");
+    } else if (results.length > 0) {
+      res.json(results[0]); // Retorna o primeiro produto encontrado
+    } else {
+      res.status(404).send("Produto não encontrado");
+    }
+  });
+});
+
+
+
 // Create a new product
 app.post("/produtos", (req, res) => {
   const produto = req.body;
@@ -1280,6 +1297,44 @@ app.put("/inventarios/saldo-estoque", (req, res) => {
 const server = app.listen(port, () => {
   // Mantido apenas uma chamada para app.listen
   console.log(`Server running on port ${port}`);
+});
+
+function formatDateToMySQL(date) {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = ('0' + (d.getMonth() + 1)).slice(-2);
+  const day = ('0' + d.getDate()).slice(-2);
+  return `${year}-${month}-${day}`;
+}
+
+// Dentro da rota
+app.post('/pedido-compra', (req, res) => {
+  const { solicitante, data_pedido, itens } = req.body;
+
+  if (!solicitante || !data_pedido || !itens || itens.length === 0) {
+    return res.status(400).json({ error: 'Dados inválidos.' });
+  }
+
+  const queryPedido = 'INSERT INTO pedido_compra (solicitante, data) VALUES (?, ?)';
+  connection.query(queryPedido, [solicitante, data_pedido], (err, result) => {
+    if (err) {
+      console.error('Erro ao inserir pedido:', err);
+      return res.status(500).json({ error: 'Erro ao salvar pedido.' });
+    }
+
+    const pedidoId = result.insertId;
+
+    const itensValues = itens.map((item) => [pedidoId, item.produto_id, item.quantidade]);
+    const queryItens = 'INSERT INTO pedido_compra_itens (pedido_id, produto_id, quantidade) VALUES ?';
+    connection.query(queryItens, [itensValues], (err) => {
+      if (err) {
+        console.error('Erro ao inserir itens do pedido:', err);
+        return res.status(500).json({ error: 'Erro ao salvar itens do pedido.' });
+      }
+
+      res.status(201).json({ message: 'Pedido e itens salvos com sucesso' });
+    });
+  });
 });
 
 server.on("error", (err) => {

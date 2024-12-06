@@ -1,0 +1,72 @@
+<mat-card>
+  <mat-card-title>Solicitação de Compra</mat-card-title>
+  <form [formGroup]="pedidoForm" class="form-container">
+    <div class="form-row-inline">
+      <!-- Nome do Produto -->
+      <mat-form-field appearance="fill" class="solicitante">
+        <mat-label>Solicitante</mat-label>
+        <input matInput formControlName="solicitante" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="data-pedido">
+        <mat-label>Data do Pedido</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="data">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      
+    </div>
+    <div class="form-row-inline">
+      <!-- Nome do Produto -->
+      <mat-form-field appearance="fill" class="produto">
+        <mat-label>Produto</mat-label>
+        <input matInput formControlName="produto" [matAutocomplete]="auto" (input)="onProdutoInput($event)">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let produto of filteredProdutos" [value]="produto.nome">
+            {{ produto.nome }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      
+
+      <mat-form-field appearance="fill" class="quantidade">
+        <mat-label>Quantidade</mat-label>
+        <input matInput formControlName="quantidade" required>
+      </mat-form-field>
+      <div class="form-group botao-adicionar">
+        <button mat-raised-button color="primary" (click)="adicionarItem()">Adicionar</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="form-group botao-adicionar">
+    <button mat-raised-button color="primary" (click)="salvarPedidoCompra()">Salvar</button>
+  </div>
+  
+ <!-- Tabela de Itens -->
+<table mat-table [dataSource]="itens" class="mat-elevation-z8">
+  <!-- Coluna Código -->
+  <ng-container matColumnDef="codigo">
+    <th mat-header-cell *matHeaderCellDef class="table-col-codigo"> Código </th>
+    <td mat-cell *matCellDef="let item" class="table-col-codigo"> {{ item.id }} </td>
+  </ng-container>
+
+  <!-- Coluna Produto -->
+  <ng-container matColumnDef="produto">
+    <th mat-header-cell *matHeaderCellDef class="table-col-produto"> Produto </th>
+    <td mat-cell *matCellDef="let item" class="table-col-produto"> {{ item.produto }} </td>
+  </ng-container>
+
+  <!-- Coluna Quantidade -->
+  <ng-container matColumnDef="quantidade">
+    <th mat-header-cell *matHeaderCellDef class="table-col-quantidade"> Quantidade </th>
+    <td mat-cell *matCellDef="let item" class="table-col-quantidade"> {{ item.quantidade }} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+  
+  
+</mat-card>

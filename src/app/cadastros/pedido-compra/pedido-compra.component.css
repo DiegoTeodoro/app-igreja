@@ -1,0 +1,39 @@
+.solicitante {
+    width: 40%;
+  }
+
+.data-pedido{
+    width: 20%;
+}
+
+.form-row-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espaço entre os elementos */
+  }
+
+.produto{
+    width: 50%;
+}
+
+.quantidade{
+    width: 20%;
+}
+/* Define as larguras das colunas */
+.table-col-codigo {
+  width: 15%;
+}
+
+.table-col-produto {
+  width: 40%;
+}
+
+.table-col-quantidade {
+  width: 15%;
+}
+
+/* Estilização adicional para ajustar o layout da tabela */
+table {
+  width: 80%; /* Garante que a tabela ocupe toda a largura disponível */
+  table-layout: fixed; /* Permite controlar as larguras das colunas */
+}
