@@ -29,7 +29,7 @@
       <!-- Seções para cada grupo de pedidos por data -->
       <ng-container *ngFor="let grupo of pedidosAgrupados">
         <mat-card class="pedido-card">
-          <mat-card-title>Data da solicitação: {{ grupo.data | date: 'dd/MM/yyyy' }}</mat-card-title>
+          Data da solicitação: {{ grupo.data | date: 'dd/MM/yyyy' }}
           <mat-table [dataSource]="grupo.pedidos" class="mat-elevation-z8">
             <!-- Código -->
             <ng-container matColumnDef="codigo">
