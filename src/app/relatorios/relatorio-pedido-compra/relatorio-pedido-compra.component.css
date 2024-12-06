@@ -1,0 +1,14 @@
+mat-card {
+  margin: 20px;
+  padding: 20px;
+}
+
+mat-form-field {
+  width: 200px;
+}
+
+.form-row-inline {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Espaço entre os elementos */
+}

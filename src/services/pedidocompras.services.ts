@@ -7,6 +7,7 @@ import { PedidoCompra } from '../app/models/pedido-compra';
   providedIn: 'root'
 })
 export class PedidoCompraService {
+ 
   private apiUrl = 'http://localhost:3000/pedido-compra';
 
   constructor(private http: HttpClient) {}
@@ -19,9 +20,10 @@ salvarPedido(pedido: any): Observable<any> {
   return this.http.post<any>(this.apiUrl, pedido);
 }
 
-  getPedidos(): Observable<PedidoCompra[]> {
-    return this.http.get<PedidoCompra[]>(this.apiUrl);
-  }
+getPedidos(): Observable<PedidoCompra[]> {
+  return this.http.get<PedidoCompra[]>(this.apiUrl);
+}
+
 
   getPedidoById(id: number): Observable<PedidoCompra> {
     return this.http.get<PedidoCompra>(`${this.apiUrl}/${id}`);
@@ -40,5 +42,13 @@ salvarPedido(pedido: any): Observable<any> {
     return this.http.get<any>(url);
   }
   
+  getRelatorioPedidos(dataInicio: Date, dataFim: Date): Observable<any[]> {
+    const url = `${this.apiUrl}/relatorio`;
+    const params = {
+      dataInicio: dataInicio.toISOString().split('T')[0],
+      dataFim: dataFim.toISOString().split('T')[0],
+    };
+    return this.http.get<any[]>(url, { params });
+  }
   
 }

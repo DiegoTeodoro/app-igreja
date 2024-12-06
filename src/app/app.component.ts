@@ -59,7 +59,9 @@ export class AppComponent implements OnInit {
         { title: 'Pedidos', route: '/relatorio-pedidos', icon: 'assignment_turned_in' },
         { title: 'Produtos', route: '/relatorio-produto', icon: 'inventory_2' },
         { title: 'Nota fiscal', route: '/relatorio-nota-fiscal', icon: 'assignment_turned_in' },
-        { title: 'Pedidos detalhado', route: '/relatorio-detalhado-pedidos', icon: 'assignment_turned_in' }
+        { title: 'Pedidos detalhado', route: '/relatorio-detalhado-pedidos', icon: 'assignment_turned_in' },
+        { title: 'Solicitação de compra', route: '/relatorio-pedido-compra', icon: 'assignment_turned_in' }
+        
       ]
     },
     {

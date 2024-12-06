@@ -1,0 +1,65 @@
+<mat-card>
+    <mat-card-header>
+      <mat-card-title>Relatório de Solicitação de Compras - CNS</mat-card-title>
+    </mat-card-header>
+  
+    <mat-card-content>
+      <!-- Contêiner com campos de data e botões alinhados na mesma linha -->
+      <div class="form-row-inline">
+        <mat-form-field>
+          <mat-label>Data Início</mat-label>
+          <input matInput [matDatepicker]="startPicker" [(ngModel)]="dataInicio" />
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Data Fim</mat-label>
+          <input matInput [matDatepicker]="endPicker" [(ngModel)]="dataFim" />
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+        <!-- Botões -->
+        <button mat-raised-button color="primary" (click)="filtrarRelatorio()">Filtrar</button>
+        <button mat-raised-button color="warn" (click)="limparFiltros()">Limpar</button>
+        <button mat-raised-button color="primary" (click)="gerarRelatorioPDF()">Gerar PDF</button>
+      </div>
+  
+      <mat-divider></mat-divider>
+  
+      <!-- Seções para cada grupo de pedidos por data -->
+      <ng-container *ngFor="let grupo of pedidosAgrupados">
+        <mat-card class="pedido-card">
+          <mat-card-title>Data da solicitação: {{ grupo.data | date: 'dd/MM/yyyy' }}</mat-card-title>
+          <mat-table [dataSource]="grupo.pedidos" class="mat-elevation-z8">
+            <!-- Código -->
+            <ng-container matColumnDef="codigo">
+              <mat-header-cell *matHeaderCellDef> Código </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{ element.codigo }} </mat-cell>
+            </ng-container>
+  
+            <!-- Produto -->
+            <ng-container matColumnDef="produto">
+              <mat-header-cell *matHeaderCellDef> Produto </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{ element.produto }} </mat-cell>
+            </ng-container>
+  
+            <!-- Quantidade -->
+            <ng-container matColumnDef="quantidade">
+              <mat-header-cell *matHeaderCellDef> Quantidade </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{ element.quantidade }} </mat-cell>
+            </ng-container>
+  
+            <!-- Data do Pedido -->
+            <ng-container matColumnDef="dataPedido">
+              <mat-header-cell *matHeaderCellDef> Data da solicitação </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{ element.dataPedido | date }} </mat-cell>
+            </ng-container>
+  
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </mat-card>
+      </ng-container>
+    </mat-card-content>
+  </mat-card>
+  

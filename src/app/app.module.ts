@@ -57,6 +57,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { RelatorioNotaFiscalComponent } from './relatorios/relatorio-nota-fiscal/relatorio-nota-fiscal.component';
 import { RelatorioDetalhadoPedidosComponent } from './relatorios/relatorio-detalhado-pedidos/relatorio-detalhado-pedidos.component';
 import { PedidoCompraComponent } from './cadastros/pedido-compra/pedido-compra.component';
+import { RelatorioPedidoCompraComponent } from './relatorios/relatorio-pedido-compra/relatorio-pedido-compra.component';
 
 
 // Registre o locale `pt-BR`
@@ -91,9 +92,8 @@ registerLocaleData(localePt);
     RelatorioNotaFiscalComponent,
     RelatorioDetalhadoPedidosComponent,
     PedidoCompraComponent,
-  
-
-
+    RelatorioPedidoCompraComponent,
+ 
    
   ],
   imports: [

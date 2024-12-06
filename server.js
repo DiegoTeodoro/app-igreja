@@ -1337,6 +1337,48 @@ app.post('/pedido-compra', (req, res) => {
   });
 });
 
+app.get("/pedido-compra/relatorio", (req, res) => {
+  const { dataInicio, dataFim } = req.query;
+
+  if (!dataInicio || !dataFim) {
+    return res.status(400).send("Os parâmetros dataInicio e dataFim são obrigatórios.");
+  }
+
+  const query = `
+    SELECT pc.id AS codigo, p.nome AS produto, pci.quantidade, pc.data AS dataPedido
+    FROM pedido_compra pc
+    JOIN pedido_compra_itens pci ON pc.id = pci.pedido_id
+    JOIN produtos p ON pci.produto_id = p.id
+    WHERE pc.data BETWEEN ? AND ?
+  `;
+
+  connection.query(query, [dataInicio, dataFim], (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar relatório de pedidos de compra:", err);
+      res.status(500).send("Erro ao buscar relatório de pedidos de compra");
+      return;
+    }
+    res.json(results);
+  });
+});
+
+// Rota para obter um pedido de compra específico por ID
+app.get("/pedido-compra/:id", (req, res) => {
+  const id = req.params.id;
+  const query = "SELECT * FROM pedido_compra WHERE id = ?";
+  connection.query(query, [id], (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar pedido de compra:", err);
+      res.status(500).send("Erro ao buscar pedido de compra");
+    } else if (results.length > 0) {
+      res.json(results[0]);
+    } else {
+      res.status(404).send("Pedido de compra não encontrado");
+    }
+  });
+});
+
+
 server.on("error", (err) => {
   if (err.code === "EADDRINUSE") {
     console.error(`Port ${port} is already in use.`);

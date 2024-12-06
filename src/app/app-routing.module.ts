@@ -23,7 +23,7 @@ import { CadastroInventarioComponent } from './cadastros/cadastro-inventario/cad
 import { RelatorioNotaFiscalComponent } from './relatorios/relatorio-nota-fiscal/relatorio-nota-fiscal.component';
 import { RelatorioDetalhadoPedidosComponent } from './relatorios/relatorio-detalhado-pedidos/relatorio-detalhado-pedidos.component';
 import { PedidoCompraComponent } from './cadastros/pedido-compra/pedido-compra.component';
-
+import { RelatorioPedidoCompraComponent } from './relatorios/relatorio-pedido-compra/relatorio-pedido-compra.component';
 
 
 const routes: Routes = [
@@ -51,6 +51,9 @@ const routes: Routes = [
   { path: 'relatorio-nota-fiscal', component: RelatorioNotaFiscalComponent },
   { path: 'relatorio-detalhado-pedidos', component: RelatorioDetalhadoPedidosComponent },
   { path: 'pedido-compra', component: PedidoCompraComponent },
+  { path: 'relatorio-pedido-compra', component: RelatorioPedidoCompraComponent },
+
+
 
 
 ];
