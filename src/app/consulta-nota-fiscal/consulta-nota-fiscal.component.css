@@ -3,4 +3,9 @@
     justify-content: center;
     margin-top: 16px; /* Ajuste o espaçamento superior conforme necessário */
   }
+  .form-row-inline {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espaço entre o campo de pesquisa e o botão */
+  }
   

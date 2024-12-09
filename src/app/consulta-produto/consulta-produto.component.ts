@@ -36,7 +36,9 @@ export class ConfirmDialog {
   styleUrls: ['./consulta-produto.component.css']
 })
 export class ConsultaProdutoComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'nome', 'volume', 'codigo_barras', 'categoria_id', 'marca', 'fornecedor_id'];
+  displayedColumns: string[] = ['id', 'nome', 'volume', 'codigo_barras', 'categoria', 'acoes'];
+
+
   dataSource = new MatTableDataSource<Produto>();
 
   // Corrigido: Importação de MatDialog no construtor

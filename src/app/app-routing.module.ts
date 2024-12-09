@@ -14,7 +14,6 @@ import { CadastroPedidoComponent } from './cadastros/cadastro-pedido/cadastro-pe
 import { ConsultaNotaFiscalComponent } from './consulta-nota-fiscal/consulta-nota-fiscal.component';
 import { RelatorioSaldoEstoqueComponent } from './relatorios/relatorio-saldo-estoque/relatorio-saldo-estoque.component';
 import { RelatorioPedidosComponent } from './relatorios/relatorio-pedidos/relatorio-pedidos.component';
-import { ConsultaPedidoComponent } from './consulta-pedido/consulta-pedido.component';
 import { CadastroUsuarioComponent } from './cadastros/cadastro-usuario/cadastro-usuario.component';
 import { RelatorioProdutoComponent } from './relatorios/relatorio-produto/relatorio-produto.component';
 import { LoginComponent } from './login/login.component';
@@ -24,6 +23,8 @@ import { RelatorioNotaFiscalComponent } from './relatorios/relatorio-nota-fiscal
 import { RelatorioDetalhadoPedidosComponent } from './relatorios/relatorio-detalhado-pedidos/relatorio-detalhado-pedidos.component';
 import { PedidoCompraComponent } from './cadastros/pedido-compra/pedido-compra.component';
 import { RelatorioPedidoCompraComponent } from './relatorios/relatorio-pedido-compra/relatorio-pedido-compra.component';
+import { ConsultaPedidoComponent } from './consultas/consulta-pedido/consulta-pedido.component';
+
 
 
 const routes: Routes = [
@@ -44,14 +45,14 @@ const routes: Routes = [
   { path: 'cadastro-pedido', component: CadastroPedidoComponent, canActivate: [AuthGuard] },
   { path: 'saldo-estoque', component: RelatorioSaldoEstoqueComponent, canActivate: [AuthGuard] },
   { path: 'relatorio-pedidos', component: RelatorioPedidosComponent, canActivate: [AuthGuard] },
-  { path: 'consulta-pedido', component: ConsultaPedidoComponent, canActivate: [AuthGuard]},
   { path: 'cadastro-usuario', component: CadastroUsuarioComponent, canActivate: [AuthGuard]},
   { path: 'relatorio-produto', component: RelatorioProdutoComponent, canActivate: [AuthGuard]},
   { path: 'cadastro-inventario', component: CadastroInventarioComponent, canActivate: [AuthGuard]},
-  { path: 'relatorio-nota-fiscal', component: RelatorioNotaFiscalComponent },
-  { path: 'relatorio-detalhado-pedidos', component: RelatorioDetalhadoPedidosComponent },
-  { path: 'pedido-compra', component: PedidoCompraComponent },
-  { path: 'relatorio-pedido-compra', component: RelatorioPedidoCompraComponent },
+  { path: 'relatorio-nota-fiscal', component: RelatorioNotaFiscalComponent, canActivate: [AuthGuard] },
+  { path: 'relatorio-detalhado-pedidos', component: RelatorioDetalhadoPedidosComponent, canActivate: [AuthGuard] },
+  { path: 'pedido-compra', component: PedidoCompraComponent, canActivate: [AuthGuard] },
+  { path: 'relatorio-pedido-compra', component: RelatorioPedidoCompraComponent, canActivate: [AuthGuard] },
+  { path: 'consulta-pedido', component: ConsultaPedidoComponent, canActivate: [AuthGuard]}
 
 
 

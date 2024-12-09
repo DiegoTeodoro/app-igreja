@@ -909,6 +909,7 @@ app.get('/pedidos', (req, res) => {
   });
 });
 
+
 // Rota para atualizar o saldo de estoque ao realizar um pedido
 app.put("/saldo-estoque/:produto_id", (req, res) => {
   const produtoId = req.params.produto_id;
@@ -1073,6 +1074,52 @@ connection.query(queryPedido, paramsPedido, (err, result) => {
 
 });
 
+app.get('/pedidos', (req, res) => {
+  const query = `
+    SELECT 
+      p.id AS pedido_id, 
+      p.data_pedido, 
+      p.recebedor, 
+      p.valor_total, 
+      i.nome AS igreja_nome
+    FROM pedidos p
+    JOIN igreja i ON p.igreja_id = i.codigo;
+  `;
+
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar pedidos:', err);
+      res.status(500).send('Erro ao buscar pedidos');
+      return;
+    }
+
+    console.log('Pedidos retornados:', results); // Verifique os campos aqui
+    res.json(results);
+  });
+});
+app.get('/pedidos/:id', (req, res) => {
+  const id = req.params.id;
+  const query = `
+    SELECT p.id AS pedido_id, p.data_pedido, p.valor_total, p.recebedor, i.nome AS igreja_nome
+    FROM pedidos p
+    JOIN igreja i ON p.igreja_id = i.codigo
+    WHERE p.id = ?
+  `;
+  connection.query(query, [id], (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar pedido:', err);
+      res.status(500).send('Erro ao buscar pedido');
+      return;
+    }
+    if (results.length > 0) {
+      res.json(results[0]); // Retorna o pedido encontrado
+    } else {
+      res.status(404).send('Pedido não encontrado');
+    }
+  });
+});
+
+
 // Rota para buscar pedido por código do pedido
 app.get("/pedidos/:codigoPedido", (req, res) => {
   const codigoPedido = req.params.codigoPedido;
@@ -1113,8 +1160,6 @@ app.get("/pedido-itens/:pedidoId", (req, res) => {
     }
   });
 });
-
-
 
 // CRUD APIs for 'usuario'
 app.post("/usuarios", (req, res) => {
@@ -1169,9 +1214,6 @@ app.post('/usuarios/login', (req, res) => {
     }
   });
 });
-
-
-
 
 app.put('/usuarios/:id', (req, res) => {
   const id = req.params.id; // Obtém o ID da rota

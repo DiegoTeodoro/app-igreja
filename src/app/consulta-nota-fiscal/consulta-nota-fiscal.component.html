@@ -2,14 +2,15 @@
   <mat-card>
     <mat-card-title>Consulta de Nota Fiscal</mat-card-title>
 
-    <!-- Campo para Pesquisar Número da Nota -->
-    <div class="pesquisar-numero-nota">
-      <mat-form-field appearance="fill">
-        <mat-label>Número da Nota</mat-label>
-        <input matInput [(ngModel)]="numeroNotaPesquisa" placeholder="Digite o número da nota para pesquisar" />
-      </mat-form-field>
-      <button mat-raised-button color="primary" (click)="pesquisarNota()">Pesquisar</button>
-    </div>
+   <!-- Campo para Pesquisar Número da Nota -->
+<div class="pesquisar-numero-nota form-row-inline">
+  <mat-form-field appearance="fill">
+    <mat-label>Número da Nota</mat-label>
+    <input matInput [(ngModel)]="numeroNotaPesquisa" placeholder="Digite o número da nota para pesquisar" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="pesquisarNota()">Pesquisar</button>
+</div>
+
 
     <!-- Tabela de Notas Fiscais -->
     <table mat-table [dataSource]="notasFiscais" class="mat-elevation-z8">
@@ -19,11 +20,6 @@
         <td mat-cell *matCellDef="let nota"> {{ nota.numero_nota }} </td>
       </ng-container>
 
-      <!-- Chave de Acesso Column -->
-      <ng-container matColumnDef="chaveAcesso">
-        <th mat-header-cell *matHeaderCellDef> Chave de Acesso </th>
-        <td mat-cell *matCellDef="let nota"> {{ nota.chave_acesso }} </td>
-      </ng-container>
 
       <!-- Data de Emissão Column -->
       <ng-container matColumnDef="dataEmissao">

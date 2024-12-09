@@ -11,67 +11,57 @@
 </div>
 
   <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" class="mat-table">
-  
-      <!-- ID Column -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Codigo</th>
-        <td mat-cell *matCellDef="let produto">{{produto.id}}</td>
-      </ng-container>
-  
-      <!-- Nome Column -->
-      <ng-container matColumnDef="nome">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Nome</th>
-        <td mat-cell *matCellDef="let produto">{{produto.nome}}</td>
-      </ng-container>
-  
-      <!-- Volume Column -->
-      <ng-container matColumnDef="volume">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Volume</th>
-        <td mat-cell *matCellDef="let produto">{{produto.volume}}</td>
-      </ng-container>
-  
-      <!-- Codigo Barras Column -->
-      <ng-container matColumnDef="codigo_barras">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Código Barras</th>
-        <td mat-cell *matCellDef="let produto">{{produto.codigo_barras}}</td>
-      </ng-container>
-  
-      <!-- Categoria ID Column -->
-      <ng-container matColumnDef="categoria_id">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Categoria</th>
-        <td mat-cell *matCellDef="let produto">{{produto.categoria_id}}</td>
-      </ng-container>
-  
-      <!-- Marca Column -->
-      <ng-container matColumnDef="marca">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Marca</th>
-        <td mat-cell *matCellDef="let produto">{{produto.marca}}</td>
-      </ng-container>
-  
-      <!-- Fornecedor ID Column -->
-      <ng-container matColumnDef="fornecedor_id">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Fornecedor</th>
-        <td mat-cell *matCellDef="let produto">{{produto.fornecedor_id}}</td>
-      </ng-container>
-  
-     <!-- Acoes Column -->
-     <ng-container matColumnDef="acoes">
-      <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Ações</th>
-      <td mat-cell *matCellDef="let produto" style="text-align: center;">
-        <button mat-icon-button color="primary" (click)="editarProduto(produto)" matTooltip="Editar">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="deletarProduto(produto)" matTooltip="Deletar">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" class="mat-table">
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Codigo</th>
+          <td mat-cell *matCellDef="let produto" style="text-align: center;">{{produto.id}}</td>
+        </ng-container>
+      
+        <!-- Nome Column -->
+        <ng-container matColumnDef="nome">
+          <th mat-header-cell *matHeaderCellDef style="text-align: left; font-size: 15px;">Nome</th>
+          <td mat-cell *matCellDef="let produto" style="text-align: left;">{{produto.nome}}</td>
+        </ng-container>
+      
+        <!-- Volume Column -->
+        <ng-container matColumnDef="volume">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Volume</th>
+          <td mat-cell *matCellDef="let produto" style="text-align: center;">{{produto.volume}}</td>
+        </ng-container>
+      
+        <!-- Codigo Barras Column -->
+        <ng-container matColumnDef="codigo_barras">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Código Barras</th>
+          <td mat-cell *matCellDef="let produto" style="text-align: center;">{{produto.codigo_barras}}</td>
+        </ng-container>
+      
+        <!-- Categoria Column -->
+        <ng-container matColumnDef="categoria">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Categoria</th>
+          <td mat-cell *matCellDef="let produto" style="text-align: center;">{{produto.categoria_nome}}</td>
+        </ng-container>
+      
+        <!-- Ações Column -->
+        <ng-container matColumnDef="acoes">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Ações</th>
+          <td mat-cell *matCellDef="let produto" style="text-align: center;">
+            <button mat-icon-button color="primary" (click)="editarProduto(produto)" matTooltip="Editar">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deletarProduto(produto)" matTooltip="Deletar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+      
+        <!-- Table Rows -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      
+    </div>
     
-  
-      <!-- Atualize as colunas exibidas para incluir "acoes" -->
-      <tr mat-header-row *matHeaderRowDef="displayedColumns.concat('acoes')"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns.concat('acoes');"></tr>
-    </table>
   </div>
   

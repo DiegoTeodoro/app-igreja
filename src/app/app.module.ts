@@ -45,7 +45,6 @@ import { ConsultaNotaFiscalComponent } from './consulta-nota-fiscal/consulta-not
 import { CadastroUsuarioComponent } from './cadastros/cadastro-usuario/cadastro-usuario.component';
 import { RelatorioSaldoEstoqueComponent } from './relatorios/relatorio-saldo-estoque/relatorio-saldo-estoque.component';
 import { RelatorioPedidosComponent } from './relatorios/relatorio-pedidos/relatorio-pedidos.component';
-import { ConsultaPedidoComponent } from './consulta-pedido/consulta-pedido.component';
 import { RelatorioProdutoComponent } from './relatorios/relatorio-produto/relatorio-produto.component';
 import { LoginComponent } from './login/login.component';
 import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
@@ -58,6 +57,8 @@ import { RelatorioNotaFiscalComponent } from './relatorios/relatorio-nota-fiscal
 import { RelatorioDetalhadoPedidosComponent } from './relatorios/relatorio-detalhado-pedidos/relatorio-detalhado-pedidos.component';
 import { PedidoCompraComponent } from './cadastros/pedido-compra/pedido-compra.component';
 import { RelatorioPedidoCompraComponent } from './relatorios/relatorio-pedido-compra/relatorio-pedido-compra.component';
+import { ConsultaPedidoComponent } from './consultas/consulta-pedido/consulta-pedido.component';
+
 
 
 // Registre o locale `pt-BR`
@@ -83,7 +84,6 @@ registerLocaleData(localePt);
     CadastroUsuarioComponent,
     RelatorioSaldoEstoqueComponent,
     RelatorioPedidosComponent,
-    ConsultaPedidoComponent,
     RelatorioProdutoComponent,
     LoginComponent,
     AuthLayoutComponent,
@@ -93,6 +93,8 @@ registerLocaleData(localePt);
     RelatorioDetalhadoPedidosComponent,
     PedidoCompraComponent,
     RelatorioPedidoCompraComponent,
+    ConsultaPedidoComponent,
+
  
    
   ],

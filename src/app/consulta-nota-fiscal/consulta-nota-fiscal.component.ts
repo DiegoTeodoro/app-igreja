@@ -11,7 +11,7 @@ import { PageEvent, MatPaginator } from '@angular/material/paginator';
 })
 export class ConsultaNotaFiscalComponent implements OnInit {
   numeroNotaPesquisa: string = '';
-  displayedColumns: string[] = ['numeroNota', 'chaveAcesso', 'dataEmissao', 'valorTotal'];
+  displayedColumns: string[] = ['numeroNota', 'dataEmissao', 'valorTotal'];
   notasFiscais = new MatTableDataSource<any>([]);
   pageSize = 8;
   pageIndex = 0;

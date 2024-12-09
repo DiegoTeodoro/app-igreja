@@ -21,3 +21,30 @@ button {
 button {
   margin-left: 10px; /* Espaçamento à esquerda do botão */
 }
+/* Ajusta o alinhamento dos dados */
+.mat-cell,
+.mat-header-cell {
+  font-size: 15px;
+}
+
+/* Alinha a coluna "Codigo" no centro */
+.mat-column-id {
+  text-align: center;
+}
+
+/* Alinha a coluna "Nome" à esquerda */
+.mat-column-nome {
+  text-align: left;
+}
+
+/* Alinha as colunas "Volume", "Código Barras" e "Categoria" no centro */
+.mat-column-volume,
+.mat-column-codigo_barras,
+.mat-column-categoria {
+  text-align: center;
+}
+
+/* Alinha a coluna "Ações" no centro */
+.mat-column-acoes {
+  text-align: center;
+}
