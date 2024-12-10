@@ -5,15 +5,19 @@
 }
 
 .custom-table {
-  width: 100%; /* Faz com que a tabela ocupe toda a largura do card */
+  width: 70%; /* Faz com que a tabela ocupe toda a largura do card */
 }
 
-.form-row {
-  margin-bottom: 30px; /* Adiciona margem inferior entre as linhas de formulário */
+.left-align {
+  text-align: left; /* Alinha o texto à esquerda */
+}
+
+.center-align {
+  text-align: center; /* Centraliza o texto */
 }
 
 .mat-form-field {
-  min-width: 200px; /* Define um tamanho mínimo para os campos */
+  min-width: 100px; /* Define um tamanho mínimo para os campos */
   margin-right: 32px; /* Aumenta o espaçamento à direita de cada campo de formulário */
 }
 

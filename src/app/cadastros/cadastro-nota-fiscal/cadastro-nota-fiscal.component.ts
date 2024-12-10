@@ -5,6 +5,9 @@ import { NotaFiscalService } from '../../../services/nota-fiscal.service'; // Im
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cadastro-nota-fiscal',
@@ -12,6 +15,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./cadastro-nota-fiscal.component.css'],
 })
 export class CadastroNotaFiscalComponent implements OnInit {
+
+  produtoControl = new FormControl();
+ produtosFiltrados: Observable<any[]> | undefined;
 
   notaFiscalForm: FormGroup;
   itens = new MatTableDataSource<any>([]);
@@ -22,6 +28,7 @@ export class CadastroNotaFiscalComponent implements OnInit {
   mensagemSucesso: any;
   numeroNotaPesquisa: string = ''; // Armazena o número da nota para pesquisa
   itemEditando: any = null; // Variável para armazenar o item em edição
+  
   constructor(
     private fb: FormBuilder,
     private notaFiscalService: NotaFiscalService, 
@@ -50,6 +57,20 @@ export class CadastroNotaFiscalComponent implements OnInit {
   ngOnInit(): void {
     this.carregarFornecedores();
     this.carregarProdutos();
+    this.produtosFiltrados = this.produtoControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this.filtrarProdutos(value || ''))
+    );
+  }
+
+  filtrarProdutos(valor: string): any[] {
+    const filtro = valor.toLowerCase();
+    return this.produtos.filter(produto => produto.nome.toLowerCase().includes(filtro));
+  }
+  
+  selecionarProduto(event: any): void {
+    const produtoId = event.option.value;
+    this.notaFiscalForm.patchValue({ produto: produtoId });
   }
 
   carregarFornecedores(): void {

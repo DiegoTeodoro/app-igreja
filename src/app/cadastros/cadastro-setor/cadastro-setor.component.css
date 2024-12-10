@@ -1,13 +1,20 @@
 .custom-table-card {
-    width: 40%;
-    /* Centraliza o card horizontalmente */
-  }
-  
-  .custom-table {
-    width: 100%; /* Faz com que a tabela ocupe toda a largura do card */
-  }
- .form-row {
-  margin-bottom: 30px; /* Adiciona margem inferior entre as linhas de formulário */
+  width: 40%; /* Define a largura do card */
+  margin: 0; /* Remove a centralização */
+}
+
+.custom-table {
+  width: 100%; /* Faz com que a tabela ocupe toda a largura do card */
+}
+
+.text-center {
+  text-align: center; /* Centraliza o texto nas colunas */
+}
+
+.actions-cell {
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente os botões de ação */
+  gap: 8px; /* Adiciona espaço entre os botões */
 }
 
 .mat-form-field {
@@ -18,5 +25,3 @@
 button {
   margin-left: 16px; /* Adiciona espaçamento à esquerda do botão Salvar */
 }
-
-  

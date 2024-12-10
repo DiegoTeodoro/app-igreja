@@ -52,11 +52,15 @@
     <form class="form-row-inline">
        <!-- Campo Produto -->
        <mat-form-field appearance="fill" style="flex: 1 1 40%;">
-          <mat-label>Produto</mat-label>
-          <mat-select [(ngModel)]="produtoSelecionado" name="produtoSelecionado" (selectionChange)="onProdutoSelecionado($event)" placeholder="Nome do Produto">
-             <mat-option *ngFor="let produto of produtos" [value]="produto.id">{{produto.nome}}</mat-option>
-          </mat-select>
+         <mat-label>Produto</mat-label>
+         <input type="text" matInput [formControl]="produtoControl" [matAutocomplete]="auto" placeholder="Digite o nome do produto">
+         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onProdutoSelecionado($event)">
+           <mat-option *ngFor="let produto of produtosFiltrados | async" [value]="produto.id">
+             {{ produto.nome }}
+           </mat-option>
+         </mat-autocomplete>
        </mat-form-field>
+       
 
        <mat-form-field appearance="fill" style="flex: 1 1 15%;">
           <mat-label>Quantidade</mat-label>

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { EstadoService } from '../../../services/estado.service';
 
 @Component({
@@ -6,10 +8,12 @@ import { EstadoService } from '../../../services/estado.service';
   templateUrl: './cadastro-estados.component.html',
   styleUrls: ['./cadastro-estados.component.css']
 })
-export class CadastroEstadosComponent implements OnInit {
-  estados: any[] = [];
+export class CadastroEstadosComponent implements OnInit, AfterViewInit {
   estado: any = {};
   displayedColumns: string[] = ['nome', 'sigla', 'actions'];
+  dataSource = new MatTableDataSource<any>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private estadoService: EstadoService) {}
 
@@ -17,9 +21,13 @@ export class CadastroEstadosComponent implements OnInit {
     this.loadEstados();
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator; // Associa o paginator ao dataSource
+  }
+
   loadEstados() {
-    this.estadoService.getEstados().subscribe(data => {
-      this.estados = data;
+    this.estadoService.getEstados().subscribe((data: any[]) => {
+      this.dataSource.data = data; // Carrega os dados no dataSource
     });
   }
 

@@ -25,3 +25,11 @@
     bottom: auto !important; /* Remove qualquer posição inferior */
   }
   
+  .mat-form-field {
+    margin-right: 16px;
+  }
+  
+  button {
+    margin-left: 16px;
+  }
+  

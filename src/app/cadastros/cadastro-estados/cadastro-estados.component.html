@@ -3,17 +3,16 @@
   <mat-card-content>
     <form (ngSubmit)="saveEstado()" class="form">
       <div fxLayout="row" fxLayoutGap="32px" fxLayoutAlign="start center">
-
         <!-- Campo Nome -->
         <mat-form-field fxFlex="40%">
           <mat-label>Nome</mat-label>
-          <input matInput placeholder="Nome" [(ngModel)]="estado.nome" name="nome" required>
+          <input matInput placeholder="Nome" [(ngModel)]="estado.nome" name="nome" required />
         </mat-form-field>
 
         <!-- Campo Sigla -->
         <mat-form-field fxFlex="20%">
           <mat-label>Sigla</mat-label>
-          <input matInput placeholder="Sigla" [(ngModel)]="estado.sigla" name="sigla" required>
+          <input matInput placeholder="Sigla" [(ngModel)]="estado.sigla" name="sigla" required />
         </mat-form-field>
 
         <!-- Botão Salvar -->
@@ -26,23 +25,23 @@
 <mat-card>
   <mat-card-title>Lista de Estados</mat-card-title>
   <mat-card-content>
-    <table mat-table [dataSource]="estados" class="custom-table">
+    <table mat-table [dataSource]="dataSource" class="custom-table">
       <!-- Coluna Nome -->
       <ng-container matColumnDef="nome">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Nome </th>
-        <td mat-cell *matCellDef="let estado"> {{estado.nome}} </td>
+        <th mat-header-cell *matHeaderCellDef class="left-align"> Nome </th>
+        <td mat-cell *matCellDef="let estado" class="left-align"> {{estado.nome}} </td>
       </ng-container>
-      
+
       <!-- Coluna Sigla -->
       <ng-container matColumnDef="sigla">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Sigla </th>
-        <td mat-cell *matCellDef="let estado"> {{estado.sigla}} </td>
+        <th mat-header-cell *matHeaderCellDef class="center-align"> Sigla </th>
+        <td mat-cell *matCellDef="let estado" class="center-align"> {{estado.sigla}} </td>
       </ng-container>
 
       <!-- Coluna Ações -->
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center;">Ações</th>
-        <td mat-cell *matCellDef="let estado" style="text-align: center;">
+        <th mat-header-cell *matHeaderCellDef class="center-align"> Ações </th>
+        <td mat-cell *matCellDef="let estado" class="center-align">
           <button mat-icon-button color="primary" (click)="editEstado(estado)" matTooltip="Editar">
             <mat-icon>edit</mat-icon>
           </button>
@@ -55,5 +54,6 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </mat-card-content>
 </mat-card>

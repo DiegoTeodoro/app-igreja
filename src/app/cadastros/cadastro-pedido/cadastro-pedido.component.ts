@@ -5,6 +5,10 @@ import { PedidoService } from "../../../services/pedido.service";
 import { SaldoEstoqueService } from "../../../services/Saldo_Estoque.service";
 import { jsPDF } from "jspdf";
 import autoTable from 'jspdf-autotable';
+import { FormControl } from "@angular/forms";
+import { Observable } from "rxjs";
+import { map, startWith } from "rxjs/operators";
+
 
 @Component({
   selector: "app-cadastro-pedido",
@@ -13,11 +17,9 @@ import autoTable from 'jspdf-autotable';
 })
 export class CadastroPedidoComponent implements OnInit {
 codigoPedido: any;
-
-  editarItem(_t151: any) {
-    throw new Error('Method not implemented.');
-  }
-
+produtoControl = new FormControl();
+produtosFiltrados: Observable<any[]> | undefined;
+  
   igrejas: any[] = [];
   produtos: any[] = [];
   pedido: any = { igreja_id: null, recebedor: '', pedido_itens: [] };
@@ -36,8 +38,12 @@ codigoPedido: any;
   ngOnInit(): void {
     this.carregarIgrejas();
     this.carregarProdutos();
-    // Definir o status como "Processando" ao carregar a página
+    this.inicializarFiltro();
     this.pedido.status = 'Processando'; 
+  }
+
+  editarItem(_t151: any) {
+    throw new Error('Method not implemented.');
   }
 
   carregarIgrejas() {
@@ -56,7 +62,7 @@ codigoPedido: any;
       (dados: any[]) => {
         this.produtos = dados;
       },
-      error => {
+      (error) => {
         console.error("Erro ao carregar produtos: ", error);
       }
     );
@@ -64,20 +70,34 @@ codigoPedido: any;
 
   // Método para obter o valor unitário ao selecionar um produto
   onProdutoSelecionado(event: any) {
-    const produtoId = event.value;
+    const produtoId = event.option.value;
     if (produtoId) {
       this.saldoEstoqueService.getPrecoUnitario(produtoId).subscribe(
-        (response: { preco_unitario: number | null; }) => {
+        (response: { preco_unitario: number | null }) => {
           if (response && response.preco_unitario) {
-            this.valorUnitario = response.preco_unitario;  // Atualizar o valor unitário automaticamente
+            this.valorUnitario = response.preco_unitario; // Atualizar o valor unitário automaticamente
           }
         },
-        (error: any) => {
-          console.error('Erro ao buscar o preço unitário:', error);
+        (error) => {
+          console.error("Erro ao buscar o preço unitário:", error);
         }
       );
     }
   }
+  inicializarFiltro() {
+    this.produtosFiltrados = this.produtoControl.valueChanges.pipe(
+      startWith(""),
+      map((value) => this.filtrarProdutos(value || ""))
+    );
+  }
+
+  filtrarProdutos(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.produtos.filter((produto) => produto.nome.toLowerCase().includes(filterValue));
+  }
+
+  
+
 
   adicionarItem() {
     if (!this.produtoSelecionado || this.quantidade == null || this.valorUnitario == null) {

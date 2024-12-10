@@ -29,10 +29,12 @@
             <mat-label>Número da Nota</mat-label>
             <input matInput formControlName="numeroNota" required />
           </mat-form-field>
+
           <mat-form-field appearance="fill">
             <mat-label>Série</mat-label>
             <input matInput formControlName="serie" required />
           </mat-form-field>
+
           <mat-form-field appearance="fill" class="chave-acesso-40">
             <mat-label>Chave de Acesso</mat-label>
             <input matInput formControlName="chaveAcesso" required />
@@ -68,13 +70,16 @@
           <mat-divider></mat-divider>
           <h3>Adicionar Itens</h3>
           <div class="adicionar-itens">
-            <mat-form-field appearance="fill" class="nome-produto-40">
-              <mat-label>Nome do Produto</mat-label>
-              <mat-select formControlName="produto">
-                <mat-option *ngFor="let produto of produtos" [value]="produto.id">{{ produto.nome }}
-                </mat-option>
-            </mat-select>
-            </mat-form-field>
+
+          <mat-form-field appearance="fill" class="nome-produto-40">
+          <mat-label>Nome do Produto</mat-label>
+          <input type="text" matInput [formControl]="produtoControl" [matAutocomplete]="auto" placeholder="Digite o nome do produto">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selecionarProduto($event)">
+            <mat-option *ngFor="let produto of produtosFiltrados | async" [value]="produto.id">
+              {{ produto.nome }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
 
             <mat-form-field appearance="fill" class="quantidade-10">
               <mat-label>Quantidade</mat-label>
