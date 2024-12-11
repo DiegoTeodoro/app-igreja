@@ -30,7 +30,6 @@ connection.connect((err) => {
 });
 
 
-
 // CRUD APIs for 'setor'
 app.get("/setores", (req, res) => {
   connection.query("SELECT * FROM setor", (err, results) => {
@@ -278,8 +277,6 @@ app.get("/produtos/nome/:nome", (req, res) => {
     }
   });
 });
-
-
 
 // Create a new product
 app.post("/produtos", (req, res) => {

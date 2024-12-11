@@ -44,14 +44,14 @@ export class CadastroNotaFiscalComponent implements OnInit {
       fornecedor: [''],
       dataEmissao: [''],
       observacao: [''],
-      produto: [''],
+      produto: [''], // Adicione aqui
       quantidade: [''],
       valorUnitario: [''],
       valorTotalProduto: [''],
       desconto: [''],
       outros: [''],
       valorTotalNota: ['']
-    });
+  });  
   }
 
   ngOnInit(): void {
@@ -69,10 +69,13 @@ export class CadastroNotaFiscalComponent implements OnInit {
   }
   
   selecionarProduto(event: any): void {
-    const produtoId = event.option.value;
-    this.notaFiscalForm.patchValue({ produto: produtoId });
+    const produtoNome = event.option.value;
+    const produtoSelecionado = this.produtos.find(p => p.nome === produtoNome);
+    if (produtoSelecionado) {
+      this.notaFiscalForm.patchValue({ produto: produtoSelecionado.id });
+    }
   }
-
+  
   carregarFornecedores(): void {
     this.notaFiscalService.getFornecedores().subscribe(
       (data: any[]) => {
@@ -170,6 +173,9 @@ salvarNotaFiscal(): void {
           this.notaFiscalForm.reset();
           this.itens.data = [];
           this.notaFiscalForm.patchValue({ valorTotalNota: 0 });
+
+          // Resetar manualmente o campo de autocomplete
+          this.produtoControl.reset();
       },
       (error: any) => {
           console.error('Erro ao salvar nota fiscal:', error);
@@ -177,7 +183,6 @@ salvarNotaFiscal(): void {
       }
   );
 }
-
 
   consultarNotaFiscal(): void {
     const numeroNota = this.notaFiscalForm.get('numeroNotaPesquisa')?.value;

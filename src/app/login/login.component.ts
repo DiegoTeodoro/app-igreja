@@ -35,12 +35,13 @@ export class LoginComponent implements OnInit {
       const { login, senha } = this.loginForm.value;
       this.usuarioService.login({ login, senha }).subscribe(
         (response) => {
-          localStorage.setItem('authToken', response.token); // Salva o token
-          localStorage.setItem('userId', response.usuario.id); // Salva o ID do usuário
-          localStorage.setItem('userName', response.usuario.nome); // Salva o nome do usuário
-          localStorage.setItem('userProfile', response.usuario.perfil.toLowerCase()); // Salva o perfil
-          this.isAuthenticated = true; // Atualiza a autenticação
-          this.router.navigate(['/home']); // Redireciona
+          const loginTime = new Date().getTime(); // Obtém o timestamp atual
+          localStorage.setItem('authToken', response.token);
+          localStorage.setItem('userId', response.usuario.id);
+          localStorage.setItem('userName', response.usuario.nome);
+          localStorage.setItem('userProfile', response.usuario.perfil.toLowerCase());
+          localStorage.setItem('loginTime', loginTime.toString()); // Salva o horário do login
+          this.router.navigate(['/home']);
         },
         (error) => {
           console.error('Erro ao autenticar:', error);
@@ -48,8 +49,7 @@ export class LoginComponent implements OnInit {
         }
       );
     }
-  }
-  
+  }  
   
 
   login(): void {

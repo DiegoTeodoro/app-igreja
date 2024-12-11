@@ -69,21 +69,26 @@ produtosFiltrados: Observable<any[]> | undefined;
   }
 
   // Método para obter o valor unitário ao selecionar um produto
-  onProdutoSelecionado(event: any) {
-    const produtoId = event.option.value;
-    if (produtoId) {
-      this.saldoEstoqueService.getPrecoUnitario(produtoId).subscribe(
-        (response: { preco_unitario: number | null }) => {
-          if (response && response.preco_unitario) {
-            this.valorUnitario = response.preco_unitario; // Atualizar o valor unitário automaticamente
-          }
-        },
-        (error) => {
-          console.error("Erro ao buscar o preço unitário:", error);
+  selecionarProduto(event: any) {
+    const produtoSelecionado = event.option.value;
+    this.produtoSelecionado = produtoSelecionado.id;
+  
+    // Atualiza o campo para exibir o nome do produto
+    this.produtoControl.setValue(produtoSelecionado.nome);
+  
+    // Busca o preço unitário
+    this.saldoEstoqueService.getPrecoUnitario(produtoSelecionado.id).subscribe(
+      (response: { preco_unitario: number | null }) => {
+        if (response && response.preco_unitario) {
+          this.valorUnitario = response.preco_unitario;
         }
-      );
-    }
+      },
+      (error) => {
+        console.error("Erro ao buscar o preço unitário:", error);
+      }
+    );
   }
+    
   inicializarFiltro() {
     this.produtosFiltrados = this.produtoControl.valueChanges.pipe(
       startWith(""),
@@ -95,9 +100,6 @@ produtosFiltrados: Observable<any[]> | undefined;
     const filterValue = value.toLowerCase();
     return this.produtos.filter((produto) => produto.nome.toLowerCase().includes(filterValue));
   }
-
-  
-
 
   adicionarItem() {
     if (!this.produtoSelecionado || this.quantidade == null || this.valorUnitario == null) {
@@ -186,7 +188,7 @@ produtosFiltrados: Observable<any[]> | undefined;
     doc.text(subTitle, (pageWidth - subTitleWidth) / 2, 40);
 
     // Recebedor
-    doc.setFontSize(14);
+    doc.setFontSize(10);
     doc.text('Recebedor: ' + this.pedido.recebedor, 10, 60);
 
     // Tabela de Itens do Pedido

@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -73,13 +74,7 @@ export class AppComponent implements OnInit {
   ];
   sidenav: any;
 
-  // @HostListener('window:beforeunload', ['$event'])
-  // onBeforeUnload(event: Event): void {
-  //   localStorage.removeItem('authToken');
-  //   localStorage.removeItem('userName');
-  // }
-
-  constructor(private router: Router, private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
+  constructor(private authService: AuthService, private router: Router, private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
     this.matIconRegistry.addSvgIcon(
       'assignment',
       this.domSanitizer.bypassSecurityTrustResourceUrl('assets/assignment.svg')
@@ -186,28 +181,26 @@ export class AppComponent implements OnInit {
 
   checkAuthentication(): void {
     const authToken = localStorage.getItem('authToken');
-    this.isAuthenticated = !!authToken;
-
-    if (this.isAuthenticated) {
+    const loginTime = parseInt(localStorage.getItem('loginTime') || '0', 10);
+    const currentTime = new Date().getTime();
+    const sessionDuration = 60 * 60 * 1000; // 1 hora em milissegundos
+  
+    if (authToken && currentTime - loginTime <= sessionDuration) {
+      this.isAuthenticated = true;
       this.userName = localStorage.getItem('userName') || 'Usuário';
       this.userProfile = localStorage.getItem('userProfile') || '';
     } else {
-      this.router.navigate(['/login']);
+      this.logout(); // Expira a sessão se exceder 1 hora
     }
   }
-
+  
   logout(): void {
-    // Limpar dados do localStorage e sessionStorage
     localStorage.clear();
     sessionStorage.clear();
-  
-    // Atualizar estados locais
     this.isAuthenticated = false;
-    this.userName = null; // Zerar o nome do usuário
-    this.userProfile = null; // Zerar o perfil do usuário
-  
-    // Redirecionar para a tela de login
+    this.userName = null;
+    this.userProfile = null;
     this.router.navigate(['/login']);
-  }
+  }  
   
 }

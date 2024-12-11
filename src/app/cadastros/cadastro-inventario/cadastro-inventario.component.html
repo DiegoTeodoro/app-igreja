@@ -1,88 +1,87 @@
 <mat-card>
-    <mat-card-title>Cadastro de Inventário</mat-card-title>
-    <mat-card-content>
-      <form [formGroup]="inventarioForm">
-  <!-- Linha: Usuário e Data -->
+  <mat-card-title>Cadastro de Inventário</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="inventarioForm">
+<!-- Linha: Usuário e Data -->
 <div fxLayout="row" fxLayoutGap="20px">
-  <mat-form-field appearance="fill" class="usuario">
-    <mat-label>Usuário</mat-label>
-    <input matInput [value]="userName" disabled /> <!-- Usa a variável 'userName' -->
-  </mat-form-field>
-  
-  
+<mat-form-field appearance="fill" class="usuario">
+  <mat-label>Usuário</mat-label>
+  <input matInput [value]="userName" disabled /> <!-- Usa a variável 'userName' -->
+</mat-form-field>
 
-  <mat-form-field appearance="fill" class="data">
-    <mat-label>Data</mat-label>
-    <input matInput type="date" formControlName="data" required />
-  </mat-form-field>
+
+
+<mat-form-field appearance="fill" class="data">
+  <mat-label>Data</mat-label>
+  <input matInput type="date" formControlName="data" required />
+</mat-form-field>
 </div>
 
 <!-- Linha: Produto, Quantidade e Botão Adicionar -->
 <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
-  <mat-form-field appearance="fill" class="produto">
-    <mat-label>Produto</mat-label>
-    <mat-select formControlName="produto_id" required>
-      <mat-option *ngFor="let produto of produtos" [value]="produto.id">
-        {{ produto.nome }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+<mat-form-field appearance="fill" class="produto">
+  <mat-label>Produto</mat-label>
+  <mat-select formControlName="produto_id" required>
+    <mat-option *ngFor="let produto of produtos" [value]="produto.id">
+      {{ produto.nome }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
 
-  <mat-form-field appearance="fill" class="quantidade">
-    <mat-label>Quantidade</mat-label>
-    <input matInput type="number" formControlName="quantidade" required />
-  </mat-form-field>
+<mat-form-field appearance="fill" class="quantidade">
+  <mat-label>Quantidade</mat-label>
+  <input matInput type="number" formControlName="quantidade" required />
+</mat-form-field>
 
-  <button mat-raised-button color="primary" (click)="adicionarProduto()">
-    Adicionar
-  </button>
+<button mat-raised-button color="primary" (click)="adicionarProduto()">
+  Adicionar
+</button>
 </div>
 
 <!-- Linha: Observação -->
 <div fxLayout="row">
-  <mat-form-field appearance="fill" class="observacao">
-    <mat-label>Observação</mat-label>
-    <input matInput formControlName="observacao" />
-  </mat-form-field>
+<mat-form-field appearance="fill" class="observacao">
+  <mat-label>Observação</mat-label>
+  <input matInput formControlName="observacao" />
+</mat-form-field>
 </div>
 
-       <!-- Tabela de Produtos Adicionados -->
+     <!-- Tabela de Produtos Adicionados -->
 <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <ng-container matColumnDef="produto">
-    <mat-header-cell *matHeaderCellDef> Produto </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{ element.produtoNome }} </mat-cell>
-  </ng-container>
+<ng-container matColumnDef="produto">
+  <mat-header-cell *matHeaderCellDef> Produto </mat-header-cell>
+  <mat-cell *matCellDef="let element"> {{ element.produtoNome }} </mat-cell>
+</ng-container>
 
-  <ng-container matColumnDef="quantidade">
-    <mat-header-cell *matHeaderCellDef> Quantidade </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{ element.quantidade }} </mat-cell>
-  </ng-container>
+<ng-container matColumnDef="quantidade">
+  <mat-header-cell *matHeaderCellDef> Quantidade </mat-header-cell>
+  <mat-cell *matCellDef="let element"> {{ element.quantidade }} </mat-cell>
+</ng-container>
 
-  <ng-container matColumnDef="acoes">
-    <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      <button mat-icon-button color="primary" (click)="editarProduto(element)">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-icon-button color="warn" (click)="removerProduto(element)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </mat-cell>
-  </ng-container>
+<ng-container matColumnDef="acoes">
+  <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
+  <mat-cell *matCellDef="let element">
+    <button mat-icon-button color="primary" (click)="editarProduto(element)">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button color="warn" (click)="removerProduto(element)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-cell>
+</ng-container>
 
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 </mat-table>
 
-  
-        <!-- Linha: Botões de Ação -->
-        <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px" style="margin-top: 20px;">
-          <button mat-raised-button color="primary" (click)="onSubmit()">
-            Salvar
-          </button>
-          <button mat-raised-button color="warn" (click)="onReset()">Cancelar</button>
-        </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
-  
+
+      <!-- Linha: Botões de Ação -->
+      <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px" style="margin-top: 20px;">
+        <button mat-raised-button color="primary" (click)="onSubmit()">
+          Salvar
+        </button>
+        <button mat-raised-button color="warn" (click)="onReset()">Cancelar</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

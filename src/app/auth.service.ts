@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
+  [x: string]: any;
   private baseUrl = 'http://localhost:3000'; // URL do backend
 
   constructor(private http: HttpClient, private router: Router) {}
