@@ -1,0 +1,18 @@
+table {
+  width: 100%;
+}
+
+th.mat-header-cell {
+  font-weight: bold;
+}
+
+.mat-card {
+  margin: 20px;
+  padding: 20px;
+}
+
+.titulo-relatorio {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}

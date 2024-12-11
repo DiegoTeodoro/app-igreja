@@ -24,6 +24,7 @@ import { RelatorioDetalhadoPedidosComponent } from './relatorios/relatorio-detal
 import { PedidoCompraComponent } from './cadastros/pedido-compra/pedido-compra.component';
 import { RelatorioPedidoCompraComponent } from './relatorios/relatorio-pedido-compra/relatorio-pedido-compra.component';
 import { ConsultaPedidoComponent } from './consultas/consulta-pedido/consulta-pedido.component';
+import { RelatorioInventarioComponent } from './relatorios/relatorio-inventario/relatorio-inventario.component';
 
 
 
@@ -52,7 +53,8 @@ const routes: Routes = [
   { path: 'relatorio-detalhado-pedidos', component: RelatorioDetalhadoPedidosComponent, canActivate: [AuthGuard] },
   { path: 'pedido-compra', component: PedidoCompraComponent, canActivate: [AuthGuard] },
   { path: 'relatorio-pedido-compra', component: RelatorioPedidoCompraComponent, canActivate: [AuthGuard] },
-  { path: 'consulta-pedido', component: ConsultaPedidoComponent, canActivate: [AuthGuard]}
+  { path: 'consulta-pedido', component: ConsultaPedidoComponent, canActivate: [AuthGuard]},
+  { path: 'relatorio-inventario', component: RelatorioInventarioComponent, canActivate: [AuthGuard] }
 
 
 

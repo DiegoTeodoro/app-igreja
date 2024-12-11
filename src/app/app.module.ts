@@ -58,6 +58,7 @@ import { RelatorioDetalhadoPedidosComponent } from './relatorios/relatorio-detal
 import { PedidoCompraComponent } from './cadastros/pedido-compra/pedido-compra.component';
 import { RelatorioPedidoCompraComponent } from './relatorios/relatorio-pedido-compra/relatorio-pedido-compra.component';
 import { ConsultaPedidoComponent } from './consultas/consulta-pedido/consulta-pedido.component';
+import { RelatorioInventarioComponent } from './relatorios/relatorio-inventario/relatorio-inventario.component';
 
 
 
@@ -94,6 +95,7 @@ registerLocaleData(localePt);
     PedidoCompraComponent,
     RelatorioPedidoCompraComponent,
     ConsultaPedidoComponent,
+    RelatorioInventarioComponent,
 
  
    

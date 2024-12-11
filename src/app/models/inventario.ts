@@ -1,7 +1,8 @@
 export interface Inventario {
-  id?: number;
+  id?: number; 
   produto_id: number;
-  usuario_id: number;
-  quantidade: number;
-  data: string; // Alterado de Date para string
+  usuario_id: number; 
+  quantidade: number; 
+  observacao?: string; // Observação opcional, já que pode não ser preenchida
+  data_inventario: string; // Data e hora do inventário, em formato ISO string
 }

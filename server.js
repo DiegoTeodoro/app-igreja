@@ -1248,91 +1248,6 @@ app.post('/usuarios', verifyToken, verifyAdmin, (req, res) => {
   });
 });
 
-
-// CRUD APIs for 'inventarios'
-app.get("/inventarios/produtos", (req, res) => {
-  const query = `
-    SELECT p.id, p.nome, p.volume, p.codigo_barras, p.marca, c.nome AS categoria_nome, f.nome_fantasia AS fornecedor_nome
-    FROM produtos p
-    JOIN categoria c ON p.categoria_id = c.id
-    JOIN fornecedor f ON p.fornecedor_id = f.id
-  `;
-
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error("Erro ao buscar produtos:", err);
-      res.status(500).send("Erro ao buscar produtos");
-    } else {
-      res.json(results);
-    }
-  });
-});
-
-// Get a single product by ID
-app.get("/inventarios/produtos/:id", (req, res) => {
-  const id = req.params.id;
-  const query = "SELECT * FROM produtos WHERE id = ?";
-  connection.query(query, [id], (err, results) => {
-    if (err) {
-      res.status(500).send(err);
-    } else if (results.length > 0) {
-      res.json(results[0]);
-    } else {
-      res.status(404).send("Produto não encontrado");
-    }
-  });
-});
-
-// Rota para salvar o inventário em lote
-app.post("/inventarios/lote", (req, res) => {
-  const inventarioData = req.body; // Array de dados do inventário
-
-  const query = `
-    INSERT INTO inventario (produto_id, usuario_id, quantidade, data_inventario, observacao)
-    VALUES ?
-  `;
-
-  const values = inventarioData.map((item) => [
-    item.produto_id,
-    item.usuario_id,
-    item.quantidade,
-    item.data, // Certifique-se de que 'data' está no formato correto (YYYY-MM-DD HH:MM:SS)
-    item.observacao,
-  ]);
-
-  connection.query(query, [values], (err, result) => {
-    if (err) {
-      console.error("Erro ao inserir inventário:", err);
-      res.status(500).send("Erro ao inserir inventário");
-    } else {
-      res.status(201).json({ message: "Inventário inserido com sucesso" });
-    }
-  });
-});
-
-
-// Update inventory stock balance
-app.put("/inventarios/saldo-estoque", (req, res) => {
-  const { produto_id, quantidade } = req.body;
-
-  const query = `
-    UPDATE saldo_estoque 
-    SET quantidade = quantidade + ?
-    WHERE produto_id = ?
-  `;
-
-  connection.query(query, [quantidade, produto_id], (err, result) => {
-    if (err) {
-      console.error("Erro ao atualizar saldo de estoque:", err);
-      res.status(500).send("Erro ao atualizar saldo de estoque");
-      return;
-    }
-
-    res.send("Saldo de estoque atualizado com sucesso");
-  });
-});
-
-
 const server = app.listen(port, () => {
   // Mantido apenas uma chamada para app.listen
   console.log(`Server running on port ${port}`);
@@ -1414,6 +1329,53 @@ app.get("/pedido-compra/:id", (req, res) => {
     } else {
       res.status(404).send("Pedido de compra não encontrado");
     }
+  });
+});
+
+app.post("/inventarios/lote", (req, res) => {
+  const inventarios = req.body; // Deve ser um array de objetos
+  const query = `
+      INSERT INTO inventario (produto_id, usuario_id, quantidade, data_inventario, observacao)
+      VALUES ?
+  `;
+
+  const values = inventarios.map(item => [
+      item.produto_id,
+      item.usuario_id,
+      item.quantidade,
+      item.data_inventario,
+      item.observacao,
+  ]);
+
+  connection.query(query, [values], (err, result) => {
+      if (err) {
+          console.error("Erro ao salvar inventário:", err);
+          res.status(500).json({ message: "Erro ao salvar inventário." });
+          return;
+      }
+      res.status(201).json({ message: "Inventário salvo com sucesso.", insertId: result.insertId });
+  });
+});
+
+app.get('/relatorio-inventario', (req, res) => {
+  const query = `
+    SELECT 
+      p.nome AS produto_nome, 
+      i.quantidade, 
+      i.data_inventario, 
+      u.login AS usuario
+    FROM inventario i
+    JOIN produtos p ON i.produto_id = p.id
+    JOIN usuarios u ON i.usuario_id = u.id
+  `;
+
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar relatório de inventário:', err);
+      res.status(500).send('Erro ao buscar relatório de inventário');
+      return;
+    }
+    res.json(results);
   });
 });
 
