@@ -33,25 +33,25 @@
           <mat-table [dataSource]="grupo.pedidos" class="mat-elevation-z8">
             <!-- Código -->
             <ng-container matColumnDef="codigo">
-              <mat-header-cell *matHeaderCellDef> Código </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef  style="background-color: #438EB9; color: white; font-size: 1.1rem;"> Código </mat-header-cell>
               <mat-cell *matCellDef="let element"> {{ element.codigo }} </mat-cell>
             </ng-container>
   
             <!-- Produto -->
             <ng-container matColumnDef="produto">
-              <mat-header-cell *matHeaderCellDef> Produto </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef  style="background-color: #438EB9; color: white; font-size: 1.1rem;"> Produto </mat-header-cell>
               <mat-cell *matCellDef="let element"> {{ element.produto }} </mat-cell>
             </ng-container>
   
             <!-- Quantidade -->
             <ng-container matColumnDef="quantidade">
-              <mat-header-cell *matHeaderCellDef> Quantidade </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef  style="background-color: #438EB9; color: white; font-size: 1.1rem;"> Quantidade </mat-header-cell>
               <mat-cell *matCellDef="let element"> {{ element.quantidade }} </mat-cell>
             </ng-container>
   
             <!-- Data do Pedido -->
             <ng-container matColumnDef="dataPedido">
-              <mat-header-cell *matHeaderCellDef> Data da solicitação </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef  style="background-color: #438EB9; color: white; font-size: 1.1rem;"> Data da solicitação </mat-header-cell>
               <mat-cell *matCellDef="let element"> {{ element.dataPedido | date }} </mat-cell>
             </ng-container>
   

@@ -5,8 +5,7 @@ table {
 
 th.mat-header-cell {
   font-weight: bold;
-  background-color: #438EB9;
-  color: white
+ 
 }
 
 .mat-card {
@@ -18,4 +17,17 @@ th.mat-header-cell {
   text-align: center;
   font-size: 1.5rem;
   /*font-weight: bold;*/
+}
+
+td.mat-cell, th.mat-header-cell {
+  text-align: left; /* Alinha à esquerda por padrão */
+}
+
+td.mat-cell.quantidade, 
+th.mat-header-cell.quantidade,
+td.mat-cell.data, 
+th.mat-header-cell.data,
+td.mat-cell.usuario, 
+th.mat-header-cell.usuario {
+  text-align: center; /* Centraliza os dados das colunas especificadas */
 }
