@@ -1,9 +1,12 @@
 table {
   width: 100%;
+  
 }
 
 th.mat-header-cell {
   font-weight: bold;
+  background-color: #438EB9;
+  color: white
 }
 
 .mat-card {
@@ -14,5 +17,5 @@ th.mat-header-cell {
 .titulo-relatorio {
   text-align: center;
   font-size: 1.5rem;
-  font-weight: bold;
+  /*font-weight: bold;*/
 }
