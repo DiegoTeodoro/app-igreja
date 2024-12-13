@@ -1,7 +1,29 @@
-<div class="alert alert-info text-large" style="color: #31708f; background-color: #d9edf7; border-color: #bce8f1;">
-  <i class="icon-info-sign bigger-120"></i>
-  <strong>Pedidos CNS Limpeza</strong>
-  <br>
-  <p>Os pedidos das Casas de Orações devem ser realizados, entre os dia 25 a 30 de cada mês.</p>
-  <p>Importante que as Casas de Orações, mantem os produtos organizadas em seus almoxarifados.</p>
+<div class="dashboard-container">
+  <!-- Cards de Resumo -->
+  <div class="summary-cards">
+    <mat-card class="summary-card">
+      <mat-card-title style="color: #fff;">Quantidade de Pedidos</mat-card-title>
+      <mat-card-content class="card-value">{{ quantidadePedidos }}</mat-card-content>
+    </mat-card>
+    <mat-card class="summary-card">
+      <mat-card-title style="color: #fff;">Valor Total de Pedidos no mês</mat-card-title>
+      <mat-card-content class="card-value">R$ {{ valorTotalPedidos | number: '1.2-2' }}</mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Gráficos -->
+  <div class="charts-container">
+    <div class="chart">
+      <div class="chart-title-bar">
+        <h3>Valor dos Pedidos por Igreja</h3>
+      </div>
+      <canvas id="chartIgreja"></canvas>
+    </div>
+    <div class="chart">
+      <div class="chart-title-bar">
+        <h3>Valor Total de Pedidos por Mês</h3>
+      </div>
+      <canvas id="chartMes"></canvas>
+    </div>
+  </div>
 </div>

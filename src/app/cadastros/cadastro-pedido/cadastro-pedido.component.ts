@@ -8,7 +8,7 @@ import autoTable from 'jspdf-autotable';
 import { FormControl } from "@angular/forms";
 import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-cadastro-pedido",
@@ -33,14 +33,20 @@ produtosFiltrados: Observable<any[]> | undefined;
   // Definir as colunas que serão exibidas na tabela
   displayedColumns: string[] = ['produto', 'quantidade', 'valorUnitario', 'valorTotal', 'acoes'];
 
-  constructor(private pedidoService: PedidoService, private saldoEstoqueService: SaldoEstoqueService, private snackBar: MatSnackBar) {}
+  constructor(
+    private pedidoService: PedidoService,
+    private saldoEstoqueService: SaldoEstoqueService,
+    private snackBar: MatSnackBar,
+    private router: Router // Adicione o Router aqui
+  ) {}
 
   ngOnInit(): void {
     this.carregarIgrejas();
     this.carregarProdutos();
     this.inicializarFiltro();
     this.pedido.status = 'Processando'; 
-  }
+    this.pedido.data_pedido = new Date(); // Define a data atual
+}
 
   editarItem(_t151: any) {
     throw new Error('Method not implemented.');
@@ -160,6 +166,9 @@ produtosFiltrados: Observable<any[]> | undefined;
         this.gerarPdfPedido();
         this.mostrarMensagem('Pedido realizado com sucesso!');
         this.limparFormulario();
+
+        // Recarrega a página atual após finalizar o pedido
+      window.location.reload();
       },
       error => {
         this.snackBar.open('Erro ao salvar o pedido. Tente novamente.', 'Fechar', { duration: 3000 });
@@ -276,8 +285,6 @@ carregarItensPedido(pedidoId: number) {
     }
   );
 }
-
-
 }
 
   

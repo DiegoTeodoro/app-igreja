@@ -1,17 +1,42 @@
-.icon-info-sign {
-    font-size: 25px; /* Aumenta o tamanho do ícone */
-    margin-right: 10px; /* Espaço entre ícone e texto */
-}
-.bigger-120 {
-    font-size: 150%; /* Aumenta o tamanho do texto forte */
-}
-.text-large {
-    font-size: 18px; /* Define um tamanho maior para o texto */
-    line-height: 1.6; /* Melhora o espaçamento entre as linhas */
-}
-.alert {
-    font-size: 18px; /* Ajusta o tamanho da fonte */
-    line-height: 1.6; /* Melhora o espaçamento entre as linhas */
-    padding: 5px; /* Espaçamento interno em todos os lados */
-    border-radius: 5px; /* Arredonda os cantos (opcional) */
-}
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .summary-cards {
+    display: flex;
+    gap: 20px;
+   
+  }
+  
+  .summary-card {
+    flex: 1;
+    text-align: center;
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .charts-container {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+  }
+  
+  .chart {
+    flex: 1;
+  }
+  .chart-title-bar {
+    background-color:  #e9ecef;
+    padding: 10px; /* Adiciona espaçamento ao redor do texto */
+    color: rgb(90, 84, 84); /* Define o texto branco */
+    text-align: center; /* Centraliza o texto */
+    border-radius: 4px; /* Adiciona bordas arredondadas (opcional) */
+    margin-bottom: 10px; /* Espaço entre a barra e o gráfico */
+  }
+  .card-value {
+    font-size: 1.1rem; /* Aumenta o tamanho da fonte */
+    font-weight: bold; /* Torna o texto mais destacado (opcional) */
+  }
+  
+  

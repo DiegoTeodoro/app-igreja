@@ -652,61 +652,80 @@ function formatDateToMySQL(date) {
 }
 
 // Rota para salvar a nota fiscal e os itens da nota fiscal
+// Rota para salvar a nota fiscal e os itens da nota fiscal
 app.post("/notas-fiscais", (req, res) => {
   const notaFiscal = req.body;
 
-  const queryNotaFiscal = `
-      INSERT INTO nota_fiscal (
-          numero_nota, serie, chave_acesso, fornecedor_id, data_emissao, valor_total, desconto, outros
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `;
+  // Função para validar e formatar data
+  function validateAndFormatDate(date) {
+    if (!date || isNaN(new Date(date).getTime())) {
+      throw new Error("Data inválida");
+    }
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = ('0' + (d.getMonth() + 1)).slice(-2);
+    const day = ('0' + d.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
 
-  const paramsNotaFiscal = [
+  try {
+    const dataEmissao = validateAndFormatDate(notaFiscal.data_emissao); // Formata a data
+
+    const queryNotaFiscal = `
+        INSERT INTO nota_fiscal (
+            numero_nota, serie, chave_acesso, fornecedor_id, data_emissao, valor_total, desconto, outros
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const paramsNotaFiscal = [
       notaFiscal.numero_nota,
       notaFiscal.serie,
       notaFiscal.chave_acesso,
       notaFiscal.fornecedor_id,
-      notaFiscal.data_emissao,
+      dataEmissao, // Data formatada
       notaFiscal.valor_total,
       notaFiscal.desconto,
-      notaFiscal.outros
-  ];
+      notaFiscal.outros,
+    ];
 
-  // Inserindo o cabeçalho da nota fiscal
-  connection.query(queryNotaFiscal, paramsNotaFiscal, (err, result) => {
+    // Inserindo o cabeçalho da nota fiscal
+    connection.query(queryNotaFiscal, paramsNotaFiscal, (err, result) => {
       if (err) {
-          console.error("Erro ao inserir nota fiscal:", err);
-          res.status(500).send("Erro ao inserir nota fiscal");
-          return;
+        console.error("Erro ao inserir nota fiscal:", err);
+        res.status(500).send("Erro ao inserir nota fiscal");
+        return;
       }
 
       const notaFiscalId = result.insertId; // ID da nota fiscal inserida
+      const queryItensNotaFiscal = `
+        INSERT INTO itens_nota_fiscal (nota_fiscal_id, produto_id, quantidade, valor_unitario)
+        VALUES ?
+      `;
 
       // Inserir itens da nota fiscal
       const itensNotaFiscal = notaFiscal.itensNotaFiscal.map(item => [
-          notaFiscalId,                // Usar o ID da nota fiscal
-          item.produto_id,              // ID do produto
-          item.quantidade,              // Quantidade do item
-          item.valorUnitario,           // Valor unitário do item
-          item.valorTotal               // Valor total do item
+        notaFiscalId,                // Usar o ID da nota fiscal
+        item.produto_id,             // ID do produto
+        item.quantidade,             // Quantidade do item
+        item.valorUnitario,          // Valor unitário do item
       ]);
 
-      const queryItensNotaFiscal = `
-          INSERT INTO itens_nota_fiscal (nota_fiscal_id, produto_id, quantidade, valor_unitario, valor_total)
-          VALUES ?
-      `;
-
       connection.query(queryItensNotaFiscal, [itensNotaFiscal], (err) => {
-          if (err) {
-              console.error("Erro ao inserir itens da nota fiscal:", err);
-              res.status(500).send("Erro ao inserir itens da nota fiscal");
-              return;
-          }
+        if (err) {
+          console.error("Erro ao inserir itens da nota fiscal:", err);
+          res.status(500).send("Erro ao inserir itens da nota fiscal");
+          return;
+        }
 
-          res.status(201).json({ message: "Nota Fiscal e itens salvos com sucesso" });
+        res.status(201).json({ message: "Nota Fiscal e itens salvos com sucesso" });
       });
-  });
+    });
+  } catch (err) {
+    console.error("Erro ao validar a data:", err.message);
+    res.status(400).send("Data inválida fornecida.");
+  }
 });
+
 
 app.post("/itens-nota-fiscal", (req, res) => {
   const itensNotaFiscal = req.body.itensNotaFiscal;
