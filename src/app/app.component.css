@@ -92,4 +92,15 @@
     vertical-align: middle;
   }
   
+  .user-container {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espaço entre o ícone e o texto */
+  }
+  
+  .user-icon {
+    width: 24px;
+    height: 24px;
+    color: #fff; /* Ajuste a cor conforme o design */
+  }
   

@@ -148,6 +148,11 @@ export class AppComponent implements OnInit {
       'location_city',
       this.domSanitizer.bypassSecurityTrustResourceUrl('assets/location_city.svg')
     );
+    this.matIconRegistry.addSvgIcon(
+      'usuario',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/usuario.svg')
+    );
+    
   }
 
   isLoginRoute(): boolean {

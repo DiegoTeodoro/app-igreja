@@ -12,8 +12,6 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(cors());
 
-
-
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -87,8 +85,6 @@ app.delete("/setores/:id", (req, res) => {
   );
 });
 
-// Repita o mesmo tratamento de erro para as demais APIs
-
 // CRUD APIs for 'igreja'
 app.get("/igrejas", (req, res) => {
   connection.query("SELECT * FROM igreja", (err, results) => {
@@ -130,7 +126,6 @@ app.put("/igrejas/:id", (req, res) => {
   });
 });
 
-
 app.delete("/igrejas/:id", (req, res) => {
   const id = req.params.id;
   connection.query("DELETE FROM igreja WHERE codigo = ?", [id], (err, results) => {
@@ -143,7 +138,6 @@ app.delete("/igrejas/:id", (req, res) => {
   });
 });
 
-
 // CRUD APIs for 'estados'
 app.get("/estados", (req, res) => {
   connection.query("SELECT * FROM estados", (err, results) => {
@@ -155,7 +149,6 @@ app.get("/estados", (req, res) => {
     res.send(results);
   });
 });
-
 
 app.post("/estados", (req, res) => {
   const estado = req.body;
@@ -226,9 +219,8 @@ app.delete("/cidades/:id", (req, res) => {
     res.send(results);
   });
 });
-// CRUD APIs for 'produtos'
 
-// Get all products
+// CRUD APIs for 'produtos'
 app.get("/produtos", (req, res) => {
   const query = `
     SELECT p.id, p.nome, p.volume, p.codigo_barras, p.marca, c.nome AS categoria_nome, f.nome_fantasia AS fornecedor_nome
@@ -246,7 +238,6 @@ app.get("/produtos", (req, res) => {
     }
   });
 });
-
 
 // Get a single product by ID
 app.get("/produtos/:id", (req, res) => {
@@ -330,7 +321,6 @@ app.get("/fornecedores", (req, res) => {
     res.send(results);
   });
 });
-
 
 app.post("/fornecedores", (req, res) => {
   const fornecedor = req.body;
@@ -462,7 +452,6 @@ app.delete("/categorias/:id", (req, res) => {
   );
 });
 
-
 // Rota para buscar o preço unitário pelo produto_id
 app.get("/saldo-estoque/preco/:produto_id", (req, res) => {
   const produtoId = req.params.produto_id;
@@ -481,7 +470,6 @@ app.get("/saldo-estoque/preco/:produto_id", (req, res) => {
     }
   });
 });
-
 
 // Rota para buscar todos os registros de saldo_estoque
 app.get("/saldo-estoque", (req, res) => {
@@ -641,7 +629,6 @@ app.get('/notas-fiscais/numero/:numeroNota', (req, res) => {
   });
 });
 
-
 // Função para formatar data no formato 'YYYY-MM-DD'
 function formatDateToMySQL(date) {
   const d = new Date(date);
@@ -651,7 +638,6 @@ function formatDateToMySQL(date) {
   return `${year}-${month}-${day}`;
 }
 
-// Rota para salvar a nota fiscal e os itens da nota fiscal
 // Rota para salvar a nota fiscal e os itens da nota fiscal
 app.post("/notas-fiscais", (req, res) => {
   const notaFiscal = req.body;
@@ -725,7 +711,6 @@ app.post("/notas-fiscais", (req, res) => {
     res.status(400).send("Data inválida fornecida.");
   }
 });
-
 
 app.post("/itens-nota-fiscal", (req, res) => {
   const itensNotaFiscal = req.body.itensNotaFiscal;
@@ -924,7 +909,6 @@ app.get('/pedidos', (req, res) => {
     }
   });
 });
-
 
 // Rota para atualizar o saldo de estoque ao realizar um pedido
 app.put("/saldo-estoque/:produto_id", (req, res) => {
@@ -1134,7 +1118,6 @@ app.get('/pedidos/:id', (req, res) => {
     }
   });
 });
-
 
 // Rota para buscar pedido por código do pedido
 app.get("/pedidos/:codigoPedido", (req, res) => {
@@ -1397,7 +1380,6 @@ app.get('/relatorio-inventario', (req, res) => {
     res.json(results);
   });
 });
-
 
 server.on("error", (err) => {
   if (err.code === "EADDRINUSE") {

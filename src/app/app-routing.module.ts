@@ -26,8 +26,6 @@ import { RelatorioPedidoCompraComponent } from './relatorios/relatorio-pedido-co
 import { ConsultaPedidoComponent } from './consultas/consulta-pedido/consulta-pedido.component';
 import { RelatorioInventarioComponent } from './relatorios/relatorio-inventario/relatorio-inventario.component';
 
-
-
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent},
@@ -55,9 +53,6 @@ const routes: Routes = [
   { path: 'relatorio-pedido-compra', component: RelatorioPedidoCompraComponent, canActivate: [AuthGuard] },
   { path: 'consulta-pedido', component: ConsultaPedidoComponent, canActivate: [AuthGuard]},
   { path: 'relatorio-inventario', component: RelatorioInventarioComponent, canActivate: [AuthGuard] }
-
-
-
 
 ];
 
