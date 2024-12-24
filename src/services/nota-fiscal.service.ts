@@ -4,59 +4,68 @@ import { Observable } from 'rxjs';
 import { NotaFiscal } from '../app/models/nota-fiscal';
 import { Fornecedor } from '../app/models/fornecedores';
 import { Produto } from '../app/models/produto';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotaFiscalService {
-  private apiUrl = 'http://localhost:3000/notas-fiscais';
+  private notasFiscaisUrl: string;
+  private igrejasUrl: string;
+  private fornecedoresUrl: string;
+  private produtosUrl: string;
+  private itensNotaFiscalUrl: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    const apiUrl = environment.apiUrl;
+    this.notasFiscaisUrl = `${apiUrl}/notas-fiscais`;
+    this.igrejasUrl = `${apiUrl}/igrejas`;
+    this.fornecedoresUrl = `${apiUrl}/fornecedores`;
+    this.produtosUrl = `${apiUrl}/produtos`;
+    this.itensNotaFiscalUrl = `${apiUrl}/itens-nota-fiscal`;
+  }
 
-  // Método corrigido para buscar igrejas
   getIgrejas(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:3000/igrejas');
+    return this.http.get<any[]>(this.igrejasUrl);
   }
 
   salvarNotaFiscal(notaFiscal: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, notaFiscal, { responseType: 'json' });
+    return this.http.post(this.notasFiscaisUrl, notaFiscal, { responseType: 'json' });
   }
 
   atualizarNotaFiscal(id: number, notaFiscal: NotaFiscal): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, notaFiscal);
+    return this.http.put(`${this.notasFiscaisUrl}/${id}`, notaFiscal);
   }
 
   getNotasFiscais(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}`);
+    return this.http.get<any[]>(this.notasFiscaisUrl);
   }
 
   searchNotaFiscal(numeroNota: string): Observable<NotaFiscal[]> {
-    return this.http.get<NotaFiscal[]>(`${this.apiUrl}?numero_nota=${numeroNota}`);
+    return this.http.get<NotaFiscal[]>(`${this.notasFiscaisUrl}?numero_nota=${numeroNota}`);
   }
 
   deleteNotaFiscal(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.notasFiscaisUrl}/${id}`);
   }
 
   getFornecedores(): Observable<Fornecedor[]> {
-    return this.http.get<Fornecedor[]>('http://localhost:3000/fornecedores');
+    return this.http.get<Fornecedor[]>(this.fornecedoresUrl);
   }
 
   getProdutos(): Observable<Produto[]> {
-    return this.http.get<Produto[]>('http://localhost:3000/produtos');
+    return this.http.get<Produto[]>(this.produtosUrl);
   }
 
   consultarNotasFiscais(filtro: any): Observable<any[]> {
-    return this.http.post<any[]>('http://localhost:3000/notas-fiscais/consultar', filtro);
+    return this.http.post<any[]>(`${this.notasFiscaisUrl}/consultar`, filtro);
   }
 
   getNotaFiscalByNumero(numeroNota: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/numero/${numeroNota}`);
+    return this.http.get<any[]>(`${this.notasFiscaisUrl}/numero/${numeroNota}`);
   }
 
   getItensNotaFiscal(notaId: number): Observable<any[]> {
-    return this.http.get<any[]>(`http://localhost:3000/itens-nota-fiscal/${notaId}`);
+    return this.http.get<any[]>(`${this.itensNotaFiscalUrl}/${notaId}`);
   }
-
-  
 }

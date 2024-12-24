@@ -1,47 +1,55 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, of, tap, throwError } from 'rxjs';
-
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PedidoService {
-  private apiUrlIgrejas = 'http://localhost:3000/igrejas';  // URL da API de igrejas
-  private apiUrlProdutos = 'http://localhost:3000/produtos';  // URL da API de produtos
-  private apiUrlPedidos = 'http://localhost:3000/pedidos';  // URL da API de pedidos
+  private igrejasUrl: string;
+  private produtosUrl: string;
+  private pedidosUrl: string;
+  private consultaPedidosUrl: string;
+  private itensPedidoUrl: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    const apiUrl = environment.apiUrl;
+    this.igrejasUrl = `${apiUrl}/igrejas`;
+    this.produtosUrl = `${apiUrl}/produtos`;
+    this.pedidosUrl = `${apiUrl}/pedidos`;
+    this.consultaPedidosUrl = `${apiUrl}/consulta-pedidos`;
+    this.itensPedidoUrl = `${apiUrl}/pedido-itens`;
+  }
 
   getIgrejas(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrlIgrejas);
+    return this.http.get<any[]>(this.igrejasUrl);
   }
 
   getProdutos(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrlProdutos);
+    return this.http.get<any[]>(this.produtosUrl);
   }
 
   salvarPedido(pedido: any): Observable<any> {
-    return this.http.post('http://localhost:3000/pedidos', pedido, { responseType: 'text' });
+    return this.http.post(this.pedidosUrl, pedido, { responseType: 'text' });
   }
 
- 
   getPedidos(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:3000/pedidos').pipe(
-      tap((data) => console.log('Dados da API de pedidos:', data)), // Adicione um log aqui
+    return this.http.get<any[]>(this.pedidosUrl).pipe(
+      tap((data) => console.log('Dados da API de pedidos:', data)), // Log para debug
       catchError((error) => {
         console.error('Erro ao buscar pedidos:', error);
         return throwError(() => new Error('Erro ao buscar pedidos'));
       })
     );
   }
-  
+
   getConsultaPedidos(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:3000/consulta-pedidos');
+    return this.http.get<any[]>(this.consultaPedidosUrl);
   }
-  
+
   getPedidoById(id: number): Observable<any> {
-    const url = `${this.apiUrlPedidos}/${id}`; // URL para buscar o pedido pelo ID
+    const url = `${this.pedidosUrl}/${id}`;
     return this.http.get<any>(url).pipe(
       tap((pedido) => console.log('Pedido retornado pela API:', pedido)),
       catchError((error) => {
@@ -50,16 +58,13 @@ export class PedidoService {
       })
     );
   }
-  
-  
+
   getPedidosDetalhados(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:3000/pedidos?_expand=igreja&_embed=itens');
+    return this.http.get<any[]>(`${this.pedidosUrl}?_expand=igreja&_embed=itens`);
   }
 
   getItensPedidoById(pedidoId: number): Observable<any[]> {
-    const url = `http://localhost:3000/pedido-itens/${pedidoId}`; // Altere a URL conforme necessário
+    const url = `${this.itensPedidoUrl}/${pedidoId}`;
     return this.http.get<any[]>(url);
   }
-  
-  
 }

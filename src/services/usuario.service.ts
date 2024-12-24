@@ -1,30 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
-  private baseUrl = 'http://localhost:3000/usuarios'; // Ajuste a URL conforme necessário
+  private usuariosUrl : string; // Ajuste a URL conforme necessário
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.usuariosUrl = `${environment.apiUrl}/usuarios`
+  }
 
   createUsuario(usuario: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}`, usuario);
+    return this.http.post<any>(`${this.usuariosUrl}`, usuario);
   }
 
   updateUsuario(usuario: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/${usuario.id}`, usuario);
+    return this.http.put<any>(`${this.usuariosUrl}/${usuario.id}`, usuario);
   }
   
   getUsuarios(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}`);
+    return this.http.get<any[]>(`${this.usuariosUrl}`);
   }
 
 
   login(credentials: { login: string; senha: string }): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/login`, credentials); // Certifique-se de que a rota está correta
+    return this.http.post<any>(`${this.usuariosUrl}/login`, credentials); // Certifique-se de que a rota está correta
   }
   
 }

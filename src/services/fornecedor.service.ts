@@ -1,28 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FornecedorService {
-  private apiUrl = 'http://localhost:3000/fornecedores';
+  private fornecedoresUrl : string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.fornecedoresUrl = `${environment.apiUrl}/fornecedores`
+  }
 
   getFornecedores(): Observable<any> {
-    return this.http.get(this.apiUrl);
+    return this.http.get(this.fornecedoresUrl);
   }
 
   createFornecedor(fornecedor: any): Observable<any> {
-    return this.http.post(this.apiUrl, fornecedor);
+    return this.http.post(this.fornecedoresUrl, fornecedor);
   }
 
   updateFornecedor(id: number, fornecedor: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, fornecedor);
+    return this.http.put(`${this.fornecedoresUrl}/${id}`, fornecedor);
   }
 
   deleteFornecedor(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+    return this.http.delete(`${this.fornecedoresUrl}/${id}`);
   }
 }

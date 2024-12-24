@@ -4,54 +4,56 @@ import { Observable } from 'rxjs';
 import { Produto } from '../app/models/produto';
 import { Categoria } from '../app/models/categoria';
 import { Fornecedor } from '../app/models/fornecedores';
-
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProdutoService {
-  getProdutosByNome(nome: string): Observable<{ id: number; nome: string }[]> {
-    return this.http.get<{ id: number; nome: string }[]>(`/api/produtos?nome=${nome}`);
+  private produtosUrl: string;
+  private categoriasUrl: string;
+  private fornecedoresUrl: string;
+
+  constructor(private http: HttpClient) {
+    const apiUrl = environment.apiUrl;
+    this.produtosUrl = `${apiUrl}/produtos`;
+    this.categoriasUrl = `${apiUrl}/categorias`;
+    this.fornecedoresUrl = `${apiUrl}/fornecedores`;
   }
-  
+
+  getProdutosByNome(nome: string): Observable<{ id: number; nome: string }[]> {
+    return this.http.get<{ id: number; nome: string }[]>(`${this.produtosUrl}?nome=${nome}`);
+  }
+
   getProdutosSaldoEstoque() {
     throw new Error('Method not implemented.');
   }
-  private apiUrl = 'http://localhost:3000/produtos';
-
-  constructor(private http: HttpClient) {}
 
   getCategorias(): Observable<Categoria[]> {
-    return this.http.get<Categoria[]>('http://localhost:3000/categorias');
+    return this.http.get<Categoria[]>(this.categoriasUrl);
   }
-  
+
   getFornecedores(): Observable<Fornecedor[]> {
-    return this.http.get<Fornecedor[]>('http://localhost:3000/fornecedores');
+    return this.http.get<Fornecedor[]>(this.fornecedoresUrl);
   }
-  
+
   getProdutos(): Observable<Produto[]> {
-    return this.http.get<Produto[]>(this.apiUrl);
+    return this.http.get<Produto[]>(this.produtosUrl);
   }
 
   getProdutoById(id: number): Observable<Produto> {
-    return this.http.get<Produto>(`${this.apiUrl}/${id}`);
+    return this.http.get<Produto>(`${this.produtosUrl}/${id}`);
   }
 
   createProduto(produto: Produto): Observable<any> {
-    return this.http.post('http://localhost:3000/produtos', produto, { responseType: 'text' });
+    return this.http.post(this.produtosUrl, produto, { responseType: 'text' });
   }
-  
 
   updateProduto(id: number, produto: Produto): Observable<any> {
-    return this.http.put(`http://localhost:3000/produtos/${id}`, produto, { responseType: 'text' });
+    return this.http.put(`${this.produtosUrl}/${id}`, produto, { responseType: 'text' });
   }
-  
 
   deleteProduto(id: number): Observable<any> {
-    return this.http.delete(`http://localhost:3000/produtos/${id}`, { responseType: 'text' });
+    return this.http.delete(`${this.produtosUrl}/${id}`, { responseType: 'text' });
   }
-  
-
-
 }
-

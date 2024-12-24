@@ -1,28 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EstadoService {
-  private apiUrl = 'http://localhost:3000/estados';
+  private estadosUrl :string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.estadosUrl = `${environment.apiUrl}/estados`
+  }
 
   getEstados(): Observable<any> {
-    return this.http.get(this.apiUrl);
+    return this.http.get(this.estadosUrl);
   }
 
   createEstado(estado: any): Observable<any> {
-    return this.http.post(this.apiUrl, estado);
+    return this.http.post(this.estadosUrl, estado);
   }
 
   updateEstado(id: number, estado: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, estado);
+    return this.http.put(`${this.estadosUrl}/${id}`, estado);
   }
 
   deleteEstado(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+    return this.http.delete(`${this.estadosUrl}/${id}`);
   }
 }
