@@ -15,37 +15,44 @@
       <table mat-table [dataSource]="dataSource" class="mat-table">
         <!-- ID Column -->
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Codigo</th>
+          <th mat-header-cell *matHeaderCellDef 
+          style="text-align: center; font-size: 15px; background-color: #438EB9;  color: white;" 
+          >Codigo</th>
           <td mat-cell *matCellDef="let produto" style="text-align: center;">{{produto.id}}</td>
         </ng-container>
       
         <!-- Nome Column -->
         <ng-container matColumnDef="nome">
-          <th mat-header-cell *matHeaderCellDef style="text-align: left; font-size: 15px;">Nome</th>
+          <th mat-header-cell *matHeaderCellDef 
+           style="text-align: left; font-size: 15px; background-color: #438EB9;  color: white; ">Nome</th>
           <td mat-cell *matCellDef="let produto" style="text-align: left;">{{produto.nome}}</td>
         </ng-container>
       
         <!-- Volume Column -->
         <ng-container matColumnDef="volume">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Volume</th>
+          <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;
+           background-color: #438EB9;  color: white; ">Volume</th>
           <td mat-cell *matCellDef="let produto" style="text-align: center;">{{produto.volume}}</td>
         </ng-container>
       
         <!-- Codigo Barras Column -->
         <ng-container matColumnDef="codigo_barras">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Código Barras</th>
+          <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;
+           background-color: #438EB9;  color: white; ">Código Barras</th>
           <td mat-cell *matCellDef="let produto" style="text-align: center;">{{produto.codigo_barras}}</td>
         </ng-container>
       
         <!-- Categoria Column -->
         <ng-container matColumnDef="categoria">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Categoria</th>
+          <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px; 
+          background-color: #438EB9;  color: white; ">Categoria</th>
           <td mat-cell *matCellDef="let produto" style="text-align: center;">{{produto.categoria_nome}}</td>
         </ng-container>
       
         <!-- Ações Column -->
         <ng-container matColumnDef="acoes">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px;">Ações</th>
+          <th mat-header-cell *matHeaderCellDef style="text-align: center; font-size: 15px; 
+          background-color: #438EB9;  color: white; ">Ações</th>
           <td mat-cell *matCellDef="let produto" style="text-align: center;">
             <button mat-icon-button color="primary" (click)="editarProduto(produto)" matTooltip="Editar">
               <mat-icon>edit</mat-icon>

@@ -16,20 +16,20 @@
     <table mat-table [dataSource]="notasFiscais" class="mat-elevation-z8">
       <!-- Número da Nota Column -->
       <ng-container matColumnDef="numeroNota">
-        <th mat-header-cell *matHeaderCellDef> Número da Nota </th>
+        <th mat-header-cell *matHeaderCellDef style="background-color: #438EB9;  color: white; "> Número da Nota </th>
         <td mat-cell *matCellDef="let nota"> {{ nota.numero_nota }} </td>
       </ng-container>
 
 
       <!-- Data de Emissão Column -->
       <ng-container matColumnDef="dataEmissao">
-        <th mat-header-cell *matHeaderCellDef> Data de Emissão </th>
+        <th mat-header-cell *matHeaderCellDef style="background-color: #438EB9;  color: white; "> Data de Emissão </th>
         <td mat-cell *matCellDef="let nota"> {{ nota.data_emissao | date:'dd/MM/yyyy' }} </td>
       </ng-container>
 
       <!-- Valor Total Column -->
       <ng-container matColumnDef="valorTotal">
-        <th mat-header-cell *matHeaderCellDef> Valor Total </th>
+        <th mat-header-cell *matHeaderCellDef style="background-color: #438EB9;  color: white; "> Valor Total </th>
         <td mat-cell *matCellDef="let nota"> {{ nota.valor_total | currency:'BRL' }} </td>
       </ng-container>
 
