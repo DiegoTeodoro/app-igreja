@@ -44,10 +44,8 @@ export class RelatorioPedidoCompraComponent implements OnInit {
 
   agruparPedidosPorData(): void {
     const grupos = this.notasFiltradas.reduce((acc, pedido) => {
-      // Certifique-se de que dataPedido é um objeto Date
       const dataPedido = typeof pedido.dataPedido === 'string' ? new Date(pedido.dataPedido) : pedido.dataPedido;
-
-      // Verifique se dataPedido é válido e obtenha a data no formato desejado
+  
       if (dataPedido instanceof Date && !isNaN(dataPedido.getTime())) {
         const data = dataPedido.toISOString().split('T')[0];
         if (!acc[data]) {
@@ -55,14 +53,19 @@ export class RelatorioPedidoCompraComponent implements OnInit {
         }
         acc[data].push(pedido);
       }
-
+  
       return acc;
     }, {});
-
-    this.pedidosAgrupados = Object.keys(grupos).map((data) => {
-      return { data: new Date(data), pedidos: grupos[data] };
-    });
+  
+    // Conversão para array e ordenação por data decrescente (mais recente primeiro)
+    this.pedidosAgrupados = Object.keys(grupos)
+      .map((data) => ({
+        data: new Date(data),
+        pedidos: grupos[data],
+      }))
+      .sort((a, b) => b.data.getTime() - a.data.getTime()); // ordena por data decrescente
   }
+  
 
   filtrarRelatorio(): void {
     this.filtrarCampos();

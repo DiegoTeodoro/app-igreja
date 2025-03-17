@@ -50,9 +50,8 @@ export class RelatorioPedidosComponent implements OnInit {
   carregarPedidos() {
     this.pedidoService.getPedidos().subscribe(
       (dados: any[]) => {
-        this.pedidos = dados;
-        console.log('Pedidos carregados:', this.pedidos); // Verifique se o campo 'recebedor' está presente
-        this.pedidosFiltrados = dados;
+        this.pedidos = dados.sort((a, b) => new Date(b.data_pedido).getTime() - new Date(a.data_pedido).getTime()); // ordenação inicial
+        this.pedidosFiltrados = [...this.pedidos];
         this.dataSource.data = this.pedidosFiltrados;
       },
       error => {
@@ -61,21 +60,19 @@ export class RelatorioPedidosComponent implements OnInit {
     );
   }
   
-  
 
   aplicarFiltros() {
     this.pedidosFiltrados = this.pedidos.filter(pedido => {
-      const filtroIgrejaValido = !this.filtroIgreja || pedido.igreja_nome === this.filtroIgreja; // Comparar com igreja_nome
+      const filtroIgrejaValido = !this.filtroIgreja || pedido.igreja_nome === this.filtroIgreja;
       const filtroDataInicioValido = !this.dataInicio || new Date(pedido.data_pedido).getTime() >= this.dataInicio.getTime();
       const filtroDataFimValido = !this.dataFim || new Date(pedido.data_pedido).getTime() <= this.dataFim.getTime();
   
       return filtroIgrejaValido && filtroDataInicioValido && filtroDataFimValido;
-    });
+    })
+    .sort((a, b) => new Date(b.data_pedido).getTime() - new Date(a.data_pedido).getTime()); // ordenação pela data mais recente
   
-    this.dataSource.data = this.pedidosFiltrados; // Atualiza a tabela
-    console.log('Pedidos filtrados:', this.pedidosFiltrados); // Verifique os resultados
+    this.dataSource.data = this.pedidosFiltrados;
   }
-  
   
 
   limparFiltros() {
@@ -121,7 +118,7 @@ export class RelatorioPedidosComponent implements OnInit {
     // Obtenha a posição Y após a última tabela
     const finalY = (doc as any).lastAutoTable.finalY;
     const valorTotal = this.calcularValorTotal().toFixed(2);
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     doc.setFont('helvetica', 'bold'); // Definir a fonte para negrito
     doc.text(
         `Valor Total: R$ ${valorTotal}`,

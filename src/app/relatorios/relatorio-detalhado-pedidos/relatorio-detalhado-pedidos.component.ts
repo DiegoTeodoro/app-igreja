@@ -30,9 +30,6 @@ export class RelatorioDetalhadoPedidosComponent implements OnInit {
 
   carregarPedidos(): void {
     this.pedidoService.getPedidosDetalhados().subscribe((dados) => {
-      console.log('Dados recebidos:', dados);
-  
-      // Agrupar pedidos pelo pedido_id
       const pedidosAgrupados: any = {};
       dados.forEach((pedido: any) => {
         if (!pedidosAgrupados[pedido.pedido_id]) {
@@ -52,9 +49,12 @@ export class RelatorioDetalhadoPedidosComponent implements OnInit {
         });
       });
   
-      // Converter o agrupamento em um array
-      this.pedidos = Object.values(pedidosAgrupados);
-      this.pedidosFiltrados = this.pedidos;
+      // Ordenar pedidos por data mais recente primeiro
+      this.pedidos = Object.values(pedidosAgrupados).sort((a: any, b: any) =>
+        new Date(b.data_pedido).getTime() - new Date(a.data_pedido).getTime()
+      );
+  
+      this.pedidosFiltrados = [...this.pedidos];
     });
   }
   
@@ -66,7 +66,8 @@ export class RelatorioDetalhadoPedidosComponent implements OnInit {
       const filtroDataInicioValido = !this.dataInicio || new Date(pedido.data_pedido) >= this.dataInicio;
       const filtroDataFimValido = !this.dataFim || new Date(pedido.data_pedido) <= this.dataFim;
       return filtroIgrejaValido && filtroDataInicioValido && filtroDataFimValido;
-    });
+    })
+    .sort((a, b) => new Date(b.data_pedido).getTime() - new Date(a.data_pedido).getTime());
   }
   
 

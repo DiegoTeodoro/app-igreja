@@ -38,10 +38,12 @@ export class RelatorioNotaFiscalComponent implements OnInit {
   carregarNotasFiscais() {
     this.notaFiscalService.getNotasFiscais().subscribe(
       (dados: any[]) => {
-        console.log('Dados recebidos:', dados); // Verificar o conteúdo dos dados
-        this.notasFiscais = dados || [];
+        this.notasFiscais = (dados || []).sort((a, b) =>
+          new Date(b.data_emissao).getTime() - new Date(a.data_emissao).getTime()
+        );
         this.notasFiltradas = [...this.notasFiscais];
         this.dataSource.data = this.notasFiltradas;
+        this.dataSource.paginator = this.paginator;
       },
       error => {
         console.error('Erro ao carregar notas fiscais:', error);
@@ -52,15 +54,19 @@ export class RelatorioNotaFiscalComponent implements OnInit {
     );
   }
   
+  
   FiltrarCampos() {
     this.notasFiltradas = this.notasFiscais.filter(nota => {
       const dataInicioMatches = this.dataInicio ? new Date(nota.data_emissao) >= this.dataInicio : true;
       const dataFimMatches = this.dataFim ? new Date(nota.data_emissao) <= this.dataFim : true;
       return dataInicioMatches && dataFimMatches;
-    });
+    })
+    .sort((a, b) => new Date(b.data_emissao).getTime() - new Date(a.data_emissao).getTime());
+  
     this.dataSource.data = this.notasFiltradas;
     this.dataSource.paginator = this.paginator;
   }
+  
   
 
   limparFiltros() {
@@ -103,7 +109,7 @@ export class RelatorioNotaFiscalComponent implements OnInit {
 
     const finalY = (doc as any).lastAutoTable.finalY;
     const valorTotal = this.calcularValorTotal().toFixed(2);
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
     doc.text(
       `Valor Total: R$ ${valorTotal}`,

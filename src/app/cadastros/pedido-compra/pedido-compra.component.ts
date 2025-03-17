@@ -14,10 +14,12 @@ import jsPDF from 'jspdf';
   styleUrls: ['./pedido-compra.component.css']
 })
 export class PedidoCompraComponent implements OnInit {
+
+
   pedidoForm: FormGroup;
   produtos: any[] = [];
   filteredProdutos: any[] = [];
-  displayedColumns: string[] = ['codigo', 'produto', 'quantidade'];
+  displayedColumns: string[] = ['codigo', 'produto', 'quantidade', 'acoes'];
 
   itens = new MatTableDataSource<any>([]);
   dataSource: CdkTableDataSourceInput<any> | undefined;
@@ -126,7 +128,16 @@ export class PedidoCompraComponent implements OnInit {
     );
   }
   
+  deletarItem(_t114: any) {
+    throw new Error('Method not implemented.');
+    }
 
+    removerItem(index: number): void {
+      const itensAtualizados = this.itens.data.slice();
+      itensAtualizados.splice(index, 1);
+      this.itens.data = itensAtualizados;
+    }
+    
   gerarRelatorioPDF(): void {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -175,5 +186,23 @@ export class PedidoCompraComponent implements OnInit {
       alert('Habilite pop-ups para visualizar o relatório.');
     }
   }
+
+  cancelarPedido(): void {
+    // Limpa os campos solicitante, produto e quantidade mantendo a data
+    this.pedidoForm.patchValue({
+      solicitante: '',
+      produto: '',
+      quantidade: null
+    });
+  
+    // Limpa os itens da tabela
+    this.itens.data = [];
+  
+    // Exibe uma mensagem opcional ao usuário indicando que o formulário foi limpo
+    this.snackBar.open('Cadastro cancelado e campos limpos.', 'Fechar', {
+      duration: 3000
+    });
+  }
+  
   
 }

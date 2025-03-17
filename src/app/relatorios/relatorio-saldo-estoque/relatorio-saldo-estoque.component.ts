@@ -68,7 +68,7 @@ export class RelatorioSaldoEstoqueComponent implements OnInit {
 
     // Adicionar o valor total no final do relatório
     const valorTotal = this.getTotal().toFixed(2);
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     doc.setFont('helvetica', 'bold'); // Definir a fonte para negrito
     doc.text(
       `Total: R$ ${valorTotal}`,

@@ -20,11 +20,14 @@ export class RelatorioInventarioComponent implements OnInit {
   fetchRelatorio(): void {
     this.inventarioService.getRelatorioInventario().subscribe({
       next: (data) => {
-        this.dataSource = data;
+        this.dataSource = data.sort((a, b) => 
+          new Date(b.data_inventario).getTime() - new Date(a.data_inventario).getTime()
+        );
       },
       error: (err) => {
         console.error('Erro ao buscar dados do relatório de inventário:', err);
       },
     });
   }
+  
 }
