@@ -3,7 +3,7 @@
     <mat-card-title>Cadastro de Categoria</mat-card-title>
     <mat-card-content>
       <form (ngSubmit)="onSubmit()">
-        <mat-form-field>
+        <mat-form-field fxFlex="40%" style="margin-right: 15px;">
           <mat-label>Nome</mat-label>
           <input matInput placeholder="Nome da categoria" [(ngModel)]="categoria.nome" name="nome" required>
         </mat-form-field>

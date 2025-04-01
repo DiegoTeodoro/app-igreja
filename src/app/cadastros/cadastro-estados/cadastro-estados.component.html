@@ -4,11 +4,11 @@
     <form (ngSubmit)="saveEstado()" class="form">
       <div fxLayout="row" fxLayoutGap="32px" fxLayoutAlign="start center">
         <!-- Campo Nome -->
-        <mat-form-field fxFlex="40%">
+        <mat-form-field fxFlex="40%" style="margin-right: 15px;">
           <mat-label>Nome</mat-label>
           <input matInput placeholder="Nome" [(ngModel)]="estado.nome" name="nome" required />
         </mat-form-field>
-
+        
         <!-- Campo Sigla -->
         <mat-form-field fxFlex="20%">
           <mat-label>Sigla</mat-label>

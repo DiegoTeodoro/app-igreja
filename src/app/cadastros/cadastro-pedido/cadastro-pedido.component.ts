@@ -215,7 +215,7 @@ produtosFiltrados: Observable<any[]> | undefined;
 
     // Valor Total do Pedido alinhado à direita
     const finalY = (doc as any).lastAutoTable.finalY;
-    doc.setFontSize(14);
+    doc.setFontSize(10);
     const valorTotalText = 'Valor Total: ' + this.valorTotalPedido.toFixed(2);
     const valorTotalWidth = doc.getTextWidth(valorTotalText);
     doc.text(valorTotalText, pageWidth - valorTotalWidth - 10, finalY + 10);
@@ -225,13 +225,13 @@ produtosFiltrados: Observable<any[]> | undefined;
   }
 
   limparFormulario() {
-    this.pedido = { igreja_id: null, recebedor: '', pedido_itens: [] };
-    this.igrejaSelecionada = null;
+    this.pedido.recebedor = '';
     this.produtoSelecionado = null;
     this.quantidade = 0;
     this.valorUnitario = 0;
     this.dataSource.data = [];
     this.valorTotalPedido = 0;
+    this.produtoControl.setValue('');
   }
 
  // Função para mostrar mensagens de snackbar com configuração personalizada

@@ -75,11 +75,15 @@
   
   /* Largura do sidenav e cor de fundo */
   .custom-sidenav {
-    width: 250px; /* O sidenav ocupa apenas 250px de largura */
+    width: 300px; /* O sidenav ocupa apenas 250px de largura */
     background-color: #d3d3d3; /* Cor de fundo para o menu lateral */
     margin-top: 64px; /* Encostar na toolbar */
   }
   
+  mat-list-item a {
+    white-space: normal; /* permite que o texto quebre linha se necessário */
+  }
+
   /* Links no menu lateral */
   a {
     text-decoration: none;

@@ -1,6 +1,32 @@
 <mat-card>
   <mat-card-title class="titulo-relatorio">Relatório Inventário - CNS</mat-card-title>
   <mat-card-content>
+<!-- Filtros -->
+<div class="filtros-container" style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+     <!-- Filtro por Data de Início -->
+     <mat-form-field appearance="fill" class="filtro-campo">
+      <mat-label>Data de Início</mat-label>
+      <input matInput [matDatepicker]="inicioPicker" [(ngModel)]="dataInicio" name="dataInicio">
+      <mat-datepicker-toggle matSuffix [for]="inicioPicker"></mat-datepicker-toggle>
+      <mat-datepicker #inicioPicker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Filtro por Data de Fim -->
+    <mat-form-field appearance="fill" class="filtro-campo">
+      <mat-label>Data de Fim</mat-label>
+      <input matInput [matDatepicker]="fimPicker" [(ngModel)]="dataFim" name="dataFim">
+      <mat-datepicker-toggle matSuffix [for]="fimPicker"></mat-datepicker-toggle>
+      <mat-datepicker #fimPicker></mat-datepicker>
+    </mat-form-field>
+
+        <!-- Botão para Filtrar as datas -->
+    <button mat-raised-button color="primary" style="margin-top: 8px;" (click)="filtrarCampos()">Filtrar</button>
+    <!-- Botão para Limpar Filtros -->
+    <button mat-raised-button color="warn" style="margin-top: 8px; margin-left: 8px;" (click)="limparFiltros()">Limpar</button>
+    <!-- Botão para Gerar PDF -->
+    <button mat-raised-button color="primary" style="margin-top: 8px;" (click)="gerarRelatorioPDF()">Gerar PDF</button>
+  </div>
+
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
       <ng-container matColumnDef="produto">

@@ -3,7 +3,7 @@
   <mat-card-content>
     <form (ngSubmit)="saveCidade()" class="form">
       <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
-        <mat-form-field fxFlex="30%">
+        <mat-form-field fxFlex="30%" style="margin-right: 15px;">
           <mat-label>Nome</mat-label>
           <input matInput placeholder="Nome" [(ngModel)]="cidade.nome" name="nome" required>
         </mat-form-field>
