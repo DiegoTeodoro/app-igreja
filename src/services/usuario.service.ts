@@ -10,7 +10,7 @@ export class UsuarioService {
   private usuariosUrl : string; // Ajuste a URL conforme necessário
 
   constructor(private http: HttpClient) {
-    this.usuariosUrl = `${environment.apiUrl}/usuarios`
+    this.usuariosUrl = `${environment.apiUrl}/api/usuarios`
   }
 
   createUsuario(usuario: any): Observable<any> {

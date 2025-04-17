@@ -10,7 +10,7 @@ export class SetorService {
   private setoresUrl = 'http://localhost:3000/setores';
 
   constructor(private http: HttpClient) {
-    this.setoresUrl = `${environment.apiUrl}/setores`
+    this.setoresUrl = `${environment.apiUrl}/api/setores`
 
   }
 

@@ -16,9 +16,9 @@ export class ProdutoService {
 
   constructor(private http: HttpClient) {
     const apiUrl = environment.apiUrl;
-    this.produtosUrl = `${apiUrl}/produtos`;
-    this.categoriasUrl = `${apiUrl}/categorias`;
-    this.fornecedoresUrl = `${apiUrl}/fornecedores`;
+    this.produtosUrl = `${apiUrl}/api/produtos`;
+    this.categoriasUrl = `${apiUrl}/api/categorias`;
+    this.fornecedoresUrl = `${apiUrl}/api/fornecedores`;
   }
 
   getProdutosByNome(nome: string): Observable<{ id: number; nome: string }[]> {

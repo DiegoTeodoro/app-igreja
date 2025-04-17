@@ -12,3 +12,7 @@ mat-form-field {
   align-items: center;
   gap: 20px; /* Espaço entre os elementos */
 }
+.titulo-centralizado {
+  width: 100%;
+  text-align: center;
+}

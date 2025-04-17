@@ -14,10 +14,10 @@ export class InventarioService {
 
   constructor(private http: HttpClient) {
     const apiUrl = environment.apiUrl;
-    this.inventarioUrl = `${apiUrl}/inventarios`;
-    this.produtosUrl = `${apiUrl}/produtos`;
-    this.usuariosUrl = `${apiUrl}/usuarios`;
-    this.relatorioInventarioUrl = `${apiUrl}/relatorio-inventario`;
+    this.inventarioUrl = `${apiUrl}/api/inventarios`;
+    this.produtosUrl = `${apiUrl}/api/produtos`;
+    this.usuariosUrl = `${apiUrl}/api/usuarios`;
+    this.relatorioInventarioUrl = `${apiUrl}/api/relatorio-inventario`;
   }
 
   getProdutos(): Observable<any[]> {

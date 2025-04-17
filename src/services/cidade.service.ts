@@ -11,7 +11,7 @@ export class CidadeService {
   private cidadesUrl :string;
 
   constructor(private http: HttpClient) {
-    this.cidadesUrl = `${environment.apiUrl}/cidades`; 
+    this.cidadesUrl = `${environment.apiUrl}/api/cidades`; 
   }
 
   // Implementando o método corretamente

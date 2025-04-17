@@ -11,7 +11,7 @@ export class CategoriaService {
   private categoriasUrl : string;
 
   constructor(private http: HttpClient) {
-    this.categoriasUrl = `${environment.apiUrl}/categorias`;
+    this.categoriasUrl = `${environment.apiUrl}/api/categorias`;
   }
 
   createCategoria(categoria: Categoria): Observable<Categoria> {

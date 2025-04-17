@@ -12,6 +12,8 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(cors());
 
+//app.use(express.static(path.join(__dirname, 'dist/app-igreja')));
+
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -27,9 +29,29 @@ connection.connect((err) => {
   console.log("Connected to MySQL database.");
 });
 
+// Função para formatar data no formato 'YYYY-MM-DD'
+// function formatDateToMySQL(date) {
+  //const d = new Date(date);
+  //const year = d.getFullYear();
+  //const month = ('0' + (d.getMonth() + 1)).slice(-2);
+  //const day = ('0' + d.getDate()).slice(-2);
+  //return `${year}-${month}-${day}`;
+//}
 
-// CRUD APIs for 'setor'
-app.get("/setores", (req, res) => {
+// Função para converter a data no formato 'YYYY-MM-DD HH:MM:SS'
+function formatDateToMySQL(date) {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = ('0' + (d.getMonth() + 1)).slice(-2);
+  const day = ('0' + d.getDate()).slice(-2);
+  const hours = ('0' + d.getHours()).slice(-2);
+  const minutes = ('0' + d.getMinutes()).slice(-2);
+  const seconds = ('0' + d.getSeconds()).slice(-2);
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+// CRUD APIs setor
+app.get("/api/setores", (req, res) => {
   connection.query("SELECT * FROM setor", (err, results) => {
     if (err) {
       console.error("Error fetching setores:", err);
@@ -40,7 +62,7 @@ app.get("/setores", (req, res) => {
   });
 });
 
-app.post("/setores", (req, res) => {
+app.post("/api/setores", (req, res) => {
   const setor = req.body;
   connection.query("INSERT INTO setor SET ?", setor, (err, results) => {
     if (err) {
@@ -52,7 +74,7 @@ app.post("/setores", (req, res) => {
   });
 });
 
-app.put("/setores/:id", (req, res) => {
+app.put("/api/setores/:id", (req, res) => {
   const id = req.params.id;
   const setor = req.body;
   connection.query(
@@ -69,7 +91,7 @@ app.put("/setores/:id", (req, res) => {
   );
 });
 
-app.delete("/setores/:id", (req, res) => {
+app.delete("/api/setores/:id", (req, res) => {
   const id = req.params.id;
   connection.query(
     "DELETE FROM setor WHERE codigo = ?",
@@ -85,8 +107,9 @@ app.delete("/setores/:id", (req, res) => {
   );
 });
 
-// CRUD APIs for 'igreja'
-app.get("/igrejas", (req, res) => {
+
+// CRUD APIs igreja
+app.get("/api/igrejas", (req, res) => {
   connection.query("SELECT * FROM igreja", (err, results) => {
     if (err) {
       console.error("Error fetching igrejas:", err);
@@ -97,7 +120,7 @@ app.get("/igrejas", (req, res) => {
   });
 });
 
-app.post("/igrejas", (req, res) => {
+app.post("/api/igrejas", (req, res) => {
   const igreja = req.body;
   connection.query("INSERT INTO igreja SET ?", igreja, (err, results) => {
     if (err) {
@@ -109,7 +132,7 @@ app.post("/igrejas", (req, res) => {
   });
 });
 
-app.put("/igrejas/:id", (req, res) => {
+app.put("/api/igrejas/:id", (req, res) => {
   const id = req.params.id;
   const igreja = req.body;
 
@@ -126,7 +149,7 @@ app.put("/igrejas/:id", (req, res) => {
   });
 });
 
-app.delete("/igrejas/:id", (req, res) => {
+app.delete("/api/igrejas/:id", (req, res) => {
   const id = req.params.id;
   connection.query("DELETE FROM igreja WHERE codigo = ?", [id], (err, results) => {
     if (err) {
@@ -138,7 +161,9 @@ app.delete("/igrejas/:id", (req, res) => {
   });
 });
 
-// CRUD APIs for 'estados'
+
+
+// CRUD APIs estados
 app.get("/estados", (req, res) => {
   connection.query("SELECT * FROM estados", (err, results) => {
     if (err) {
@@ -153,7 +178,11 @@ app.get("/estados", (req, res) => {
 app.post("/estados", (req, res) => {
   const estado = req.body;
   connection.query("INSERT INTO estados SET ?", estado, (err, results) => {
-    if (err) throw err;
+    if (err) {
+      console.error("Erro ao inserir estado:", err);
+      res.status(500).send("Erro ao inserir estado");
+      return;
+    }
     res.send(results);
   });
 });
@@ -165,7 +194,11 @@ app.put("/estados/:id", (req, res) => {
     "UPDATE estados SET ? WHERE id = ?",
     [estado, id],
     (err, results) => {
-      if (err) throw err;
+      if (err) {
+        console.error("Erro ao atualizar estado:", err);
+        res.status(500).send("Erro ao atualizar estado");
+        return;
+      }
       res.send(results);
     }
   );
@@ -174,13 +207,19 @@ app.put("/estados/:id", (req, res) => {
 app.delete("/estados/:id", (req, res) => {
   const id = req.params.id;
   connection.query("DELETE FROM estados WHERE id = ?", [id], (err, results) => {
-    if (err) throw err;
+    if (err) {
+      console.error("Erro ao deletar estado:", err);
+      res.status(500).send("Erro ao deletar estado");
+      return;
+    }
     res.send(results);
   });
 });
 
-// CRUD APIs for 'cidades'
-app.get("/cidades", (req, res) => {
+//------------------------------------------------------------\\
+
+// CRUD APIs cidades 
+app.get("/api/cidades", (req, res) => {
   connection.query("SELECT * FROM cidades", (err, results) => {
     if (err) {
       console.error("Erro ao buscar cidades:", err);
@@ -191,7 +230,7 @@ app.get("/cidades", (req, res) => {
     res.send(results);
   });
 });
-app.post("/cidades", (req, res) => {
+app.post("/api/cidades", (req, res) => {
   const cidade = req.body;
   connection.query("INSERT INTO cidades SET ?", cidade, (err, results) => {
     if (err) throw err;
@@ -199,7 +238,7 @@ app.post("/cidades", (req, res) => {
   });
 });
 
-app.put("/cidades/:id", (req, res) => {
+app.put("/api/cidades/:id", (req, res) => {
   const id = req.params.id;
   const cidade = req.body;
   connection.query(
@@ -212,7 +251,7 @@ app.put("/cidades/:id", (req, res) => {
   );
 });
 
-app.delete("/cidades/:id", (req, res) => {
+app.delete("/api/cidades/:id", (req, res) => {
   const id = req.params.id;
   connection.query("DELETE FROM cidades WHERE id = ?", [id], (err, results) => {
     if (err) throw err;
@@ -220,8 +259,10 @@ app.delete("/cidades/:id", (req, res) => {
   });
 });
 
-// CRUD APIs for 'produtos'
-app.get("/produtos", (req, res) => {
+//------------------------------------------------------------\\
+
+// CRUD APIs produtos
+app.get("/api/produtos", (req, res) => {
   const query = `
     SELECT p.id, p.nome, p.volume, p.codigo_barras, p.marca, c.nome AS categoria_nome, f.nome_fantasia AS fornecedor_nome
     FROM produtos p
@@ -240,7 +281,7 @@ app.get("/produtos", (req, res) => {
 });
 
 // Get a single product by ID
-app.get("/produtos/:id", (req, res) => {
+app.get("/api/produtos/:id", (req, res) => {
   const id = req.params.id;
   const query = "SELECT * FROM produtos WHERE id = ?";
   connection.query(query, [id], (err, results) => {
@@ -254,7 +295,7 @@ app.get("/produtos/:id", (req, res) => {
   });
 });
 
-app.get("/produtos/nome/:nome", (req, res) => {
+app.get("/api/produtos/nome/:nome", (req, res) => {
   const nome = req.params.nome;
   const query = "SELECT * FROM produtos WHERE nome = ?";
   connection.query(query, [nome], (err, results) => {
@@ -269,8 +310,8 @@ app.get("/produtos/nome/:nome", (req, res) => {
   });
 });
 
-// Create a new product
-app.post("/produtos", (req, res) => {
+// CRUD APIs Produtos
+app.post("/api/produtos", (req, res) => {
   const produto = req.body;
   const query = "INSERT INTO produtos SET ?";
   connection.query(query, produto, (err, results) => {
@@ -283,7 +324,7 @@ app.post("/produtos", (req, res) => {
 });
 
 // Update an existing product by ID
-app.put("/produtos/:id", (req, res) => {
+app.put("/api/produtos/:id", (req, res) => {
   const id = req.params.id;
   const produto = req.body;
   const query = "UPDATE produtos SET ? WHERE id = ?";
@@ -297,7 +338,7 @@ app.put("/produtos/:id", (req, res) => {
 });
 
 // Delete a product by ID
-app.delete("/produtos/:id", (req, res) => {
+app.delete("/api/produtos/:id", (req, res) => {
   const id = req.params.id;
   const query = "DELETE FROM produtos WHERE id = ?";
   connection.query(query, [id], (err, results) => {
@@ -309,8 +350,10 @@ app.delete("/produtos/:id", (req, res) => {
   });
 });
 
-// CRUD APIs for 'fornecedor'
-app.get("/fornecedores", (req, res) => {
+//------------------------------------------------------------\\
+
+// CRUD APIs Fornecedor
+app.get("/api/fornecedores", (req, res) => {
   connection.query("SELECT * FROM fornecedor", (err, results) => {
     if (err) {
       console.error("Error fetching fornecedores:", err);
@@ -322,7 +365,7 @@ app.get("/fornecedores", (req, res) => {
   });
 });
 
-app.post("/fornecedores", (req, res) => {
+app.post("/api/fornecedores", (req, res) => {
   const fornecedor = req.body;
   connection.query(
     "INSERT INTO fornecedor SET ?",
@@ -338,7 +381,7 @@ app.post("/fornecedores", (req, res) => {
   );
 });
 
-app.put("/fornecedores/:id", (req, res) => {
+app.put("/api/fornecedores/:id", (req, res) => {
   const id = req.params.id;
   const fornecedor = req.body;
   connection.query(
@@ -355,7 +398,7 @@ app.put("/fornecedores/:id", (req, res) => {
   );
 });
 
-app.delete("/fornecedores/:id", (req, res) => {
+app.delete("/api/fornecedores/:id", (req, res) => {
   const id = req.params.id;
   connection.query(
     "DELETE FROM fornecedor WHERE id = ?",
@@ -370,9 +413,10 @@ app.delete("/fornecedores/:id", (req, res) => {
     }
   );
 });
+//------------------------------------------------------------\\
 
-// CRUD APIs for 'categoria'
-app.get("/categorias", (req, res) => {
+// CRUD APIs Categorias
+app.get("/api/categorias", (req, res) => {
   connection.query("SELECT * FROM categoria", (err, results) => {
     if (err) {
       console.error("Error fetching categories:", err);
@@ -384,7 +428,7 @@ app.get("/categorias", (req, res) => {
 });
 
 // Get a single category by ID
-app.get("/categorias/:id", (req, res) => {
+app.get("/api/categorias/:id", (req, res) => {
   const id = req.params.id;
   connection.query(
     "SELECT * FROM categoria WHERE id = ?",
@@ -405,7 +449,7 @@ app.get("/categorias/:id", (req, res) => {
 });
 
 // Create a new category
-app.post("/categorias", (req, res) => {
+app.post("/api/categorias", (req, res) => {
   const categoria = req.body;
   connection.query("INSERT INTO categoria SET ?", categoria, (err, results) => {
     if (err) {
@@ -418,7 +462,7 @@ app.post("/categorias", (req, res) => {
 });
 
 // Update an existing category by ID
-app.put("/categorias/:id", (req, res) => {
+app.put("/api/categorias/:id", (req, res) => {
   const id = req.params.id;
   const categoria = req.body;
   connection.query(
@@ -436,7 +480,7 @@ app.put("/categorias/:id", (req, res) => {
 });
 
 // Delete a category by ID
-app.delete("/categorias/:id", (req, res) => {
+app.delete("/api/categorias/:id", (req, res) => {
   const id = req.params.id;
   connection.query(
     "DELETE FROM categoria WHERE id = ?",
@@ -452,27 +496,11 @@ app.delete("/categorias/:id", (req, res) => {
   );
 });
 
-// Rota para buscar o preço unitário pelo produto_id
-app.get("/saldo-estoque/preco/:produto_id", (req, res) => {
-  const produtoId = req.params.produto_id;
-  const query = "SELECT valor_unitario FROM saldo_estoque WHERE produto_id = ?";
-  
-  connection.query(query, [produtoId], (err, result) => {
-    if (err) {
-      console.error("Erro ao buscar preço unitário:", err);
-      res.status(500).send("Erro ao buscar preço unitário");
-    } else {
-      if (result.length > 0) {
-        res.json({ preco_unitario: result[0].valor_unitario });
-      } else {
-        res.status(404).send("Produto não encontrado no saldo de estoque");
-      }
-    }
-  });
-});
+//------------------------------------------------------------\\
 
+// CRUD APIs Saldo estoque
 // Rota para buscar todos os registros de saldo_estoque
-app.get("/saldo-estoque", (req, res) => {
+app.get("/api/saldo-estoque", (req, res) => {
   const query = `
     SELECT se.produto_id, p.nome AS produto_nome, se.quantidade, se.valor_unitario, se.valor_total
 FROM saldo_estoque se
@@ -489,27 +517,8 @@ JOIN produtos p ON se.produto_id = p.id;
   });
 });
 
-// Rota para buscar o preço unitário pelo produto_id
-app.get("/saldo-estoque/preco/:produto_id", (req, res) => {
-  const produtoId = req.params.produto_id;
-  const query = "SELECT valor_unitario FROM saldo_estoque WHERE produto_id = ?";
-  
-  connection.query(query, [produtoId], (err, result) => {
-    if (err) {
-      console.error("Erro ao buscar preço unitário:", err);
-      res.status(500).send("Erro ao buscar preço unitário");
-    } else {
-      if (result.length > 0) {
-        res.json({ preco_unitario: result[0].valor_unitario });
-      } else {
-        res.status(404).send("Produto não encontrado no saldo de estoque");
-      }
-    }
-  });
-});
-
 // Rota para atualizar saldo de estoque ao dar entrada de nota fiscal
-app.put("/saldo-estoque/update/:produto_id", (req, res) => {
+app.put("/api/saldo-estoque/update/:produto_id", (req, res) => {
   const produtoId = req.params.produto_id;
   const { quantidade, valor_unitario } = req.body;
 
@@ -553,7 +562,56 @@ app.put("/saldo-estoque/update/:produto_id", (req, res) => {
     }
   });
 });
-app.get("/notas-fiscais", (req, res) => {
+
+// Rota para buscar o saldo de estoque de um produto específico
+app.get("/api/saldo-estoque/:produto_id", (req, res) => {
+  const produtoId = req.params.produto_id;
+
+  const query = `
+    SELECT se.*, p.nome AS produto_nome
+    FROM saldo_estoque se
+    JOIN produtos p ON se.produto_id = p.id
+    WHERE se.produto_id = ?
+  `;
+
+  connection.query(query, [produtoId], (err, result) => {
+    if (err) {
+      console.error("Erro ao buscar saldo de estoque:", err);
+      res.status(500).send("Erro ao buscar saldo de estoque");
+    } else if (result.length > 0) {
+      res.json(result[0]); // Retorna o primeiro item, que é o saldo de estoque do produto
+    } else {
+      res.status(404).send("Produto não encontrado no saldo de estoque");
+    }
+  });
+});
+
+// Rota para atualizar o saldo de estoque ao realizar um pedido
+app.put("/saldo-estoque/:produto_id", (req, res) => {
+  const produtoId = req.params.produto_id;
+  const quantidadeVendida = req.body.quantidade;  // A quantidade que será deduzida do estoque
+
+  const query = `
+    UPDATE saldo_estoque 
+    SET quantidade = quantidade - ?
+    WHERE produto_id = ?
+  `;
+
+  connection.query(query, [quantidadeVendida, produtoId], (err, result) => {
+    if (err) {
+      console.error("Erro ao atualizar saldo de estoque:", err);
+      res.status(500).send("Erro ao atualizar saldo de estoque");
+      return;
+    }
+
+    res.send("Saldo de estoque atualizado com sucesso");
+  });
+});
+
+//------------------------------------------------------------\\
+
+// CRUD APIs Notas fiscais
+app.get("/api/notas-fiscais", (req, res) => {
   const query = `
     SELECT nf.numero_nota, nf.serie, nf.data_emissao, nf.valor_total, 
            f.nome_fantasia 
@@ -571,7 +629,7 @@ app.get("/notas-fiscais", (req, res) => {
   });
 });
 
-app.get("/notas-fiscais", (req, res) => {
+/*app.get("/notas-fiscais-todos", (req, res) => {
   console.log("Rota /notas-fiscais foi chamada");
   connection.query("SELECT * FROM nota_fiscal", (err, results) => {
     if (err) {
@@ -582,9 +640,9 @@ app.get("/notas-fiscais", (req, res) => {
     console.log("Notas Fiscais encontradas:", results); // Log para ver o resultado
     res.json(results);
   });
-});
+});*/
 
-app.get('/notas-fiscais/numero/:numeroNota', (req, res) => {
+app.get('/api/notas-fiscais/numero/:numeroNota', (req, res) => {
   const numeroNota = req.params.numeroNota;
   const query = 'SELECT * FROM nota_fiscal WHERE numero_nota = ?';
 
@@ -597,7 +655,8 @@ app.get('/notas-fiscais/numero/:numeroNota', (req, res) => {
     }
   });
 });
-app.get("/itens-nota-fiscal/:nota_fiscal_id", (req, res) => {
+
+app.get("/api/itens-nota-fiscal/:nota_fiscal_id", (req, res) => {
   const notaFiscalId = req.params.nota_fiscal_id;
 
   const query = `
@@ -615,31 +674,8 @@ app.get("/itens-nota-fiscal/:nota_fiscal_id", (req, res) => {
   });
 });
 
-app.get('/notas-fiscais/numero/:numeroNota', (req, res) => {
-  const numeroNota = req.params.numeroNota;
-  const query = 'SELECT * FROM nota_fiscal WHERE numero_nota = ?';
-
-  connection.query(query, [numeroNota], (err, results) => {
-    if (err) {
-      console.error('Erro ao buscar nota fiscal pelo número:', err);
-      res.status(500).send('Erro ao buscar nota fiscal');
-    } else {
-      res.json(results); // Retorna um array de notas, vazio se não houver duplicidade
-    }
-  });
-});
-
-// Função para formatar data no formato 'YYYY-MM-DD'
-function formatDateToMySQL(date) {
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = ('0' + (d.getMonth() + 1)).slice(-2);
-  const day = ('0' + d.getDate()).slice(-2);
-  return `${year}-${month}-${day}`;
-}
-
 // Rota para salvar a nota fiscal e os itens da nota fiscal
-app.post("/notas-fiscais", (req, res) => {
+app.post("/api/notas-fiscais", (req, res) => {
   const notaFiscal = req.body;
 
   // Função para validar e formatar data
@@ -712,7 +748,7 @@ app.post("/notas-fiscais", (req, res) => {
   }
 });
 
-app.post("/itens-nota-fiscal", (req, res) => {
+app.post("/api/itens-nota-fiscal", (req, res) => {
   const itensNotaFiscal = req.body.itensNotaFiscal;
 
   const query = `
@@ -738,44 +774,9 @@ app.post("/itens-nota-fiscal", (req, res) => {
   });
 });
 
-// Rota para buscar o saldo de estoque de um produto específico
-app.get("/saldo-estoque/:produto_id", (req, res) => {
-  const produtoId = req.params.produto_id;
 
-  const query = `
-    SELECT se.*, p.nome AS produto_nome
-    FROM saldo_estoque se
-    JOIN produtos p ON se.produto_id = p.id
-    WHERE se.produto_id = ?
-  `;
-
-  connection.query(query, [produtoId], (err, result) => {
-    if (err) {
-      console.error("Erro ao buscar saldo de estoque:", err);
-      res.status(500).send("Erro ao buscar saldo de estoque");
-    } else if (result.length > 0) {
-      res.json(result[0]); // Retorna o primeiro item, que é o saldo de estoque do produto
-    } else {
-      res.status(404).send("Produto não encontrado no saldo de estoque");
-    }
-  });
-});
-
-// Função para converter a data no formato 'YYYY-MM-DD HH:MM:SS'
-function formatDateToMySQL(date) {
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = ('0' + (d.getMonth() + 1)).slice(-2);
-  const day = ('0' + d.getDate()).slice(-2);
-  const hours = ('0' + d.getHours()).slice(-2);
-  const minutes = ('0' + d.getMinutes()).slice(-2);
-  const seconds = ('0' + d.getSeconds()).slice(-2);
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
-
-
-// No código de inserção do pedido
-app.post("/pedidos", (req, res) => {
+//CRUD APIs Pedidos
+app.post("/api/pedidos", (req, res) => {
   const pedido = req.body;
 
   // Converte a data para o formato adequado
@@ -828,8 +829,8 @@ connection.query(queryItensPedido, [itensPedido], (err) => {
   });
 });
 
-// relatorio de pedido
-app.get('/pedidos', (req, res) => {
+
+app.get('/api/pedidos', (req, res) => {
   const { igreja, dataInicio, dataFim } = req.query;
 
   // Adjusted query to include the `codigo` column
@@ -878,7 +879,7 @@ app.get('/pedidos', (req, res) => {
   });
 });
 
-app.get("/pedidos/:id", (req, res) => {
+app.get("/api/pedidos/:id", (req, res) => {
   const id = req.params.id;
   const query = `
     SELECT p.id AS codigo, p.*, i.nome AS igreja_nome 
@@ -898,7 +899,8 @@ app.get("/pedidos/:id", (req, res) => {
   });
 });
 
-app.get('/pedidos', (req, res) => {
+//Consulta pedido por Id
+/*app.get('/api/pedidos-busca', (req, res) => {
   connection.query('SELECT ...', (err, results) => {
     if (err) {
       console.error('Erro ao buscar pedidos:', err);
@@ -908,173 +910,9 @@ app.get('/pedidos', (req, res) => {
       res.json(results);
     }
   });
-});
+});*/
 
-// Rota para atualizar o saldo de estoque ao realizar um pedido
-app.put("/saldo-estoque/:produto_id", (req, res) => {
-  const produtoId = req.params.produto_id;
-  const quantidadeVendida = req.body.quantidade;  // A quantidade que será deduzida do estoque
-
-  const query = `
-    UPDATE saldo_estoque 
-    SET quantidade = quantidade - ?
-    WHERE produto_id = ?
-  `;
-
-  connection.query(query, [quantidadeVendida, produtoId], (err, result) => {
-    if (err) {
-      console.error("Erro ao atualizar saldo de estoque:", err);
-      res.status(500).send("Erro ao atualizar saldo de estoque");
-      return;
-    }
-
-    res.send("Saldo de estoque atualizado com sucesso");
-  });
-});
-
-// Get all empresas
-app.get("/empresas", (req, res) => {
-  connection.query("SELECT * FROM empresa", (err, results) => {
-    if (err) {
-      console.error("Error fetching empresas:", err);
-      res.status(500).send("Internal Server Error");
-      return;
-    }
-    res.send(results);
-  });
-});
-
-// Get a single empresa by ID
-app.get("/empresas/:id", (req, res) => {
-  const id = req.params.id;
-  connection.query("SELECT * FROM empresa WHERE id = ?", [id], (err, results) => {
-    if (err) {
-      res.status(500).send(err);
-    } else if (results.length > 0) {
-      res.json(results[0]);
-    } else {
-      res.status(404).send("Empresa não encontrada");
-    }
-  });
-});
-
-// Create a new empresa
-app.post("/empresas", (req, res) => {
-  const empresa = req.body;
-
-  // Adicione um console.log para verificar os dados
-  console.log(empresa);
-
-  connection.query("INSERT INTO empresa SET ?", empresa, (err, results) => {
-    if (err) {
-      console.error("Erro ao inserir empresa:", err);
-      res.status(500).send("Erro ao inserir empresa");
-    } else {
-      res.status(201).send({ id: results.insertId, ...empresa });
-    }
-  });
-});
-
-// Update an existing empresa by ID
-app.put("/empresas/:id", (req, res) => {
-  const id = req.params.id;
-  const empresa = req.body;
-  connection.query("UPDATE empresa SET ? WHERE id = ?", [empresa, id], (err, results) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.send("Empresa atualizada com sucesso");
-    }
-  });
-});
-
-// Delete an empresa by ID
-app.delete("/empresas/:id", (req, res) => {
-  const id = req.params.id;
-  connection.query("DELETE FROM empresa WHERE id = ?", [id], (err, results) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.send("Empresa deletada com sucesso");
-    }
-  });
-});
-
-app.post("/empresas/pesquisar", (req, res) => {
-  const { razao_social, cnpj } = req.body;
-  
-  // Exemplo de query SQL - modifique conforme seu banco de dados
-  const query = `
-    SELECT * FROM empresa 
-    WHERE razao_social LIKE ? 
-    OR cnpj = ?
-  `;
-  
-  connection.query(query, [`%${razao_social}%`, cnpj], (error, results) => {
-    if (error) {
-      return res.status(500).json({ error: 'Erro ao buscar empresas' });
-    }
-    res.json(results);
-  });
-});
-
-app.post("/pedidos", (req, res) => {
-  const pedido = req.body;
-  console.log("Pedido recebido:", pedido);  // Log dos dados recebidos
-
-  // Converte a data para o formato adequado
-  const dataPedidoMySQL = formatDateToMySQL(pedido.data_pedido);
-
-  const queryPedido = `
-    INSERT INTO pedidos (igreja_id, data_pedido, status, valor_total, recebedor)
-    VALUES (?, ?, ?, ?, ?)
-  `;
-  
-  const paramsPedido = [
-    pedido.igreja_id,
-    dataPedidoMySQL,  // Data formatada corretamente
-    pedido.status,
-    pedido.valor_total,
-    pedido.recebedor
-  ];
-
-  // Inserir o pedido
-connection.query(queryPedido, paramsPedido, (err, result) => {
-  if (err) {
-    console.error("Erro ao inserir o pedido:", err); // <-- Verifique a mensagem de erro aqui
-    res.status(500).send("Erro ao inserir o pedido");
-    return;
-  }
-
-  const pedidoId = result.insertId;
-
-  // Inserir os itens do pedido
-  const itensPedido = pedido.pedido_itens.map(item => [
-    pedidoId,
-    item.produto_id,
-    item.quantidade,
-    item.valor_unitario
-  ]);
-
-  const queryItensPedido = `
-    INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, valor_unitario)
-    VALUES ?
-  `;
-
-  connection.query(queryItensPedido, [itensPedido], (err) => {
-    if (err) {
-      console.error("Erro ao inserir itens do pedido:", err); // <-- Verifique a mensagem de erro aqui
-      res.status(500).send("Erro ao inserir itens do pedido");
-      return;
-    }
-
-    res.status(201).send("Pedido e itens salvos com sucesso");
-  });
-});
-
-});
-
-app.get('/pedidos', (req, res) => {
+/*app.get('/pedido', (req, res) => {
   const query = `
     SELECT 
       p.id AS pedido_id, 
@@ -1096,8 +934,9 @@ app.get('/pedidos', (req, res) => {
     console.log('Pedidos retornados:', results); // Verifique os campos aqui
     res.json(results);
   });
-});
-app.get('/pedidos/:id', (req, res) => {
+});*/
+
+/*app.get('/pedidos/:id', (req, res) => {
   const id = req.params.id;
   const query = `
     SELECT p.id AS pedido_id, p.data_pedido, p.valor_total, p.recebedor, i.nome AS igreja_nome
@@ -1117,10 +956,10 @@ app.get('/pedidos/:id', (req, res) => {
       res.status(404).send('Pedido não encontrado');
     }
   });
-});
+});*/
 
 // Rota para buscar pedido por código do pedido
-app.get("/pedidos/:codigoPedido", (req, res) => {
+/*app.get("/pedidos/:codigoPedido", (req, res) => {
   const codigoPedido = req.params.codigoPedido;
   const query = `
     SELECT p.*, i.nome AS igreja_nome 
@@ -1139,9 +978,9 @@ app.get("/pedidos/:codigoPedido", (req, res) => {
       res.status(404).send("Pedido não encontrado");
     }
   });
-});
+});*/
 
-app.get("/pedido-itens/:pedidoId", (req, res) => {
+app.get("/api/pedido-itens/:pedidoId", (req, res) => {
   const pedidoId = req.params.pedidoId;
   const query = `
     SELECT ip.*, p.nome AS produto_nome
@@ -1160,8 +999,97 @@ app.get("/pedido-itens/:pedidoId", (req, res) => {
   });
 });
 
+// CRUD APIs Empresas
+
+app.get("/api/empresas", (req, res) => {
+  connection.query("SELECT * FROM empresa", (err, results) => {
+    if (err) {
+      console.error("Error fetching empresas:", err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    res.send(results);
+  });
+});
+
+// Get a single empresa by ID
+app.get("/api/empresas/:id", (req, res) => {
+  const id = req.params.id;
+  connection.query("SELECT * FROM empresa WHERE id = ?", [id], (err, results) => {
+    if (err) {
+      res.status(500).send(err);
+    } else if (results.length > 0) {
+      res.json(results[0]);
+    } else {
+      res.status(404).send("Empresa não encontrada");
+    }
+  });
+});
+
+// Create a new empresa
+app.post("/api/empresas", (req, res) => {
+  const empresa = req.body;
+
+  // Adicione um console.log para verificar os dados
+  console.log(empresa);
+
+  connection.query("INSERT INTO empresa SET ?", empresa, (err, results) => {
+    if (err) {
+      console.error("Erro ao inserir empresa:", err);
+      res.status(500).send("Erro ao inserir empresa");
+    } else {
+      res.status(201).send({ id: results.insertId, ...empresa });
+    }
+  });
+});
+
+// Update an existing empresa by ID
+app.put("/api/empresas/:id", (req, res) => {
+  const id = req.params.id;
+  const empresa = req.body;
+  connection.query("UPDATE empresa SET ? WHERE id = ?", [empresa, id], (err, results) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.send("Empresa atualizada com sucesso");
+    }
+  });
+});
+
+// Delete an empresa by ID
+app.delete("/api/empresas/:id", (req, res) => {
+  const id = req.params.id;
+  connection.query("DELETE FROM empresa WHERE id = ?", [id], (err, results) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.send("Empresa deletada com sucesso");
+    }
+  });
+});
+
+app.post("/api/empresas/pesquisar", (req, res) => {
+  const { razao_social, cnpj } = req.body;
+  
+  // Exemplo de query SQL - modifique conforme seu banco de dados
+  const query = `
+    SELECT * FROM empresa 
+    WHERE razao_social LIKE ? 
+    OR cnpj = ?
+  `;
+  
+  connection.query(query, [`%${razao_social}%`, cnpj], (error, results) => {
+    if (error) {
+      return res.status(500).json({ error: 'Erro ao buscar empresas' });
+    }
+    res.json(results);
+  });
+});
+
+//------------------------------------------------------------\\
+
 // CRUD APIs for 'usuario'
-app.post("/usuarios", (req, res) => {
+app.post("/api/usuarios", (req, res) => {
   const usuario = req.body;
 
   console.log("Dados recebidos para cadastro de usuário:", usuario);
@@ -1177,7 +1105,7 @@ app.post("/usuarios", (req, res) => {
   });
 });
 
-app.get("/usuarios", (req, res) => {
+app.get("/api/usuarios", (req, res) => {
   connection.query("SELECT * FROM usuarios", (err, results) => {
     if (err) {
       console.error("Erro ao buscar usuários:", err);
@@ -1188,7 +1116,7 @@ app.get("/usuarios", (req, res) => {
   });
 });
 
-app.post('/usuarios/login', (req, res) => {
+app.post('/api/usuarios/login', (req, res) => {
   const { login, senha } = req.body;
   const query = 'SELECT * FROM usuarios WHERE login = ? AND senha = ?';
 
@@ -1214,7 +1142,7 @@ app.post('/usuarios/login', (req, res) => {
   });
 });
 
-app.put('/usuarios/:id', (req, res) => {
+app.put('/api/usuarios/:id', (req, res) => {
   const id = req.params.id; // Obtém o ID da rota
   const { login, senha, perfil, ativo } = req.body; // Obtém os dados do corpo da requisição
 
@@ -1238,7 +1166,7 @@ const verifyAdmin = (req, res, next) => {
   next();
 };
 
-app.post('/usuarios', verifyToken, verifyAdmin, (req, res) => {
+app.post('/api/usuarios/admin', verifyToken, verifyAdmin, (req, res) => {
   const usuario = req.body;
   connection.query("INSERT INTO usuarios SET ?", usuario, (err, results) => {
     if (err) {
@@ -1250,21 +1178,15 @@ app.post('/usuarios', verifyToken, verifyAdmin, (req, res) => {
   });
 });
 
+
 const server = app.listen(port, () => {
   // Mantido apenas uma chamada para app.listen
   console.log(`Server running on port ${port}`);
 });
 
-function formatDateToMySQL(date) {
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = ('0' + (d.getMonth() + 1)).slice(-2);
-  const day = ('0' + d.getDate()).slice(-2);
-  return `${year}-${month}-${day}`;
-}
 
-// Dentro da rota
-app.post('/pedido-compra', (req, res) => {
+// Pedido de Compras
+app.post('/api/pedido-compra', (req, res) => {
   const { solicitante, data_pedido, itens } = req.body;
 
   if (!solicitante || !data_pedido || !itens || itens.length === 0) {
@@ -1293,7 +1215,7 @@ app.post('/pedido-compra', (req, res) => {
   });
 });
 
-app.get("/pedido-compra/relatorio", (req, res) => {
+app.get("/api/pedido-compra/relatorio", (req, res) => {
   const { dataInicio, dataFim } = req.query;
 
   if (!dataInicio || !dataFim) {
@@ -1319,7 +1241,7 @@ app.get("/pedido-compra/relatorio", (req, res) => {
 });
 
 // Rota para obter um pedido de compra específico por ID
-app.get("/pedido-compra/:id", (req, res) => {
+app.get("/api/pedido-compra/:id", (req, res) => {
   const id = req.params.id;
   const query = "SELECT * FROM pedido_compra WHERE id = ?";
   connection.query(query, [id], (err, results) => {
@@ -1334,7 +1256,10 @@ app.get("/pedido-compra/:id", (req, res) => {
   });
 });
 
-app.post("/inventarios/lote", (req, res) => {
+
+
+// Inventarios
+app.post("/api/inventarios/lote", (req, res) => {
   const inventarios = req.body; // Deve ser um array de objetos
   const query = `
       INSERT INTO inventario (produto_id, usuario_id, quantidade, data_inventario, observacao)
@@ -1359,7 +1284,7 @@ app.post("/inventarios/lote", (req, res) => {
   });
 });
 
-app.get('/relatorio-inventario', (req, res) => {
+app.get('/api/relatorio-inventario', (req, res) => {
   const query = `
     SELECT 
       p.nome AS produto_nome, 
@@ -1380,6 +1305,8 @@ app.get('/relatorio-inventario', (req, res) => {
     res.json(results);
   });
 });
+
+
 
 server.on("error", (err) => {
   if (err.code === "EADDRINUSE") {

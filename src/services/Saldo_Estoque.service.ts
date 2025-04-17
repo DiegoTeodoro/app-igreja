@@ -13,7 +13,7 @@ export class SaldoEstoqueService {
   private saldoEstoqueUrl : string;
 
   constructor(private http: HttpClient) {
-    this.saldoEstoqueUrl = `${environment.apiUrl}/saldo-estoque`
+    this.saldoEstoqueUrl = `${environment.apiUrl}/api/saldo-estoque`
   }
 
   getSaldoEstoque(): Observable<SaldoEstoque[]> {

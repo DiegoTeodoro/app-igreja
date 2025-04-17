@@ -1,0 +1,39 @@
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.metade {
+  flex: 1 1 48%;
+}
+
+.terco {
+  flex: 1 1 30%;
+}
+
+.trinta {
+  flex: 1 1 30%;
+}
+
+.quinze {
+  flex: 1 1 15%;
+}
+
+.vinte {
+  flex: 1 1 20%;
+}
+
+.vintecinco {
+  flex: 1 1 25%;
+}
+
+.sessenta {
+  flex: 1 1 60%;
+}
+
+.acoes-botoes {
+  display: flex;
+  gap: 12px; /* ou o valor que desejar */
+  margin-top: 16px;
+}

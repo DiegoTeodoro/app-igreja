@@ -31,6 +31,7 @@ export class AppComponent implements OnInit {
         { title: 'Inventario', route: '/cadastro-inventario', icon: 'inventory' },
         { title: 'Usuario', route: '/cadastro-usuario', icon: 'person' },
         { title: 'Login', route: '/login', icon: 'login' },
+        { title: 'Fornecedor', route: '/fornecedor', icon: 'business' },
       ]
     },
     {

@@ -25,6 +25,15 @@ export class RelatorioProdutoComponent implements OnInit {
         console.error('Erro ao buscar produtos', error);
       }
     );
+    this.atualizarDataHora();
+    setInterval(() => this.atualizarDataHora(), 60000); // Atualiza a cada 60 segundos
+  }
+
+  atualizarDataHora() {
+    const agora = new Date();
+    const opcoes = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+    this.dataAtual = agora.toLocaleString('pt-BR');
+
   }
 
   gerarPDF() {

@@ -1,0 +1,97 @@
+<mat-card>
+    <mat-card-title>Cadastro de Fornecedor</mat-card-title>
+    <br>
+    <mat-card-content>
+      <form [formGroup]="fornecedorForm">
+        <div class="linha">
+          <mat-form-field appearance="fill" class="metade">
+            <mat-label>Razão Social</mat-label>
+            <input matInput formControlName="razao_social">
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill" class="metade">
+            <mat-label>Nome Fantasia</mat-label>
+            <input matInput formControlName="nome_fantasia">
+          </mat-form-field>
+        </div>
+  
+        <div class="linha">
+          <mat-form-field appearance="fill" class="terco">
+            <mat-label>CNPJ</mat-label>
+            <input matInput formControlName="cnpj">
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill" class="terco">
+            <mat-label>Inscrição Estadual</mat-label>
+            <input matInput formControlName="inscricao_estadual">
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill" class="terco">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+          </mat-form-field>
+        </div>
+  
+       <!-- Telefones -->
+<div class="linha">
+    <mat-form-field appearance="fill" class="trinta">
+      <mat-label>Telefone Fixo</mat-label>
+      <input matInput formControlName="telefone_fixo">
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill" class="trinta">
+      <mat-label>Telefone Celular</mat-label>
+      <input matInput formControlName="telefone_celular">
+    </mat-form-field>
+  </div>
+  
+  <!-- Logradouro, Número, Complemento -->
+  <div class="linha">
+    <mat-form-field appearance="fill" class="sessenta">
+      <mat-label>Logradouro</mat-label>
+      <input matInput formControlName="logradouro">
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill" class="quinze">
+      <mat-label>Número</mat-label>
+      <input matInput formControlName="numero">
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill" class="vintecinco">
+      <mat-label>Complemento</mat-label>
+      <input matInput formControlName="complemento">
+    </mat-form-field>
+  </div>
+  
+  <!-- Bairro, CEP, Cidade, UF -->
+  <div class="linha">
+    <mat-form-field appearance="fill" class="vinte">
+      <mat-label>Bairro</mat-label>
+      <input matInput formControlName="bairro">
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill" class="vinte">
+      <mat-label>CEP</mat-label>
+      <input matInput formControlName="cep">
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill" class="trinta">
+      <mat-label>Cidade</mat-label>
+      <input matInput formControlName="cidade_codigo">
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill" class="quinze">
+      <mat-label>UF</mat-label>
+      <input matInput formControlName="uf_codigo">
+    </mat-form-field>
+  </div>
+      </form>
+    </mat-card-content>
+  
+    <mat-card-actions class="acoes-botoes">
+      <button mat-raised-button color="primary" (click)="salvar()">Salvar</button>
+      <button mat-raised-button color="warn" (click)="cancelar()" type="button">Cancelar</button>
+    </mat-card-actions>
+    
+  </mat-card>
+  

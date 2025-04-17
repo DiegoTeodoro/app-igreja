@@ -49,7 +49,7 @@ export class CadastroIgrejaComponent implements OnInit {
   }
 
   loadIgrejas() {
-    this.http.get<IgrejaDetalhes[]>('http://localhost:3000/igrejas').subscribe((data: IgrejaDetalhes[]) => {
+    this.http.get<IgrejaDetalhes[]>('http://localhost:3000/api/igrejas').subscribe((data: IgrejaDetalhes[]) => {
       this.igrejas.data = data.map(igreja => {
         const setor = this.setores.find(s => s.codigo === igreja.codigo_setor); // Associa o setor à igreja
         return {
@@ -64,7 +64,7 @@ export class CadastroIgrejaComponent implements OnInit {
 
   // Carrega os setores
   loadSetores() {
-    this.http.get<any[]>('http://localhost:3000/setores').subscribe((data) => {
+    this.http.get<any[]>('http://localhost:3000/api/setores').subscribe((data) => {
       this.setores = data;
     }, error => {
       console.error('Erro ao carregar setores:', error);
@@ -73,7 +73,7 @@ export class CadastroIgrejaComponent implements OnInit {
 
   // Carrega as cidades
   loadCidades() {
-    this.http.get<any[]>('http://localhost:3000/cidades').subscribe((data) => {
+    this.http.get<any[]>('http://localhost:3000/api/cidades').subscribe((data) => {
       this.cidades = data;
     }, error => {
       console.error('Erro ao carregar cidades:', error);
@@ -82,7 +82,7 @@ export class CadastroIgrejaComponent implements OnInit {
 
   // Carrega os estados
   loadEstados() {
-    this.http.get<any[]>('http://localhost:3000/estados').subscribe((data) => {
+    this.http.get<any[]>('http://localhost:3000/api/estados').subscribe((data) => {
       this.estados = data;
     }, error => {
       console.error('Erro ao carregar estados:', error);
@@ -112,14 +112,14 @@ export class CadastroIgrejaComponent implements OnInit {
   onSubmit() {
     if (this.igreja.codigo) {
       // Atualizar igreja existente
-      this.http.put(`http://localhost:3000/igrejas/${this.igreja.codigo}`, this.igreja).subscribe(() => {
+      this.http.put(`http://localhost:3000/api/igrejas/${this.igreja.codigo}`, this.igreja).subscribe(() => {
         this.loadIgrejas();
         this.resetForm();
         this.showSuccessMessage('Igreja atualizada com sucesso!');
       });
     } else {
       // Criar nova igreja
-      this.http.post('http://localhost:3000/igrejas', this.igreja).subscribe(() => {
+      this.http.post('http://localhost:3000/api/igrejas', this.igreja).subscribe(() => {
         this.loadIgrejas();
         this.resetForm();
         this.showSuccessMessage('Igreja criada com sucesso!');

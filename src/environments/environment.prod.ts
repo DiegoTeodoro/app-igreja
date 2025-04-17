@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://192.168.100.121:3000',
+  apiUrl: 'http://172.30.97.94:3000',
 
   dbConfig: {
   host: "localhost",
