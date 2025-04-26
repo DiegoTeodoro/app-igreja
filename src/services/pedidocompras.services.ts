@@ -13,8 +13,8 @@ export class PedidoCompraService {
 
   constructor(private http: HttpClient) {
     const apiUrl = environment.apiUrl;
-    this.pedidoCompraUrl = `${apiUrl}/api/pedido-compra`;
-    this.produtosUrl = `${apiUrl}/api/produtos`;
+    this.pedidoCompraUrl = `${apiUrl}/pedido-compra`;
+    this.produtosUrl = `${apiUrl}/produtos`;
   }
 
   createPedido(pedido: any): Observable<any> {

@@ -13,7 +13,7 @@ export class SaldoEstoqueService {
   private saldoEstoqueUrl : string;
 
   constructor(private http: HttpClient) {
-    this.saldoEstoqueUrl = `${environment.apiUrl}/api/saldo-estoque`
+    this.saldoEstoqueUrl = `${environment.apiUrl}/saldo-estoque`
   }
 
   getSaldoEstoque(): Observable<SaldoEstoque[]> {
@@ -23,8 +23,9 @@ export class SaldoEstoqueService {
 
   // Método para buscar o valor unitário com base no produto_id
   getPrecoUnitario(produtoId: number): Observable<any> {
-    return this.http.get(`${this.saldoEstoqueUrl}/preco/${produtoId}`);
+    return this.http.get<any>(`${this.saldoEstoqueUrl}/${produtoId}`);
   }
+  
 
  // Método para atualizar o saldo de estoque com base no produto_id e quantidade
  updateSaldoEstoque(produto_id: number, quantidade: number, valor_unitario: number): Observable<any> {

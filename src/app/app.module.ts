@@ -60,6 +60,7 @@ import { RelatorioPedidoCompraComponent } from './relatorios/relatorio-pedido-co
 import { ConsultaPedidoComponent } from './consultas/consulta-pedido/consulta-pedido.component';
 import { RelatorioInventarioComponent } from './relatorios/relatorio-inventario/relatorio-inventario.component';
 import { CadastroFornecedorComponent } from './cadastros/cadastro-fornecedor/cadastro-fornecedor.component';
+import { ConsultaFornecedorComponent } from './cadastros/consulta-fornecedor/consulta-fornecedor.component';
 
 
 // Registre o locale `pt-BR`
@@ -97,6 +98,7 @@ registerLocaleData(localePt);
     ConsultaPedidoComponent,
     RelatorioInventarioComponent,
     CadastroFornecedorComponent,
+    ConsultaFornecedorComponent,
    
 
  

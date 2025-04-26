@@ -85,8 +85,18 @@
       <input matInput formControlName="uf_codigo">
     </mat-form-field>
   </div>
+  
       </form>
     </mat-card-content>
+
+    
+<!-- Radio button para Ativo/Inativo -->
+<div class="inline-fields" style="margin-top: 20px;">
+  <mat-radio-group formControlName="ativo" (change)="verificarAtivo()">
+    <mat-radio-button [value]="true">Ativo</mat-radio-button>
+    <mat-radio-button [value]="false">Inativo</mat-radio-button>
+  </mat-radio-group>
+</div>
   
     <mat-card-actions class="acoes-botoes">
       <button mat-raised-button color="primary" (click)="salvar()">Salvar</button>

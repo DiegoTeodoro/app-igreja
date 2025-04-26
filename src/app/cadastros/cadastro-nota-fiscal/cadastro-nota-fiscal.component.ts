@@ -152,17 +152,23 @@ export class CadastroNotaFiscalComponent implements OnInit {
 salvarNotaFiscal(): void {
   const dataEmissao = this.formatarData(this.notaFiscalForm.value.dataEmissao);
 
+  const itensNotaFiscal = this.itens.data.map(item => ({
+    produto_id: item.produto_id,
+    quantidade: item.quantidade,
+    valorUnitario: item.valorUnitario // 👈 sem enviar valorTotal!
+  }));
+  
   const notaFiscal = {
-      numero_nota: this.notaFiscalForm.value.numeroNota,
-      serie: this.notaFiscalForm.value.serie,
-      chave_acesso: this.notaFiscalForm.value.chaveAcesso,
-      fornecedor_id: this.notaFiscalForm.value.fornecedor,
-      data_emissao: dataEmissao,
-      valor_total: this.notaFiscalForm.value.valorTotalNota || 0,
-      desconto: this.notaFiscalForm.value.desconto || 0,
-      outros: this.notaFiscalForm.value.outros || 0,
-      observacoes: this.notaFiscalForm.value.observacao || '',
-      itensNotaFiscal: this.itens.data
+    numero_nota: this.notaFiscalForm.value.numeroNota,
+    serie: this.notaFiscalForm.value.serie,
+    chave_acesso: this.notaFiscalForm.value.chaveAcesso,
+    fornecedor_id: this.notaFiscalForm.value.fornecedor,
+    data_emissao: dataEmissao,
+    valor_total: this.notaFiscalForm.value.valorTotalNota || 0,
+    desconto: this.notaFiscalForm.value.desconto || 0,
+    outros: this.notaFiscalForm.value.outros || 0,
+    observacoes: this.notaFiscalForm.value.observacao || '',
+    itensNotaFiscal: itensNotaFiscal
   };
 
   console.log("Nota Fiscal a ser salva:", notaFiscal);  // Log para verificar os dados
@@ -299,7 +305,10 @@ salvarNotaFiscal(): void {
     );
   }
   
-
+  abrirCadastroFornecedor(): void {
+    window.open('/fornecedor', '_blank');
+  }
+  
   cancelar(): void {
     this.notaFiscalForm.reset();
     this.itens.data = [];

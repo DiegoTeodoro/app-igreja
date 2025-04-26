@@ -41,23 +41,33 @@
           </mat-form-field>
         </div>
 
-        <!-- Segunda linha: Fornecedor, Data de Emissão -->
-        <div class="form-row-inline">
-          <mat-form-field appearance="fill" class="observacao-50">
-            <mat-label>Fornecedor</mat-label>
-            <mat-select formControlName="fornecedor">
-                <mat-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor.id">
-                {{ fornecedor.nome_fantasia }}
-                </mat-option>
-            </mat-select>
-            </mat-form-field>
+        <!-- Segunda linha: Fornecedor, Botão de adicionar, Data de Emissão -->
+<div class="form-row-inline">
+  <!-- Fornecedor -->
+  <mat-form-field appearance="fill" class="observacao-50">
+    <mat-label>Fornecedor</mat-label>
+    <mat-select formControlName="fornecedor">
+      <mat-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor.id">
+        {{ fornecedor.nome_fantasia }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Data de Emissão</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="dataEmissao" required/>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle><mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
+ <!-- Botão com imagem -->
+ <div class="botao-wrapper">
+  <button mat-icon-button type="button" (click)="abrirCadastroFornecedor()" matTooltip="Cadastrar novo fornecedor">
+    <img src="assets/mais.png" width="24" height="24" alt="Adicionar">
+  </button>
+</div>
+
+  <!-- Data de Emissão -->
+  <mat-form-field appearance="fill">
+    <mat-label>Data de Emissão</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="dataEmissao" required />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</div>
 
         <!-- Observação -->
         <mat-form-field appearance="fill" class="observacao-50">

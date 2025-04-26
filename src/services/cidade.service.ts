@@ -7,20 +7,19 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class CidadeService {
-  
-  private cidadesUrl :string;
+  private cidadesUrl: string;
 
   constructor(private http: HttpClient) {
-    this.cidadesUrl = `${environment.apiUrl}/api/cidades`; 
-  }
-
-  // Implementando o método corretamente
-  getCidadesByEstado(estadoId: number): Observable<any> {
-    return this.http.get(`${this.cidadesUrl}?estado_id=${estadoId}`);
+    // ✅ Correto: já inclui o /api vindo do environment
+    this.cidadesUrl = `${environment.apiUrl}/cidades`;
   }
 
   getCidades(): Observable<any> {
     return this.http.get(this.cidadesUrl);
+  }
+
+  getCidadesByEstado(estadoId: number): Observable<any> {
+    return this.http.get(`${this.cidadesUrl}?estado_id=${estadoId}`);
   }
 
   createCidade(cidade: any): Observable<any> {

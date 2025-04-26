@@ -7,10 +7,10 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class SetorService {
-  private setoresUrl = 'http://localhost:3000/setores';
+  private setoresUrl : string;;
 
   constructor(private http: HttpClient) {
-    this.setoresUrl = `${environment.apiUrl}/api/setores`
+    this.setoresUrl = `${environment.apiUrl}/setores`
 
   }
 

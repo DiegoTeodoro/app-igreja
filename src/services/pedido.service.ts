@@ -15,11 +15,11 @@ export class PedidoService {
 
   constructor(private http: HttpClient) {
     const apiUrl = environment.apiUrl;
-    this.igrejasUrl = `${apiUrl}/api/igrejas`;
-    this.produtosUrl = `${apiUrl}/api/produtos`;
-    this.pedidosUrl = `${apiUrl}/api/pedidos`;
+    this.igrejasUrl = `${apiUrl}/igrejas`;
+    this.produtosUrl = `${apiUrl}/produtos`;
+    this.pedidosUrl = `${apiUrl}/pedidos`;
     this.consultaPedidosUrl = `${apiUrl}/consulta-pedidos`;
-    this.itensPedidoUrl = `${apiUrl}/api/pedido-itens`;
+    this.itensPedidoUrl = `${apiUrl}/pedido-itens`;
   }
 
   getIgrejas(): Observable<any[]> {

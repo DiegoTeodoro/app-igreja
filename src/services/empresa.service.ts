@@ -10,7 +10,7 @@ export class EmpresaService {
   private empresasUrl :string;  // URL base da API para empresas
 
   constructor(private http: HttpClient) {
-    this.empresasUrl = `${environment.apiUrl}/api/empresas`;
+    this.empresasUrl = `${environment.apiUrl}/empresas`;
   }
 
   // Método para cadastrar nova empresa

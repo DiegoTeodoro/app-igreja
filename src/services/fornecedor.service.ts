@@ -10,7 +10,7 @@ export class FornecedorService {
   private fornecedoresUrl : string;
 
   constructor(private http: HttpClient) {
-    this.fornecedoresUrl = `${environment.apiUrl}/api/fornecedores`
+    this.fornecedoresUrl = `${environment.apiUrl}/fornecedores`
   }
 
   getFornecedores(): Observable<any> {

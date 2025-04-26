@@ -14,7 +14,7 @@ export class IgrejaService {
   private igrejasUrl :string;
 
   constructor(private http: HttpClient) {
-    this.igrejasUrl = `${environment.apiUrl}/api/igrejas`
+    this.igrejasUrl = `${environment.apiUrl}/igrejas`
   }
 
   getIgrejas(): Observable<Igreja[]> {

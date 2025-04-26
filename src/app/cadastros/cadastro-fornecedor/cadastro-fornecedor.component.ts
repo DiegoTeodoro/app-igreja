@@ -33,6 +33,7 @@ export class CadastroFornecedorComponent {
       cep: [''],
       cidade_codigo: [null],
       uf_codigo: [null],
+      ativo: [true] 
     });
   }
 
@@ -49,5 +50,20 @@ export class CadastroFornecedorComponent {
 
   cancelar(): void {
     this.fornecedorForm.reset({ ativo: true });
+  }
+
+  verificarAtivo(): void {
+    const ativo = this.fornecedorForm.get('ativo')?.value;
+  
+    if (ativo) {
+      this.fornecedorForm.enable(); // Habilita tudo
+    } else {
+      // Desabilita todos os campos, exceto o radio button 'ativo'
+      Object.keys(this.fornecedorForm.controls).forEach(field => {
+        if (field !== 'ativo') {
+          this.fornecedorForm.get(field)?.disable();
+        }
+      });
+    }
   }
 }

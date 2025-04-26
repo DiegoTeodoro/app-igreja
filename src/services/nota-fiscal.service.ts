@@ -18,11 +18,11 @@ export class NotaFiscalService {
 
   constructor(private http: HttpClient) {
     const apiUrl = environment.apiUrl;
-    this.notasFiscaisUrl = `${apiUrl}/api/notas-fiscais`;
-    this.igrejasUrl = `${apiUrl}/api/igrejas`;
-    this.fornecedoresUrl = `${apiUrl}/api/fornecedores`;
-    this.produtosUrl = `${apiUrl}/api/produtos`;
-    this.itensNotaFiscalUrl = `${apiUrl}/api/itens-nota-fiscal`;
+    this.notasFiscaisUrl = `${apiUrl}/notas-fiscais`;
+    this.igrejasUrl = `${apiUrl}/igrejas`;
+    this.fornecedoresUrl = `${apiUrl}/fornecedores`;
+    this.produtosUrl = `${apiUrl}/produtos`;
+    this.itensNotaFiscalUrl = `${apiUrl}/itens-nota-fiscal`;
   }
 
   getIgrejas(): Observable<any[]> {

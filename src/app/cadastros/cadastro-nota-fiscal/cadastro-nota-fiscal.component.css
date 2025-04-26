@@ -79,4 +79,10 @@
     background-color: #636161; /* Define uma cor para a linha */
     border: none; /* Remove qualquer borda para evitar conflitos */
   }
+  .botao-adicionar-fornecedor {
+    margin: 36px 10px 0 -10px;
+    padding: 0;
+    height: 36px;
+    vertical-align: bottom;
+  }
   

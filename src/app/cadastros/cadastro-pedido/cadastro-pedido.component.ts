@@ -79,22 +79,24 @@ produtosFiltrados: Observable<any[]> | undefined;
     const produtoSelecionado = event.option.value;
     this.produtoSelecionado = produtoSelecionado.id;
   
-    // Atualiza o campo para exibir o nome do produto
     this.produtoControl.setValue(produtoSelecionado.nome);
   
-    // Busca o preço unitário
     this.saldoEstoqueService.getPrecoUnitario(produtoSelecionado.id).subscribe(
-      (response: { preco_unitario: number | null }) => {
-        if (response && response.preco_unitario) {
-          this.valorUnitario = response.preco_unitario;
+      (response) => {
+        if (response && response.valor_unitario != null) {
+          this.valorUnitario = parseFloat(response.valor_unitario.toFixed(2));
+        } else {
+          this.valorUnitario = 0;
+          this.snackBar.open('Preço não encontrado no saldo de estoque.', 'Fechar', { duration: 3000 });
         }
       },
       (error) => {
-        console.error("Erro ao buscar o preço unitário:", error);
+        console.error("Erro ao buscar o valor unitário:", error);
+        this.snackBar.open('Erro ao buscar o valor unitário.', 'Fechar', { duration: 3000 });
       }
     );
-  }
-    
+  }    
+  
   inicializarFiltro() {
     this.produtosFiltrados = this.produtoControl.valueChanges.pipe(
       startWith(""),
