@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import { Igreja, IgrejaDetalhes } from '../../models/igreja';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastro-igreja',
@@ -10,6 +11,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./cadastro-igreja.component.css']
 })
 export class CadastroIgrejaComponent implements OnInit {
+  [x: string]: any;
+
+  abrirConsultaIgreja() {
+    this.router.navigate(['/consulta-igreja']);
+  }
   displayedColumns: string[] = ['codigo_igreja', 'nome', 'setor'];
   igrejas = new MatTableDataSource<IgrejaDetalhes>();
   igreja: Igreja = this.createEmptyIgreja();
@@ -18,13 +24,22 @@ export class CadastroIgrejaComponent implements OnInit {
   estados: any[] = [];
   showTable: boolean = false; // Para controlar a exibição da tabela
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
+  constructor(
+  private http: HttpClient,
+  private snackBar: MatSnackBar,
+  private router: Router
+) {}
 
   ngOnInit() {
     this.loadSetores();
     this.loadCidades();
     this.loadEstados();
-    this.loadIgrejas();
+  
+    const igrejaSelecionada = localStorage.getItem('igrejaSelecionada');
+    if (igrejaSelecionada) {
+      this.igreja = JSON.parse(igrejaSelecionada);
+      localStorage.removeItem('igrejaSelecionada');
+    }
   }
 
   createEmptyIgreja(): Igreja {

@@ -30,7 +30,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { CadastroCategoriaComponent } from './cadastros/cadastro-categoria/cadastro-categoria.component';
 import { DeleteDialogComponent } from './cadastros/cadastro-categoria/delete-dialog.component';
 import { CadastroProdutoComponent } from './cadastros/cadastro-produto/cadastro-produto.component';
-import { ConfirmDialog, ConsultaProdutoComponent } from './consulta-produto/consulta-produto.component';
+import { ConfirmDialog, ConsultaProdutoComponent } from './consultas/consulta-produto/consulta-produto.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -41,7 +41,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CadastroNotaFiscalComponent } from './cadastros/cadastro-nota-fiscal/cadastro-nota-fiscal.component';
 import { CadastroPedidoComponent } from './cadastros/cadastro-pedido/cadastro-pedido.component';
 import { RouterModule } from '@angular/router';
-import { ConsultaNotaFiscalComponent } from './consulta-nota-fiscal/consulta-nota-fiscal.component';
 import { CadastroUsuarioComponent } from './cadastros/cadastro-usuario/cadastro-usuario.component';
 import { RelatorioSaldoEstoqueComponent } from './relatorios/relatorio-saldo-estoque/relatorio-saldo-estoque.component';
 import { RelatorioPedidosComponent } from './relatorios/relatorio-pedidos/relatorio-pedidos.component';
@@ -60,8 +59,11 @@ import { RelatorioPedidoCompraComponent } from './relatorios/relatorio-pedido-co
 import { ConsultaPedidoComponent } from './consultas/consulta-pedido/consulta-pedido.component';
 import { RelatorioInventarioComponent } from './relatorios/relatorio-inventario/relatorio-inventario.component';
 import { CadastroFornecedorComponent } from './cadastros/cadastro-fornecedor/cadastro-fornecedor.component';
-import { ConsultaFornecedorComponent } from './cadastros/consulta-fornecedor/consulta-fornecedor.component';
-
+import { ConsultaFornecedorComponent } from './consultas/consulta-fornecedor/consulta-fornecedor.component';
+import { RelatorioFornecedorComponent } from './relatorios/relatorio-fornecedor/relatorio-fornecedor.component';
+import { ConsultaNotaFiscalComponent } from './consultas/consulta-nota-fiscal/consulta-nota-fiscal.component';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { ConsultaIgrejaComponent } from './consultas/consulta-igreja/consulta-igreja.component';
 
 // Registre o locale `pt-BR`
 registerLocaleData(localePt);
@@ -78,11 +80,9 @@ registerLocaleData(localePt);
     CadastroCategoriaComponent,
     DeleteDialogComponent,
     CadastroProdutoComponent,
-    ConsultaProdutoComponent,
     ConfirmDialog,
     CadastroNotaFiscalComponent,
     CadastroPedidoComponent,
-    ConsultaNotaFiscalComponent,
     CadastroUsuarioComponent,
     RelatorioSaldoEstoqueComponent,
     RelatorioPedidosComponent,
@@ -99,7 +99,9 @@ registerLocaleData(localePt);
     RelatorioInventarioComponent,
     CadastroFornecedorComponent,
     ConsultaFornecedorComponent,
-   
+    RelatorioFornecedorComponent,
+    ConsultaNotaFiscalComponent,
+    ConsultaIgrejaComponent,
 
  
    
@@ -133,11 +135,13 @@ registerLocaleData(localePt);
     MatTableModule,
     RouterModule,
     MatSidenavModule,
-    NgChartsModule, // Adicione esta linha
-    
+    NgxMaskDirective, 
+    NgxMaskPipe, 
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'pt-BR' }  // Configuração do locale
+    provideNgxMask(),
+    { provide: LOCALE_ID, useValue: 'pt-BR' },  // Configuração do locale
+   
   ],
   bootstrap: [AppComponent]
 })

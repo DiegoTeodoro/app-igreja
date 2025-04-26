@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { NotaFiscalService } from '../../services/nota-fiscal.service'; // Importando o serviço
+import { NotaFiscalService } from '../../../services/nota-fiscal.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 

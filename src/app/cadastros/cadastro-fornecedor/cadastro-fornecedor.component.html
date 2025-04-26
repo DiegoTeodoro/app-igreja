@@ -1,5 +1,9 @@
 <mat-card>
     <mat-card-title>Cadastro de Fornecedor</mat-card-title>
+    <div class="botoes-acoes">
+      <button mat-raised-button color="primary" (click)="abrirConsultaFornecedor()">Pesquisar</button>
+
+    </div>
     <br>
     <mat-card-content>
       <form [formGroup]="fornecedorForm">
@@ -18,14 +22,16 @@
         <div class="linha">
           <mat-form-field appearance="fill" class="terco">
             <mat-label>CNPJ</mat-label>
-            <input matInput formControlName="cnpj">
+            <input matInput formControlName="cnpj" mask="00.000.000/0000-00">
           </mat-form-field>
-  
+          
+          <!-- Inscrição Estadual (se quiser colocar só números ou formato livre, pode deixar sem máscara) -->
           <mat-form-field appearance="fill" class="terco">
             <mat-label>Inscrição Estadual</mat-label>
             <input matInput formControlName="inscricao_estadual">
           </mat-form-field>
-  
+          
+          <!-- Email -->
           <mat-form-field appearance="fill" class="terco">
             <mat-label>Email</mat-label>
             <input matInput formControlName="email">
@@ -34,15 +40,16 @@
   
        <!-- Telefones -->
 <div class="linha">
-    <mat-form-field appearance="fill" class="trinta">
-      <mat-label>Telefone Fixo</mat-label>
-      <input matInput formControlName="telefone_fixo">
-    </mat-form-field>
+  <mat-form-field appearance="fill" class="trinta">
+    <mat-label>Telefone Fixo</mat-label>
+    <input matInput formControlName="telefone_fixo" mask="(00) 0000-0000">
+  </mat-form-field>
   
-    <mat-form-field appearance="fill" class="trinta">
-      <mat-label>Telefone Celular</mat-label>
-      <input matInput formControlName="telefone_celular">
-    </mat-form-field>
+  <!-- Telefone Celular -->
+  <mat-form-field appearance="fill" class="trinta">
+    <mat-label>Telefone Celular</mat-label>
+    <input matInput formControlName="telefone_celular" mask="(00) 00000-0000">
+  </mat-form-field>
   </div>
   
   <!-- Logradouro, Número, Complemento -->
@@ -72,18 +79,23 @@
   
     <mat-form-field appearance="fill" class="vinte">
       <mat-label>CEP</mat-label>
-      <input matInput formControlName="cep">
+      <input matInput formControlName="cep" mask="00000-000">
     </mat-form-field>
   
     <mat-form-field appearance="fill" class="trinta">
       <mat-label>Cidade</mat-label>
-      <input matInput formControlName="cidade_codigo">
+      <mat-select formControlName="cidade_codigo" (selectionChange)="onCidadeChange($event.value)">
+        <mat-option *ngFor="let cidade of cidades" [value]="cidade.id">
+          {{ cidade.nome }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
-  
+    
     <mat-form-field appearance="fill" class="quinze">
       <mat-label>UF</mat-label>
-      <input matInput formControlName="uf_codigo">
+      <input matInput formControlName="uf_codigo" readonly>
     </mat-form-field>
+    
   </div>
   
       </form>
@@ -99,7 +111,10 @@
 </div>
   
     <mat-card-actions class="acoes-botoes">
-      <button mat-raised-button color="primary" (click)="salvar()">Salvar</button>
+      <button mat-raised-button color="primary" (click)="salvar()">
+        {{ fornecedorForm.get('id')?.value ? 'Atualizar' : 'Salvar' }}
+      </button>
+      
       <button mat-raised-button color="warn" (click)="cancelar()" type="button">Cancelar</button>
     </mat-card-actions>
     

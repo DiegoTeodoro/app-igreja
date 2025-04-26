@@ -1,0 +1,50 @@
+<mat-card>
+  <mat-card-title>Consulta de Fornecedores</mat-card-title>
+  <br>
+  <mat-card-content>
+    <form [formGroup]="pesquisaForm" (ngSubmit)="pesquisar()">
+      <div class="linha">
+        <mat-form-field appearance="fill" class="quarenta">
+          <mat-label>Pesquisar Fornecedor</mat-label>
+          <input matInput formControlName="pesquisa" placeholder="Digite razão social, nome fantasia ou CNPJ">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" style="margin-top: 10px; height: 56px;" type="submit">
+          Pesquisar
+        </button>
+      </div>
+    </form>
+
+    <br>
+
+    <table mat-table [dataSource]="fornecedoresFiltrados" class="mat-elevation-z8" *ngIf="fornecedoresFiltrados.length > 0">
+      <!-- Colunas -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> Código </th>
+        <td mat-cell *matCellDef="let fornecedor"> {{ fornecedor.id }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="razao_social">
+        <th mat-header-cell *matHeaderCellDef> Razão Social </th>
+        <td mat-cell *matCellDef="let fornecedor"> {{ fornecedor.razao_social }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nome_fantasia">
+        <th mat-header-cell *matHeaderCellDef> Nome Fantasia </th>
+        <td mat-cell *matCellDef="let fornecedor"> {{ fornecedor.nome_fantasia }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cnpj">
+        <th mat-header-cell *matHeaderCellDef> CNPJ </th>
+        <td mat-cell *matCellDef="let fornecedor"> {{ fornecedor.cnpj }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['id', 'razao_social', 'nome_fantasia', 'cnpj']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['id', 'razao_social', 'nome_fantasia', 'cnpj'];" (click)="selecionarFornecedor(row)"></tr>
+    </table>
+
+    <div *ngIf="fornecedoresFiltrados.length === 0" style="text-align: center; margin-top: 20px;">
+      Nenhum fornecedor encontrado.
+    </div>
+  </mat-card-content>
+</mat-card>

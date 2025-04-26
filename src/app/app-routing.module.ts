@@ -8,10 +8,10 @@ import { CadastroCidadesComponent } from './cadastros/cadastro-cidades/cadastro-
 import { CadastroIgrejaComponent } from './cadastros/cadastro-igreja/cadastro-igreja.component';
 import { CadastroCategoriaComponent } from './cadastros/cadastro-categoria/cadastro-categoria.component';
 import { CadastroProdutoComponent } from './cadastros/cadastro-produto/cadastro-produto.component';
-import { ConsultaProdutoComponent } from './consulta-produto/consulta-produto.component';
+import { ConsultaProdutoComponent } from './consultas/consulta-produto/consulta-produto.component';
 import { CadastroNotaFiscalComponent } from './cadastros/cadastro-nota-fiscal/cadastro-nota-fiscal.component';
 import { CadastroPedidoComponent } from './cadastros/cadastro-pedido/cadastro-pedido.component';
-import { ConsultaNotaFiscalComponent } from './consulta-nota-fiscal/consulta-nota-fiscal.component';
+import { ConsultaNotaFiscalComponent } from './consultas/consulta-nota-fiscal/consulta-nota-fiscal.component';
 import { RelatorioSaldoEstoqueComponent } from './relatorios/relatorio-saldo-estoque/relatorio-saldo-estoque.component';
 import { RelatorioPedidosComponent } from './relatorios/relatorio-pedidos/relatorio-pedidos.component';
 import { CadastroUsuarioComponent } from './cadastros/cadastro-usuario/cadastro-usuario.component';
@@ -26,6 +26,9 @@ import { RelatorioPedidoCompraComponent } from './relatorios/relatorio-pedido-co
 import { ConsultaPedidoComponent } from './consultas/consulta-pedido/consulta-pedido.component';
 import { RelatorioInventarioComponent } from './relatorios/relatorio-inventario/relatorio-inventario.component';
 import { CadastroFornecedorComponent } from './cadastros/cadastro-fornecedor/cadastro-fornecedor.component';
+import { ConsultaFornecedorComponent } from './consultas/consulta-fornecedor/consulta-fornecedor.component';
+import { RelatorioFornecedorComponent } from './relatorios/relatorio-fornecedor/relatorio-fornecedor.component';
+import { ConsultaIgrejaComponent } from './consultas/consulta-igreja/consulta-igreja.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -55,6 +58,9 @@ const routes: Routes = [
   { path: 'consulta-pedido', component: ConsultaPedidoComponent, canActivate: [AuthGuard]},
   { path: 'relatorio-inventario', component: RelatorioInventarioComponent, canActivate: [AuthGuard] },
   { path: 'fornecedor', component: CadastroFornecedorComponent, canActivate: [AuthGuard] },
+  {path: 'consulta-fornecedor', component: ConsultaFornecedorComponent, canActivate: [AuthGuard] },
+  {path: 'relatorio-fornecedor',component:RelatorioFornecedorComponent, canActivate:[AuthGuard]},
+  {path:'consulta-igreja', component:ConsultaIgrejaComponent, canActivate:[AuthGuard]}
 ];
 
 @NgModule({

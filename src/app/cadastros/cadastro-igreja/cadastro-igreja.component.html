@@ -2,8 +2,8 @@
   <mat-card-title>Cadastro de Igreja</mat-card-title>
 
  <!-- Botão de Pesquisar -->
- <div class="button-row" *ngIf="!showTable">
-  <button mat-raised-button color="primary" (click)="toggleTable()">Pesquisar</button>
+ <div class="button-row">
+  <button mat-raised-button color="primary" (click)="abrirConsultaIgreja()">Pesquisar</button>
 </div>
 
 <br>
@@ -74,34 +74,4 @@
 </div>
   </form>
 
-  <!-- Tabela de igrejas que aparece ao clicar em Pesquisar -->
-  <mat-card *ngIf="showTable">
-    <div class="button-row">
-      <button mat-raised-button color="primary" (click)="toggleTable()">Voltar</button>
-    </div>
-
-    <h2>Resultado da Pesquisa</h2>
-    <table mat-table [dataSource]="igrejas" class="mat-elevation-z8">
-      <!-- Código da Igreja -->
-      <ng-container matColumnDef="codigo_igreja">
-        <th mat-header-cell *matHeaderCellDef>Código da Igreja</th>
-        <td mat-cell *matCellDef="let element" (click)="onSelectIgreja(element)">{{ element.codigo_igreja }}</td>
-      </ng-container>
-
-      <!-- Nome -->
-      <ng-container matColumnDef="nome">
-        <th mat-header-cell *matHeaderCellDef>Nome</th>
-        <td mat-cell *matCellDef="let element" (click)="onSelectIgreja(element)">{{ element.nome }}</td>
-      </ng-container>
-
-      <!-- Setor -->
-      <ng-container matColumnDef="setor">
-        <th mat-header-cell *matHeaderCellDef>Setor</th>
-        <td mat-cell *matCellDef="let element" (click)="onSelectIgreja(element)">{{ element.setor }}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="['codigo_igreja', 'nome', 'setor']"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['codigo_igreja', 'nome', 'setor'];"></tr>
-    </table>
   </mat-card>
-</mat-card>

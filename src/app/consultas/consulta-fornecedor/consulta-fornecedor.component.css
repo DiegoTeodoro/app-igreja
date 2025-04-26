@@ -1,0 +1,12 @@
+.linha {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .setenta {
+    flex: 0 0 70%;
+  }
+  .quarenta {
+    flex: 0 0 30%;
+  }

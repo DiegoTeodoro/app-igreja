@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthService } from './auth.service';
+import { Title } from 'chart.js';
 
 @Component({
   selector: 'app-root',
@@ -64,6 +65,7 @@ export class AppComponent implements OnInit {
         { title: 'Pedidos detalhado', route: '/relatorio-detalhado-pedidos', icon: 'assignment_turned_in' },
         { title: 'Compras', route: '/relatorio-pedido-compra', icon: 'assignment_turned_in' },
         { title: 'Inventario', route: '/relatorio-inventario', icon: 'assignment_turned_in' },
+        { title: 'Fornecedor', route: '/relatorio-fornecedor', icon: 'assignment_turned_in' },
         
       ]
     },

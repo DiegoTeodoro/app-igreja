@@ -15,13 +15,13 @@
   <table mat-table [dataSource]="setores" class="mat-elevation-z8 custom-table">
     <!-- Nome Column -->
     <ng-container matColumnDef="nome">
-      <th mat-header-cell *matHeaderCellDef class="text-center"> Nome </th>
+      <th mat-header-cell *matHeaderCellDef class="text-center"style="background-color: #438EB9; color: white; font-size: 1.1rem;"> Nome </th>
       <td mat-cell *matCellDef="let setor" class="text-center"> {{setor.nome}} </td>
     </ng-container>
 
     <!-- Ações Column -->
     <ng-container matColumnDef="acoes">
-      <th mat-header-cell *matHeaderCellDef class="text-center"> Ações </th>
+      <th mat-header-cell *matHeaderCellDef class="text-center" style="background-color: #438EB9; color: white; font-size: 1.1rem;"> Ações </th>
       <td mat-cell *matCellDef="let setor" class="text-center actions-cell">
         <button mat-icon-button color="primary" (click)="onEdit(setor)">
           <mat-icon>edit</mat-icon>
