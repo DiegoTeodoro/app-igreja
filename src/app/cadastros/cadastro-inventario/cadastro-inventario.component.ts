@@ -114,7 +114,7 @@ export class CadastroInventarioComponent implements OnInit {
       alert('Adicione pelo menos um produto.');
       return;
     }
-
+  
     const inventarioData = this.dataSource.data.map((item) => ({
       produto_id: item.produtoId,
       usuario_id: this.inventarioForm.value.usuario_id,
@@ -122,11 +122,11 @@ export class CadastroInventarioComponent implements OnInit {
       observacao: this.inventarioForm.value.observacao,
       data_inventario: this.inventarioForm.value.data,
     }));
-
+  
     this.inventarioService.saveInventario(inventarioData).subscribe(
       (response) => {
         alert('Inventário salvo com sucesso!');
-        this.onReset();
+        window.location.reload(); // <<<<<< ADICIONE ISTO
       },
       (error) => {
         console.error('Erro ao salvar inventário:', error);
@@ -134,6 +134,7 @@ export class CadastroInventarioComponent implements OnInit {
       }
     );
   }
+  
 
   onReset(): void {
     this.inventarioForm.reset({

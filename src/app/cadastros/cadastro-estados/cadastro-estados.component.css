@@ -24,3 +24,10 @@
 button {
   margin-left: 16px; /* Adiciona espaçamento à esquerda do botão Salvar */
 }
+
+.table-card {
+  width: 50%;
+  margin: 0; /* Remove todas as margens automáticas */
+  /* ou */
+  margin-left: 16px; /* Adiciona uma margem esquerda padrão */
+}

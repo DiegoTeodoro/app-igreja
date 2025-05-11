@@ -16,4 +16,9 @@
   button {
     margin-left: 16px; /* Adiciona espaçamento à esquerda do botão Salvar */
   }
-  
+  /* Para o card que contém a tabela */
+.table-card {
+  width: 50%;
+  margin: 0; 
+  margin-left: 16px; 
+}

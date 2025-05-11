@@ -1,7 +1,7 @@
-<mat-card>
+<mat-card class="table-card">
     <mat-card-title>Consulta Igreja</mat-card-title>
   
-    <mat-card>
+   
       <table mat-table [dataSource]="igrejas" class="mat-elevation-z8">
   
         <!-- Código da Igreja -->
@@ -25,6 +25,6 @@
         <tr mat-header-row *matHeaderRowDef="['codigo_igreja', 'nome', 'setor']"></tr>
         <tr mat-row *matRowDef="let row; columns: ['codigo_igreja', 'nome', 'setor'];"></tr>
       </table>
-    </mat-card>
+    
   </mat-card>
   

@@ -13,4 +13,40 @@ table.mat-table td.mat-cell.mat-nome-cell {
     color: white;
   }
 
- 
+  .table-card {
+    width: 50%;
+    margin: 0; /* Remove todas as margens automáticas */
+    /* ou */
+    margin-left: 16px; /* Adiciona uma margem esquerda padrão */
+  }
+
+  /* Estilo para o campo de input */
+.large-input .mat-form-field-infix {
+  width: 40%; /* Define a largura do input */
+}
+
+/* Ou para o form-field inteiro */
+.large-form-field {
+  width: 40%;
+}
+
+/* Ajuste para o card de formulário */
+mat-card:first-of-type {
+  width: 60%;
+  margin-left: 0;
+}
+
+/* Ajuste para o form-field */
+mat-card:first-of-type mat-form-field {
+  width: 100%;
+}
+
+/* Ajuste específico para o input */
+mat-card:first-of-type .mat-form-field-infix {
+  width: 100%;
+}
+
+/* Ajuste para o botão */
+mat-card:first-of-type button {
+  margin-left: 15px;
+}

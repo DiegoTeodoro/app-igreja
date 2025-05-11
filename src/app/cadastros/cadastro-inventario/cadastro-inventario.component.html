@@ -46,19 +46,20 @@
 </div>
 
      <!-- Tabela de Produtos Adicionados -->
+<mat-card style="width: 70%; margin-left: 0;">
 <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 <ng-container matColumnDef="produto">
-  <mat-header-cell *matHeaderCellDef> Produto </mat-header-cell>
+  <mat-header-cell *matHeaderCellDef style="font-size: 15px;background-color: #438EB9; color: white; font-size: 1.1rem;"> Produto </mat-header-cell>
   <mat-cell *matCellDef="let element"> {{ element.produtoNome }} </mat-cell>
 </ng-container>
 
 <ng-container matColumnDef="quantidade">
-  <mat-header-cell *matHeaderCellDef> Quantidade </mat-header-cell>
+  <mat-header-cell *matHeaderCellDef style="font-size: 15px;background-color: #438EB9; color: white; font-size: 1.1rem;"> Quantidade </mat-header-cell>
   <mat-cell *matCellDef="let element"> {{ element.quantidade }} </mat-cell>
 </ng-container>
 
 <ng-container matColumnDef="acoes">
-  <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
+  <mat-header-cell *matHeaderCellDef style="font-size: 15px;background-color: #438EB9; color: white; font-size: 1.1rem;"> Ações </mat-header-cell>
   <mat-cell *matCellDef="let element">
     <button mat-icon-button color="warn" (click)="removerProduto(element)">
       <mat-icon>delete</mat-icon>
@@ -69,7 +70,7 @@
 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 </mat-table>
-
+</mat-card>
 
       <!-- Linha: Botões de Ação -->
       <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px" style="margin-top: 20px;">

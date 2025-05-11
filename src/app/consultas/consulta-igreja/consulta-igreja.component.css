@@ -1,0 +1,6 @@
+.table-card {
+    width: 60%;
+    margin: 0; /* Remove todas as margens automáticas */
+    /* ou */
+    margin-left: 16px; /* Adiciona uma margem esquerda padrão */
+  }

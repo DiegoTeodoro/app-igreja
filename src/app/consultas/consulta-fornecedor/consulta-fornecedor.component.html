@@ -16,26 +16,26 @@
     </form>
 
     <br>
-
+    <mat-card style="width: 70%; margin-left: 0;">
     <table mat-table [dataSource]="fornecedoresFiltrados" class="mat-elevation-z8" *ngIf="fornecedoresFiltrados.length > 0">
       <!-- Colunas -->
       <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> Código </th>
+        <th mat-header-cell *matHeaderCellDef style="font-size: 15px;background-color: #438EB9; color: white; font-size: 1.1rem;"> Código </th>
         <td mat-cell *matCellDef="let fornecedor"> {{ fornecedor.id }} </td>
       </ng-container>
 
       <ng-container matColumnDef="razao_social">
-        <th mat-header-cell *matHeaderCellDef> Razão Social </th>
+        <th mat-header-cell *matHeaderCellDef style="font-size: 15px;background-color: #438EB9; color: white; font-size: 1.1rem;"> Razão Social </th>
         <td mat-cell *matCellDef="let fornecedor"> {{ fornecedor.razao_social }} </td>
       </ng-container>
 
       <ng-container matColumnDef="nome_fantasia">
-        <th mat-header-cell *matHeaderCellDef> Nome Fantasia </th>
+        <th mat-header-cell *matHeaderCellDef style="font-size: 15px;background-color: #438EB9; color: white; font-size: 1.1rem;"> Nome Fantasia </th>
         <td mat-cell *matCellDef="let fornecedor"> {{ fornecedor.nome_fantasia }} </td>
       </ng-container>
 
       <ng-container matColumnDef="cnpj">
-        <th mat-header-cell *matHeaderCellDef> CNPJ </th>
+        <th mat-header-cell *matHeaderCellDef style="font-size: 15px;background-color: #438EB9; color: white; font-size: 1.1rem;"> CNPJ </th>
         <td mat-cell *matCellDef="let fornecedor"> {{ fornecedor.cnpj }} </td>
       </ng-container>
 
@@ -46,5 +46,6 @@
     <div *ngIf="fornecedoresFiltrados.length === 0" style="text-align: center; margin-top: 20px;">
       Nenhum fornecedor encontrado.
     </div>
+    </mat-card>
   </mat-card-content>
 </mat-card>

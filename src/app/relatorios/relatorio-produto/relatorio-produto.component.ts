@@ -3,6 +3,10 @@ import { ProdutoService } from '../../../services/produto.service';
 import { Produto } from '../../models/produto';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable'; // Importar desta forma
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { ViewChild, AfterViewInit } from '@angular/core';
+
 
 @Component({
   selector: 'app-relatorio-produto',
@@ -13,6 +17,10 @@ export class RelatorioProdutoComponent implements OnInit {
   produtos: Produto[] = [];
   displayedColumns: string[] = ['nome', 'volume', 'codigoBarras', 'fornecedor', 'marca'];
   dataAtual: any;
+  produtosFiltrados: any[] = [];
+  dataSource = new MatTableDataSource<Produto>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private produtoService: ProdutoService) {}
 
@@ -20,6 +28,8 @@ export class RelatorioProdutoComponent implements OnInit {
     this.produtoService.getProdutos().subscribe(
       (data) => {
         this.produtos = data;
+        this.dataSource = new MatTableDataSource<Produto>(this.produtos);
+        this.dataSource.paginator = this.paginator;
       },
       (error) => {
         console.error('Erro ao buscar produtos', error);
@@ -27,6 +37,10 @@ export class RelatorioProdutoComponent implements OnInit {
     );
     this.atualizarDataHora();
     setInterval(() => this.atualizarDataHora(), 60000); // Atualiza a cada 60 segundos
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 
   atualizarDataHora() {

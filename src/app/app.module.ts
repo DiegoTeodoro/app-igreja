@@ -30,7 +30,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { CadastroCategoriaComponent } from './cadastros/cadastro-categoria/cadastro-categoria.component';
 import { DeleteDialogComponent } from './cadastros/cadastro-categoria/delete-dialog.component';
 import { CadastroProdutoComponent } from './cadastros/cadastro-produto/cadastro-produto.component';
-import { ConfirmDialog, ConsultaProdutoComponent } from './consultas/consulta-produto/consulta-produto.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -49,7 +48,6 @@ import { LoginComponent } from './login/login.component';
 import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { CadastroInventarioComponent } from './cadastros/cadastro-inventario/cadastro-inventario.component';
-import { NgChartsModule } from 'ng2-charts';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RelatorioNotaFiscalComponent } from './relatorios/relatorio-nota-fiscal/relatorio-nota-fiscal.component';
@@ -64,11 +62,14 @@ import { RelatorioFornecedorComponent } from './relatorios/relatorio-fornecedor/
 import { ConsultaNotaFiscalComponent } from './consultas/consulta-nota-fiscal/consulta-nota-fiscal.component';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { ConsultaIgrejaComponent } from './consultas/consulta-igreja/consulta-igreja.component';
+import { MatSortModule } from '@angular/material/sort';
+import { ConfirmDialog, ConsultaProdutoComponent } from './consultas/consulta-produto/consulta-produto.component';
 
 // Registre o locale `pt-BR`
 registerLocaleData(localePt);
 
 @NgModule({
+  
   declarations: [
     AppComponent,
     CadastroEmpresaComponent,
@@ -80,7 +81,6 @@ registerLocaleData(localePt);
     CadastroCategoriaComponent,
     DeleteDialogComponent,
     CadastroProdutoComponent,
-    ConfirmDialog,
     CadastroNotaFiscalComponent,
     CadastroPedidoComponent,
     CadastroUsuarioComponent,
@@ -102,18 +102,20 @@ registerLocaleData(localePt);
     RelatorioFornecedorComponent,
     ConsultaNotaFiscalComponent,
     ConsultaIgrejaComponent,
+    ConsultaProdutoComponent,
+    ConfirmDialog,
 
- 
-   
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    RouterModule,
     MatCardModule,
     MatFormFieldModule,
-    ReactiveFormsModule,
-    MatTableModule,
     MatInputModule,
     MatButtonModule,
     MatToolbarModule,
@@ -121,8 +123,6 @@ registerLocaleData(localePt);
     MatListModule,
     MatIconModule,
     MatExpansionModule,
-    FormsModule,
-    HttpClientModule,
     MatSelectModule,
     MatOptionModule,
     MatDialogModule,
@@ -132,12 +132,13 @@ registerLocaleData(localePt);
     MatAutocompleteModule,
     MatNativeDateModule,
     MatPaginatorModule,
-    MatTableModule,
-    RouterModule,
-    MatSidenavModule,
-    NgxMaskDirective, 
-    NgxMaskPipe, 
+    MatTableModule,        // ✅ Agora está certo
+    NgxMaskDirective,
+    NgxMaskPipe,
+    MatSortModule,
+    
   ],
+  
   providers: [
     provideNgxMask(),
     { provide: LOCALE_ID, useValue: 'pt-BR' },  // Configuração do locale

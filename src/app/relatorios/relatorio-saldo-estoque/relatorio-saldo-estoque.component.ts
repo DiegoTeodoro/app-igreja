@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SaldoEstoqueService } from '../../../services/Saldo_Estoque.service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-relatorio-saldo-estoque',
@@ -10,8 +12,11 @@ import autoTable from 'jspdf-autotable';
 })
 export class RelatorioSaldoEstoqueComponent implements OnInit {
   displayedColumns: string[] = ['produto_id', 'produto_nome', 'quantidade', 'valor_unitario', 'valor_total'];
-  dataSource: any[] = [];
+  dataSource = new MatTableDataSource<any>([]);
   dataAtual: string;
+  allData: any[] = []; // Armazena todos os dados para cálculo do total
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private saldoEstoqueService: SaldoEstoqueService) {
     this.dataAtual = new Date().toLocaleString();
@@ -20,7 +25,8 @@ export class RelatorioSaldoEstoqueComponent implements OnInit {
   ngOnInit(): void {
     this.saldoEstoqueService.getSaldoEstoque().subscribe(
       data => {
-        this.dataSource = data;
+        this.allData = data;
+        this.dataSource.data = data;
       },
       error => {
         console.error('Erro ao buscar saldo de estoque', error);
@@ -28,8 +34,12 @@ export class RelatorioSaldoEstoqueComponent implements OnInit {
     );
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
   getTotal(): number {
-    return this.dataSource.reduce((acc, curr) => acc + curr.valor_total, 0);
+    return this.allData.reduce((acc, curr) => acc + curr.valor_total, 0);
   }
 
   generatePDF(): void {
@@ -39,25 +49,21 @@ export class RelatorioSaldoEstoqueComponent implements OnInit {
     const subtitle = 'CCB - Parque São Jorge, R. Antônio Paiva Catalão, Nº 548.';
     const dateTime = new Date().toLocaleString();
     
-      // Centraliza o título no cabeçalho
-      doc.setFontSize(14);
-      const textWidth = doc.getTextWidth(title);
-      doc.text(title, (pageWidth - textWidth) / 2, 10); // Centraliza horizontalmente na página
+    doc.setFontSize(14);
+    const textWidth = doc.getTextWidth(title);
+    doc.text(title, (pageWidth - textWidth) / 2, 10);
 
-      // Adiciona o subtítulo abaixo do título
-      doc.setFontSize(10); // Fonte menor para o subtítulo
-      const subtitleWidth = doc.getTextWidth(subtitle);
-      doc.text(subtitle, (pageWidth - subtitleWidth) / 2, 16); // Centraliza horizontalmente
+    doc.setFontSize(10);
+    const subtitleWidth = doc.getTextWidth(subtitle);
+    doc.text(subtitle, (pageWidth - subtitleWidth) / 2, 16);
 
-      // Alinha a data e hora no canto direito
-      doc.setFontSize(10);
-      doc.text(dateTime, pageWidth - doc.getTextWidth(dateTime) - 10, 10); // Alinha à direita com margem de 10 unidades
+    doc.setFontSize(10);
+    doc.text(dateTime, pageWidth - doc.getTextWidth(dateTime) - 10, 10);
 
-    // Gerar tabela com os dados
     autoTable(doc, {
       startY: 22,
       head: [['Codigo', 'Nome do Produto', 'Quantidade', 'Valor Unitário', 'Valor Total']],
-      body: this.dataSource.map(item => [
+      body: this.allData.map(item => [
         item.produto_id,
         item.produto_nome,
         item.quantidade,
@@ -66,17 +72,15 @@ export class RelatorioSaldoEstoqueComponent implements OnInit {
       ])
     });
 
-    // Adicionar o valor total no final do relatório
     const valorTotal = this.getTotal().toFixed(2);
     doc.setFontSize(10);
-    doc.setFont('helvetica', 'bold'); // Definir a fonte para negrito
+    doc.setFont('helvetica', 'bold');
     doc.text(
       `Total: R$ ${valorTotal}`,
       pageWidth - doc.getTextWidth(`Total: R$ ${valorTotal}`) - 10,
-      (doc as any).lastAutoTable.finalY + 10 // Utilize 'as any' para evitar erro de tipo
+      (doc as any).lastAutoTable.finalY + 10
     );
 
-    // Abra uma nova janela com visualização do PDF usando um blob
     const blob = doc.output('blob');
     const url = URL.createObjectURL(blob);
     const x = window.open(url, '_blank');

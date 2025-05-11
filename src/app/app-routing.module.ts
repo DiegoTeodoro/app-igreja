@@ -8,7 +8,6 @@ import { CadastroCidadesComponent } from './cadastros/cadastro-cidades/cadastro-
 import { CadastroIgrejaComponent } from './cadastros/cadastro-igreja/cadastro-igreja.component';
 import { CadastroCategoriaComponent } from './cadastros/cadastro-categoria/cadastro-categoria.component';
 import { CadastroProdutoComponent } from './cadastros/cadastro-produto/cadastro-produto.component';
-import { ConsultaProdutoComponent } from './consultas/consulta-produto/consulta-produto.component';
 import { CadastroNotaFiscalComponent } from './cadastros/cadastro-nota-fiscal/cadastro-nota-fiscal.component';
 import { CadastroPedidoComponent } from './cadastros/cadastro-pedido/cadastro-pedido.component';
 import { ConsultaNotaFiscalComponent } from './consultas/consulta-nota-fiscal/consulta-nota-fiscal.component';
@@ -29,6 +28,7 @@ import { CadastroFornecedorComponent } from './cadastros/cadastro-fornecedor/cad
 import { ConsultaFornecedorComponent } from './consultas/consulta-fornecedor/consulta-fornecedor.component';
 import { RelatorioFornecedorComponent } from './relatorios/relatorio-fornecedor/relatorio-fornecedor.component';
 import { ConsultaIgrejaComponent } from './consultas/consulta-igreja/consulta-igreja.component';
+import { ConsultaProdutoComponent } from './consultas/consulta-produto/consulta-produto.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -41,7 +41,7 @@ const routes: Routes = [
   { path: 'igreja', component: CadastroIgrejaComponent, canActivate: [AuthGuard] },
   { path: 'categoria', component: CadastroCategoriaComponent, canActivate: [AuthGuard] },
   { path: 'produto', component: CadastroProdutoComponent, canActivate: [AuthGuard] },
-  { path: 'consulta-produto', component: ConsultaProdutoComponent, canActivate: [AuthGuard] },
+  {path:'consulta-produto', component:ConsultaProdutoComponent, canActivate:[AuthGuard]},
   { path: 'cadastro-produto/:id', component: CadastroProdutoComponent, canActivate: [AuthGuard] },
   { path: 'cadastro-nota-fiscal', component: CadastroNotaFiscalComponent, canActivate: [AuthGuard] },
   { path: 'consulta-nota-fiscal', component: ConsultaNotaFiscalComponent, canActivate: [AuthGuard] },

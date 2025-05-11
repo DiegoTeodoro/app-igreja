@@ -54,6 +54,7 @@
   <!-- Linha de rodapé -->
   <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
 </table>
+<mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25,50]" showFirstLastButtons></mat-paginator>
 </div>
 <!-- Botão para gerar PDF -->
-<button mat-raised-button color="primary" (click)="generatePDF()">Visualizar Relatório</button>
+<button mat-raised-button color="primary" (click)="generatePDF()">Gerar PDF</button>
